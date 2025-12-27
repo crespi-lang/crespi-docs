@@ -1,0 +1,84 @@
+site_name: Crespi Lang Docs
+site_url: https://izantech.app/crespilang/es/
+repo_url: https://github.com/crespi-lang/crespi-docs
+repo_name: crespi-lang/crespi-docs
+
+docs_dir: docs
+
+theme:
+  name: material
+  language: es
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+plugins:
+  - search
+  - exclude:
+      glob:
+        - en/**/*
+
+markdown_extensions:
+  - admonition
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      use_pygments: false
+  - pymdownx.superfences
+
+extra:
+  alternate:
+    - name: English
+      link: ../
+      lang: en
+    - name: Español
+      link: ./
+      lang: es
+
+extra_css:
+  - assets/stylesheets/dracula.css
+  - assets/stylesheets/crespi-code.css
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js
+  - assets/javascripts/hljs-crespi.js
+  - assets/javascripts/hljs-loader.js
+
+nav:
+  - Inicio: es/README.md
+  - Guia:
+      - Inicio Rapido: es/inicio-rapido.md
+      - Variables y Constantes: es/guia/variables.md
+      - Control de Flujo: es/guia/control-flujo.md
+      - Funciones: es/guia/funciones.md
+      - Listas y Diccionarios: es/guia/colecciones.md
+      - Clases y Objetos: es/guia/clases.md
+      - Caracteristicas Avanzadas: es/guia/avanzado.md
+  - Referencia:
+      - Palabras Clave: es/referencia/palabras-clave.md
+      - Operadores: es/referencia/operadores.md
+      - Funciones Integradas: es/referencia/funciones.md
+      - Tipos de Datos: es/referencia/tipos.md
+      - Gramatica (ANTLR4): es/referencia/gramatica.md
+  - Ejecucion:
+      - Interprete: es/guia/interprete.md
+      - Compilador: es/guia/compilador.md
