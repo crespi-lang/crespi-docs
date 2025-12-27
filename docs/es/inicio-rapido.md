@@ -220,7 +220,7 @@ mostrar(persona.claves())     // [nombre, edad, ciudad]
 ## Clases
 
 ```crespi
-tipo Rectangulo(let ancho, let alto) {
+tipo Rectangulo(immutable ancho, immutable alto) {
     bloque area() {
         resultado yo.ancho * yo.alto
     }

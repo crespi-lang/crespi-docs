@@ -316,13 +316,13 @@ tipo Animal(variable nombre) {
     }
 }
 
-tipo Perro(let nombre, var raza) : Animal(nombre) {  // Llama al constructor padre
+tipo Perro(immutable nombre, variable raza) : Animal(nombre) {  // Llama al constructor padre
     bloque hablar() {
         mostrar(yo.nombre + " ladra")
     }
 }
 
-tipo Gato(let nombre) : Animal(nombre) {
+tipo Gato(immutable nombre) : Animal(nombre) {
     bloque hablar() {
         mostrar(yo.nombre + " maúlla")
     }
@@ -344,13 +344,13 @@ michi.hablar()  // Michi maúlla
 ### En el Constructor
 
 ```crespi
-tipo Vehiculo(let marca, let modelo) {
+tipo Vehiculo(immutable marca, immutable modelo) {
     bloque describir() {
         resultado yo.marca + " " + yo.modelo
     }
 }
 
-tipo Coche(let marca, let modelo, let puertas) : Vehiculo(marca, modelo) {  // Inicializa marca y modelo
+tipo Coche(immutable marca, immutable modelo, immutable puertas) : Vehiculo(marca, modelo) {  // Inicializa marca y modelo
     bloque describir() {
         variable base = super.describir()  // Llama al método padre
         resultado base + " (" + texto(yo.puertas) + " puertas)"
@@ -364,13 +364,13 @@ mostrar(coche.describir())  // Toyota Corolla (4 puertas)
 ### En Métodos
 
 ```crespi
-tipo Empleado(let nombre, let salario) {
+tipo Empleado(immutable nombre, immutable salario) {
     bloque calcular_bono() {
         resultado yo.salario * 0.10
     }
 }
 
-tipo Gerente(let nombre, let salario, let departamento) : Empleado(nombre, salario) {
+tipo Gerente(immutable nombre, immutable salario, immutable departamento) : Empleado(nombre, salario) {
     bloque calcular_bono() {
         variable bono_base = super.calcular_bono()  // 10%
         resultado bono_base * 2  // Gerentes: 20%
@@ -397,19 +397,19 @@ tipo Forma {
     }
 }
 
-tipo Cuadrado(let lado) : Forma {
+tipo Cuadrado(immutable lado) : Forma {
     bloque area() {
         resultado yo.lado * yo.lado
     }
 }
 
-tipo Circulo(let radio) : Forma {
+tipo Circulo(immutable radio) : Forma {
     bloque area() {
         resultado 3.14159 * yo.radio * yo.radio
     }
 }
 
-tipo Triangulo(let base, let altura) : Forma {
+tipo Triangulo(immutable base, immutable altura) : Forma {
     bloque area() {
         resultado (yo.base * yo.altura) / 2
     }
@@ -519,7 +519,7 @@ variable config2 = obtener_config()
 ### Composición
 
 ```crespi
-tipo Motor(let potencia, var encendido = falso) {
+tipo Motor(immutable potencia, variable encendido = falso) {
     bloque arrancar() {
         yo.encendido = verdadero
         mostrar("Motor arrancado")
@@ -573,7 +573,7 @@ trait Describible {
 Usa `:` para implementar traits (misma sintaxis que herencia):
 
 ```crespi
-tipo Persona(let nombre, let edad) : Describible {
+tipo Persona(immutable nombre, immutable edad) : Describible {
     bloque describir() -> String {
         resultado "Persona: " + yo.nombre + ", " + texto(yo.edad) + " años"
     }
@@ -594,7 +594,7 @@ trait Saludable {
     }
 }
 
-tipo Estudiante(let nombre) : Saludable {
+tipo Estudiante(immutable nombre) : Saludable {
     // Usa la implementación por defecto de saludar()
 }
 
@@ -616,7 +616,7 @@ trait Corredor : Caminable {
 }
 
 // Las clases que implementan Corredor deben implementar tanto caminar() como correr()
-tipo Atleta(let nombre) : Corredor {
+tipo Atleta(immutable nombre) : Corredor {
     bloque caminar() {
         mostrar(yo.nombre + " está caminando")
     }
@@ -640,7 +640,7 @@ trait Comparable {
     bloque comparar(otro) -> Int
 }
 
-tipo Valor(let n) : Imprimible, Comparable {
+tipo Valor(immutable n) : Imprimible, Comparable {
     bloque imprimir() -> String {
         resultado "Valor(" + texto(yo.n) + ")"
     }
@@ -656,7 +656,7 @@ tipo Valor(let n) : Imprimible, Comparable {
 Al heredar de una clase e implementar traits, la clase va primero:
 
 ```crespi
-tipo Animal(let nombre) {
+tipo Animal(immutable nombre) {
     bloque hablar() {
         mostrar(yo.nombre + " hace un sonido")
     }
@@ -666,7 +666,7 @@ trait Volable {
     bloque volar()
 }
 
-tipo Pajaro(let nombre) : Animal(nombre), Volable {
+tipo Pajaro(immutable nombre) : Animal(nombre), Volable {
     bloque volar() {
         mostrar(yo.nombre + " está volando")
     }

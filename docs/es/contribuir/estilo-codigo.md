@@ -107,18 +107,18 @@ mod tests { ... }
 
 ### Palabras Clave
 
-Usar palabras clave en español en documentación española:
+Usar palabras clave en español y mantener los ejemplos localizados en documentación española:
 
 ```crespi
 // Bueno para docs en español
 variable nombre = "Alicia"
-tipo Persona(let nombre, let edad)
+tipo Persona(immutable nombre, immutable edad)
 bloque saludar() { ... }
 
-// Evitar en docs en español
-var name = "Alicia"
-class Person(let name, let age)
-fn greet() { ... }
+// Evitar nombres en inglés en docs en español
+variable name = "Alicia"
+tipo Person(immutable name, immutable age)
+bloque greet() { ... }
 ```
 
 Los ejemplos en inglés pertenecen solo a la documentación en inglés.
@@ -145,13 +145,13 @@ Usar **PascalCase** para nombres de clases:
 
 ```crespi
 // Bueno
-tipo Persona(let nombre, let edad)
-tipo ClienteHttp(let urlBase)
+tipo Persona(immutable nombre, immutable edad)
+tipo ClienteHttp(immutable urlBase)
 tipo ListaEnlazada[T]()
 
 // Evitar
-tipo persona(let nombre, let edad)
-tipo cliente_http(let urlBase)
+tipo persona(immutable nombre, immutable edad)
+tipo cliente_http(immutable urlBase)
 ```
 
 ### Formateo
@@ -161,7 +161,7 @@ tipo cliente_http(let urlBase)
 - **Longitud de línea**: Razonable (sin límite estricto)
 
 ```crespi
-tipo Rectangulo(let ancho, let alto) {
+tipo Rectangulo(immutable ancho, immutable alto) {
     bloque area() {
         resultado yo.ancho * yo.alto
     }

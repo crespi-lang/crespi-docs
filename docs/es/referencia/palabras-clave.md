@@ -254,7 +254,7 @@ repetir n en numeros {
 Define un tipo con propiedades y métodos.
 
 ```crespi
-tipo Persona(let nombre, let edad) {
+tipo Persona(immutable nombre, immutable edad) {
     bloque presentarse() {
         mostrar("Soy " + yo.nombre + ", tengo " + texto(yo.edad) + " años")
     }
@@ -269,13 +269,13 @@ p.presentarse()  // Soy Ana, tengo 25 años
 Indica que un tipo hereda de otro.
 
 ```crespi
-tipo Animal(let nombre) {
+tipo Animal(immutable nombre) {
     bloque hablar() {
         mostrar(yo.nombre + " hace un sonido")
     }
 }
 
-tipo Perro(let nombre, let raza) extiende Animal(nombre) {
+tipo Perro(immutable nombre, immutable raza) extiende Animal(nombre) {
     bloque hablar() {
         mostrar(yo.nombre + " ladra")
     }
@@ -310,10 +310,10 @@ tipo Contador {
 Accede a métodos del tipo padre.
 
 ```crespi
-tipo Vehiculo(let marca) {
+tipo Vehiculo(immutable marca) {
 }
 
-tipo Coche(let marca, let modelo) extiende Vehiculo(marca) {  // Llama al constructor de Vehiculo
+tipo Coche(immutable marca, immutable modelo) extiende Vehiculo(marca) {  // Llama al constructor de Vehiculo
 }
 ```
 
@@ -322,7 +322,7 @@ tipo Coche(let marca, let modelo) extiende Vehiculo(marca) {  // Llama al constr
 Define sobrecarga de operadores para tipos personalizados.
 
 ```crespi
-tipo Vector(let x, let y) {
+tipo Vector(immutable x, immutable y) {
     operador +(otro) {
         resultado Vector(yo.x + otro.x, yo.y + otro.y)
     }

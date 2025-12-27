@@ -77,8 +77,8 @@ bloque [T, U] transformar(valor, funcion) {
     resultado funcion(valor)
 }
 
-fn [T] doble(x) = x * 2
-fn [T] a_texto(x) = texto(x)
+bloque [T] doble(x) = x * 2
+bloque [T] a_texto(x) = texto(x)
 
 mostrar(transformar(5, doble))     // 10
 mostrar(transformar(42, a_texto))  // "42"

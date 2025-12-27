@@ -51,6 +51,8 @@ Crespi is a bilingual programming language with English as the primary syntax an
 
 ### Bilingual Syntax
 
+English is canonical; a Spanish language pack provides localized aliases. See the Spanish docs for localized examples.
+
 ```crespi
 // English (primary)
 var name = "Ana"
@@ -58,14 +60,6 @@ let PI = 3.14159
 
 if name == "Ana" {
     print("Hello, Ana!")
-}
-
-// Spanish (via language pack)
-variable nombre = "Ana"
-immutable PI = 3.14159
-
-si nombre igualA "Ana" {
-    mostrar("Hola, Ana!")
 }
 ```
 
@@ -77,8 +71,8 @@ Crespi allows using operators in symbolic or textual form:
 // Symbolic form
 var sum = 5 + 3
 
-// Textual form (Spanish)
-variable suma = 5 mas 3
+// Textual form (Spanish operators)
+var sumText = 5 mas 3
 ```
 
 ### Object-Oriented Programming

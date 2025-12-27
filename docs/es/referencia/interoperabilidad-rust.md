@@ -114,21 +114,21 @@ Esto genera:
 ```crespi
 // main.crespi
 
-fn main() {
+bloque main() {
     // Las funciones primitivas funcionan directamente
-    var suma = sumar(10, 20)
+    variable suma = sumar(10, 20)
     mostrar(suma)  // 30
 
     // Los structs se convierten en clases
-    var p1 = Punto(0.0, 0.0)
-    var p2 = Punto(3.0, 4.0)
+    variable p1 = Punto(0.0, 0.0)
+    variable p2 = Punto(3.0, 4.0)
 
     // Los métodos funcionan naturalmente
-    var dist = p1.distancia(p2)
+    variable dist = p1.distancia(p2)
     mostrar(dist)  // 5.0
 
     // Funciones libres con parámetros struct
-    var medio = punto_medio(p1, p2)
+    variable medio = punto_medio(p1, p2)
     mostrar(medio.x())  // 1.5
     mostrar(medio.y())  // 2.0
 }
@@ -166,8 +166,8 @@ Los tipos complejos requieren funciones wrapper para el marshaling.
 | `HashMap<K, V>` | `Dict[K, V]` | Mapeo de diccionario |
 | `Option<T>` | `T?` | Tipo nullable |
 | `Result<T, E>` | `T?` | Los errores se convierten en null |
-| `struct` personalizado | `class` | Clase auto-generada |
-| `enum` personalizado | `class` | Constructores de variantes |
+| `struct` personalizado | `tipo` | Tipo auto-generado |
+| `enum` personalizado | `tipo` | Constructores de variantes |
 
 ### Punteros Inteligentes
 
@@ -210,23 +210,23 @@ impl Persona {
 
 **Crespi Generado:**
 ```crespi
-class Persona {
-    private var _ptr: Any
+tipo Persona {
+    privado variable _ptr: Any
 
-    fn init(nombre: String, edad: Int) {
-        this._ptr = __crespi_Persona_new(nombre, edad)
+    bloque init(nombre: String, edad: Int) {
+        yo._ptr = __crespi_Persona_new(nombre, edad)
     }
 
-    fn nombre() -> String {
-        return __crespi_Persona_get_nombre(this._ptr)
+    bloque nombre() -> String {
+        resultado __crespi_Persona_get_nombre(yo._ptr)
     }
 
-    fn edad() -> Int {
-        return __crespi_Persona_get_edad(this._ptr)
+    bloque edad() -> Int {
+        resultado __crespi_Persona_get_edad(yo._ptr)
     }
 
-    fn saludar() -> String {
-        return __crespi_Persona_saludar(this._ptr)
+    bloque saludar() -> String {
+        resultado __crespi_Persona_saludar(yo._ptr)
     }
 }
 ```
@@ -244,10 +244,10 @@ pub fn calcular_area(ancho: f64, alto: f64) -> f64 {
 
 **Crespi Generado:**
 ```crespi
-extern fn __crespi_calcular_area(ancho: Double, alto: Double) -> Double
+externo bloque __crespi_calcular_area(ancho: Double, alto: Double) -> Double
 
-fn calcular_area(ancho: Double, alto: Double) -> Double {
-    return __crespi_calcular_area(ancho, alto)
+bloque calcular_area(ancho: Double, alto: Double) -> Double {
+    resultado __crespi_calcular_area(ancho, alto)
 }
 ```
 
@@ -267,19 +267,19 @@ pub enum Color {
 
 **Crespi Generado:**
 ```crespi
-class Color {
-    private var _tag: Int
-    private var _data: Any
+tipo Color {
+    privado variable _tag: Int
+    privado variable _data: Any
 
-    fn Rojo() -> Color { ... }
-    fn Verde() -> Color { ... }
-    fn Azul() -> Color { ... }
-    fn Rgb(r: Int, g: Int, b: Int) -> Color { ... }
+    bloque Rojo() -> Color { ... }
+    bloque Verde() -> Color { ... }
+    bloque Azul() -> Color { ... }
+    bloque Rgb(r: Int, g: Int, b: Int) -> Color { ... }
 
-    fn es_rojo() -> Bool { return this._tag == 0 }
-    fn es_verde() -> Bool { return this._tag == 1 }
-    fn es_azul() -> Bool { return this._tag == 2 }
-    fn es_rgb() -> Bool { return this._tag == 3 }
+    bloque es_rojo() -> Bool { resultado yo._tag == 0 }
+    bloque es_verde() -> Bool { resultado yo._tag == 1 }
+    bloque es_azul() -> Bool { resultado yo._tag == 2 }
+    bloque es_rgb() -> Bool { resultado yo._tag == 3 }
 }
 ```
 
@@ -378,8 +378,8 @@ export PATH="$HOME/.cargo/bin:$PATH"
    - Llaman a las funciones originales
    - Convierten resultados de vuelta a `CrespiValue`
 5. **Generación de Facade**: Se genera un archivo `.crespi` con:
-   - Declaraciones `extern fn` para las funciones FFI
-   - Definiciones de clase para structs
+   - Declaraciones `externo bloque` para las funciones FFI
+   - Definiciones de tipo para structs
    - Funciones wrapper para API ergonómica
 6. **Compilación**: El crate wrapper se compila a biblioteca estática
 
@@ -454,14 +454,14 @@ regex = "1.10"
 
 ```crespi
 // main.crespi
-fn main() {
-    var patron = Regex("[0-9]+")
+bloque main() {
+    variable patron = Regex("[0-9]+")
 
     si patron.is_match("abc123") {
         mostrar("¡Se encontraron dígitos!")
     }
 
-    var coincidencias = patron.find_all("a1b2c3")
+    variable coincidencias = patron.find_all("a1b2c3")
     para m en coincidencias {
         mostrar(m)  // "1", "2", "3"
     }
@@ -505,18 +505,18 @@ impl Complejo {
 
 ```crespi
 // main.crespi
-fn main() {
+bloque main() {
     // Usando funciones libres
     mostrar(factorial(10))    // 3628800
     mostrar(fibonacci(10))    // 55
 
     // Usando la clase Complejo
-    var c1 = Complejo(3.0, 4.0)
-    var c2 = Complejo(1.0, 2.0)
+    variable c1 = Complejo(3.0, 4.0)
+    variable c2 = Complejo(1.0, 2.0)
 
     mostrar(c1.magnitud())   // 5.0
 
-    var suma = c1.sumar(c2)
+    variable suma = c1.sumar(c2)
     mostrar(suma.real())     // 4.0
     mostrar(suma.imag())     // 6.0
 }
@@ -563,4 +563,4 @@ Solo las funciones e items `pub` se incluyen en los bindings generados.
 
 - [Referencia de Tipos](tipos.md) - Sistema de tipos de Crespi
 - [Referencia de Funciones](funciones.md) - Funciones incorporadas
-- [Referencia de Palabras Clave](palabras-clave.md) - Palabras clave del lenguaje incluyendo `extern`
+- [Referencia de Palabras Clave](palabras-clave.md) - Palabras clave del lenguaje incluyendo `externo`

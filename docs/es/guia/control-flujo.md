@@ -126,7 +126,7 @@ cuando [1, 2] {
 Las instancias de clase se pueden comparar por nombre y campos:
 
 ```crespi
-tipo Persona(let nombre, let edad) {
+tipo Persona(immutable nombre, immutable edad) {
 }
 
 variable persona = Persona("Ana", 30)

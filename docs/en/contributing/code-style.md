@@ -114,14 +114,9 @@ Use English keywords in documentation and examples:
 var name = "Alice"
 class Person(let name, let age)
 fn greet() { ... }
-
-// Avoid in English docs
-variable nombre = "Alice"
-tipo Persona(let nombre, let edad)
-bloque saludar() { ... }
 ```
 
-Spanish examples belong in Spanish documentation only.
+Avoid localized keyword packs in English docs. Spanish examples belong in Spanish documentation only.
 
 ### Function Naming
 

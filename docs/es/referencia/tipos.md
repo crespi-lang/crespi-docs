@@ -70,7 +70,7 @@ bloque parsear(entrada: String) -> Int | Error {
 ### Anotaciones de Tipo en Clases
 
 ```crespi
-tipo Punto(let x: Int, let y: Int) {
+tipo Punto(immutable x: Int, immutable y: Int) {
     bloque distancia() -> Float {
         resultado raiz(decimal(yo.x * yo.x + yo.y * yo.y))
     }
@@ -80,7 +80,7 @@ tipo Punto(let x: Int, let y: Int) {
 ### Tipos Genéricos
 
 ```crespi
-tipo Contenedor[T](let valor: T) {
+tipo Contenedor[T](immutable valor: T) {
     bloque obtener() -> T {
         resultado yo.valor
     }
@@ -465,8 +465,8 @@ variable operacion = suma
 mostrar(operacion(3, 4))  // 7
 
 // Pasar como argumento
-bloque aplicar(fn, valor) {
-    resultado fn(valor)
+bloque aplicar(funcion, valor) {
+    resultado funcion(valor)
 }
 mostrar(aplicar(doble, 5))  // 10
 
@@ -486,7 +486,7 @@ mostrar(triple(4))  // 12
 Definición de un tipo con constructor y métodos.
 
 ```crespi
-tipo Contador(var valor = 0) {
+tipo Contador(variable valor = 0) {
     bloque incrementar() {
         yo.valor += 1
     }
@@ -504,7 +504,7 @@ mostrar(tipo_de(Contador))  // clase
 Objeto creado a partir de una clase.
 
 ```crespi
-tipo Punto(let x, let y) {
+tipo Punto(immutable x, immutable y) {
 }
 
 variable p = Punto(3, 4)

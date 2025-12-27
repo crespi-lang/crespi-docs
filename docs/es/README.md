@@ -75,7 +75,7 @@ variable suma = 5 mas 3
 ### Programación Orientada a Objetos
 
 ```crespi
-tipo Persona(let nombre, let edad) {
+tipo Persona(immutable nombre, immutable edad) {
     bloque saludar() {
         mostrar("Hola, soy " + yo.nombre)
     }

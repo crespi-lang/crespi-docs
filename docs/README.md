@@ -33,15 +33,15 @@ mostrar(suma(3, 5))  // 8
 
 ```crespi
 // Hello World
-variable message = "Hello, World"
-mostrar(message)
+var message = "Hello, World"
+print(message)
 
 // Simple function
-bloque add(a, b) {
-    resultado a + b
+fn add(a, b) {
+    return a + b
 }
 
-mostrar(add(3, 5))  // 8
+print(add(3, 5))  // 8
 ```
 
 ---

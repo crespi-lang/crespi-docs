@@ -83,7 +83,7 @@ Las extensiones pueden agregarse a los siguientes tipos integrados (los nombres 
 Tambien puedes extender clases definidas por el usuario:
 
 ```crespi
-tipo Punto(let x, let y)
+tipo Punto(immutable x, immutable y)
 
 extension Punto {
     bloque magnitud() {

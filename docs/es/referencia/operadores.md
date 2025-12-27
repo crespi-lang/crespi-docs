@@ -320,7 +320,7 @@ mostrar(dict["nombre"])  // Ana
 Accede a propiedades y métodos de objetos:
 
 ```crespi
-tipo Punto(let x, let y) {
+tipo Punto(immutable x, immutable y) {
 }
 
 variable p = Punto(3, 4)

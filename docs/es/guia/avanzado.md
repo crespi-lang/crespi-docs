@@ -301,7 +301,7 @@ bloque maximo(a, b) {
 ### En Clases
 
 ```crespi
-tipo Vector(let x, let y) {
+tipo Vector(immutable x, immutable y) {
     bloque magnitud() = (yo.x * yo.x + yo.y * yo.y)
     bloque escalar(factor) = Vector(yo.x * factor, yo.y * factor)
 }
@@ -471,9 +471,9 @@ mostrar(incrementar_y_doble(5))  // 12 ((5+1) * 2)
 ### Aplicación Parcial
 
 ```crespi
-bloque parcial(fn, primer_arg) {
+bloque parcial(funcion, primer_arg) {
     bloque aplicada(segundo_arg) {
-        resultado fn(primer_arg, segundo_arg)
+        resultado funcion(primer_arg, segundo_arg)
     }
     resultado aplicada
 }
@@ -499,8 +499,8 @@ mostrar(cuadrado(4))  // 2^4 = 16
 bloque pipe(valor, funciones) {
     variable resultado_val = valor
 
-    repetir fn en funciones {
-        resultado_val = fn(resultado_val)
+    repetir funcion en funciones {
+        resultado_val = funcion(resultado_val)
     }
 
     resultado resultado_val

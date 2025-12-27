@@ -95,15 +95,15 @@ El compilador soporta la mayoría de características del lenguaje:
 
 ## Funciones Externas (FFI)
 
-Crespi permite llamar funciones nativas externas de bibliotecas Rust o C usando la declaración `extern fn`.
+Crespi permite llamar funciones nativas externas de bibliotecas Rust o C usando la declaración `externo bloque`.
 
 ### 1. Declarar en Crespi
 
 ```crespi
-extern fn mi_suma(a: Int, b: Int) -> Int
-extern fn mi_seno(x: Double) -> Double
+externo bloque mi_suma(a: Int, b: Int) -> Int
+externo bloque mi_seno(x: Double) -> Double
 
-fn main() {
+bloque main() {
     print(mi_suma(10, 32))  // Salida: 42
     print(mi_seno(1.57))    // Salida: ~1.0
 }

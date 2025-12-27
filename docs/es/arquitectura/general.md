@@ -106,7 +106,7 @@ Ambos modos soportan todas las características del lenguaje.
 
 Los genéricos usan **sintaxis de corchetes** para evitar ambigüedad:
 ```crespi
-tipo Caja[T](let valor)    // No <T> para evitar ambigüedad con operadores de comparación
+tipo Caja[T](immutable valor)    // No <T> para evitar ambigüedad con operadores de comparación
 ```
 
 Los parámetros de tipo se parsean pero no se verifican en tiempo de ejecución (duck typing).
