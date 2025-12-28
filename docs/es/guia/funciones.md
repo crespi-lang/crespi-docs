@@ -355,6 +355,18 @@ mostrar(calcular_impuestos(100))  // 116
 
 ---
 
+## Lambdas Asincronas
+
+Las lambdas asincronas usan el prefijo `asincrono` y devuelven `Task[T]`.
+
+```crespi
+variable incrementar = asincrono x => x + 1
+variable resultado = esperar incrementar(41)
+mostrar(resultado)  // 42
+```
+
+---
+
 ## Patrones Comunes
 
 ### Map (Transformar Lista)

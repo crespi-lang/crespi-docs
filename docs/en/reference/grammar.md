@@ -329,8 +329,8 @@ primary
   ;
 
 lambdaExpr
-  : IDENTIFIER '=>' lambdaBody
-  | '(' parameters? ')' returnType? '=>' lambdaBody
+  : 'async'? IDENTIFIER '=>' lambdaBody
+  | 'async'? '(' parameters? ')' returnType? '=>' lambdaBody
   ;
 
 lambdaBody

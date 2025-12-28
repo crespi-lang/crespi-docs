@@ -436,6 +436,19 @@ Este enfoque:
 4. **Deriva `Clone`** para structs que necesiten ser copiados
 5. **Mantén las APIs públicas simples** - la complejidad interna está bien
 
+### Helper de Tokio
+
+`crespi-tokio` ofrece un wrapper bloqueante sobre Tokio pensado para Crespi. Expone
+`sleep_ms`, `join_sleep_ms`, `race_sleep_ms`, y un wrapper `Runtime` que puedes usar vía `crespi-cargo`.
+
+```crespi
+externo bloque sleep_ms(ms: Int)
+externo bloque join_sleep_ms(a: Int, b: Int) -> Int
+
+sleep_ms(50)
+mostrar(join_sleep_ms(10, 30))
+```
+
 ## Ejemplos
 
 ### Usando una Biblioteca de crates.io

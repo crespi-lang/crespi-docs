@@ -141,6 +141,8 @@ variable tarea = obtener()
 variable valor = esperar tarea
 ```
 
+También se puede usar en lambdas: `variable f = asincrono x => x + 1`.
+
 ### `esperar`
 
 Desenvuelve una `Task` y devuelve su valor. Usar `esperar` sobre algo que no es Task es un error.

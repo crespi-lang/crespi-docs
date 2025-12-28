@@ -145,6 +145,14 @@ Implementa la lógica para analizar proyectos Rust, extraer metadatos de API ví
 
 ---
 
+### crespi-tokio
+
+**Wrapper simple de Tokio para Crespi.**
+
+Expone helpers bloqueantes (sleep, race/join, timeout) y un wrapper `Runtime` pensado para usar vía `crespi-cargo`.
+
+---
+
 ### crespigen
 
 **Generador de bindings FFI independiente.**
