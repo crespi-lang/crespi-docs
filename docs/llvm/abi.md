@@ -115,6 +115,10 @@ Use runtime helpers to box/unbox values at ABI boundaries when needed.
   is available, and falls back to boxed helpers otherwise.
 - Helpers that allocate (strings, lists, objects) take `gc_ctx` as the first
   parameter.
+- Closure creation uses `crespi_rt_make_closure(gc_ctx, code_ptr, captures_ptr,
+  capture_count, arity, min_arity, mutable_mask_ptr, mutable_mask_len,
+  name_ptr, name_len) -> CrespiValue`. The mutable mask is a `u64` bitset
+  array; bit `i` marks capture `i` as mutable.
 
 ## Notes
 
