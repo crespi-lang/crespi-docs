@@ -327,8 +327,8 @@ primary
   ;
 
 lambdaExpr
-  : IDENTIFIER '=>' lambdaBody
-  | '(' parameters? ')' returnType? => lambdaBody
+  : 'asincrono'? IDENTIFIER '=>' lambdaBody
+  | 'asincrono'? '(' parameters? ')' returnType? '=>' lambdaBody
   ;
 
 lambdaBody

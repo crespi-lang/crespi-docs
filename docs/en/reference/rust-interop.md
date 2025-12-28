@@ -436,6 +436,19 @@ This approach:
 4. **Derive `Clone`** for structs that need to be copied
 5. **Keep public APIs simple** - internal complexity is fine
 
+### Tokio helper crate
+
+`crespi-tokio` provides a small, blocking wrapper over Tokio for Crespi-friendly use. It exposes
+`sleep_ms`, `join_sleep_ms`, `race_sleep_ms`, and a `Runtime` wrapper that can be used via `crespi-cargo`.
+
+```crespi
+extern fn sleep_ms(ms: Int)
+extern fn join_sleep_ms(a: Int, b: Int) -> Int
+
+sleep_ms(50)
+print(join_sleep_ms(10, 30))
+```
+
 ## Examples
 
 ### Using a crates.io Library

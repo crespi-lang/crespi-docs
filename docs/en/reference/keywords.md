@@ -142,6 +142,8 @@ var task = get_answer()
 var value = await task
 ```
 
+Async also works with lambdas: `var f = async x => x + 1`.
+
 ### `await`
 
 Unwraps a `Task` and yields its value. Using `await` on a non-task is an error.

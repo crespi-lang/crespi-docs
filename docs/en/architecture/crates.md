@@ -150,6 +150,15 @@ Facilitates interoperability between Crespi and other languages (primarily Rust,
 
 ---
 
+### crespi-tokio
+
+**Tokio helper crate for Crespi.**
+
+Provides a small, blocking wrapper over Tokio intended for Crespi FFI usage (sleep helpers,
+simple race/join utilities, and a `Runtime` wrapper).
+
+---
+
 ### crespi-builtins
 
 **Standard Library Native Bindings.**

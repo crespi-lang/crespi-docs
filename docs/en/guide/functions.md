@@ -360,6 +360,18 @@ print(doubled)  // 10
 
 ---
 
+## Async Lambdas
+
+Async lambdas use the same `async` prefix as functions and return `Task[T]`.
+
+```crespi
+var increment = async x => x + 1
+var result = await increment(41)
+print(result)  // 42
+```
+
+---
+
 ## Common Patterns
 
 ### Map (Transform List)
