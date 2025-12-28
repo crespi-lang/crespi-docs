@@ -86,3 +86,6 @@ nav:
       - Execution:
           - Interpreter: en/guide/interpreter.md
           - Compiler: en/guide/compiler.md
+  - Architecture:
+      - Overview: en/architecture/overview.md
+      - Crate Structure: en/architecture/crates.md

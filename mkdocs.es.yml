@@ -83,3 +83,6 @@ nav:
   - Ejecucion:
       - Interprete: es/guia/interprete.md
       - Compilador: es/guia/compilador.md
+  - Arquitectura:
+      - Vision General: es/arquitectura/general.md
+      - Estructura de Crates: es/arquitectura/crates.md

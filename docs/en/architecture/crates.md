@@ -10,19 +10,19 @@ The Crespi language is organized as a Cargo workspace with specialized crates fo
 
 ```
                     ┌─────────────┐
-                    │ crespi-cli  │  (Binary: crespi)
+                    │ crespi-cli  │  (Binary: crespi, crespic)
                     └──────┬──────┘
                            │
               ┌────────────┼────────────┐
               ▼            ▼            ▼
-      ┌─────────────┐ ┌─────────┐
-      │ crespi-llvm │ │crespi-  │
-      │ (crespic)   │ │  core   │
-      └──────┬──────┘ └────┬────┘
+      ┌─────────────┐ ┌─────────┐ ┌─────────────┐
+      │ crespi-llvm │ │ crespi- │ │crespi-rust- │
+      │             │ │  core   │ │    ffi      │
+      └──────┬──────┘ └────┬────┘ └─────────────┘
              │             │
              ▼             │
       ┌─────────────┐      │
-      │crespi-codegen│     │
+      │  crespi-hir │      │
       └──────┬──────┘      │
              │             │
              ▼             │
@@ -44,6 +44,12 @@ The Crespi language is organized as a Cargo workspace with specialized crates fo
       │ crespi-i18n │  │crespi-schema│  │crespi-langpack│
       └─────────────┘  └─────────────┘  └─────────────┘
             (Internationalization support crates)
+
+      ┌─────────────┐  ┌─────────────┐
+      │  crespi-lsp │  │crespi-lsp-  │
+      │  (binary)   │  │    core     │
+      └─────────────┘  └─────────────┘
+            (Language Server Protocol crates)
 ```
 
 ---
@@ -74,9 +80,9 @@ The Crespi language is organized as a Cargo workspace with specialized crates fo
 
 ---
 
-### crespi-codegen
+### crespi-hir
 
-**HIR lowering and optimization shared by backends.**
+**HIR (High-level Intermediate Representation) lowering and optimization shared by backends.**
 
 | Module | Purpose |
 |--------|---------|
@@ -186,15 +192,15 @@ Contains the native wrapper functions for the standard library, bridging the FFI
 
 ---
 
-### crespi-cargo
+### crespi-rust-ffi
 
-**Cargo integration library.**
+**Rust FFI binding generation library.**
 
-Implements the logic for analyzing Rust projects, extracting API metadata via `rustdoc`, and generating FFI bindings. Used by both the compiler (`crespic`) for automatic linking and the standalone `crespigen` tool.
+Implements the logic for analyzing Rust projects, extracting API metadata via `rustdoc`, and generating FFI bindings. Used by both the compiler (`crespic`) for automatic linking and the standalone `crespi-bindgen` tool.
 
 ---
 
-### crespigen
+### crespi-bindgen
 
 **Standalone FFI binding generator.**
 
@@ -206,17 +212,59 @@ A CLI tool that generates Crespi bindings for Rust libraries.
 
 ---
 
-## External Repositories
+### cargo-crespi
+
+**Cargo subcommand for Crespi projects.**
+
+Provides `cargo crespi build`, `cargo crespi run`, and `cargo crespi check` commands for Cargo-based Crespi projects with Rust FFI integration.
+
+---
+
+## LSP Crates
+
+### crespi-lsp
+
+**Language Server Protocol binary.**
+
+The LSP server binary that provides IDE support via the Language Server Protocol. Uses `tower-lsp` for the protocol implementation.
+
+**Features:**
+- Diagnostics (syntax errors, type errors)
+- Go to definition
+- Hover information
+- Completions
+
+---
+
+### crespi-lsp-core
+
+**LSP analysis core library.**
+
+Reusable analysis infrastructure for IDE features. Separated from the binary to enable:
+- Native LSP server (`crespi-lsp`)
+- WASM bindings for web environments (`crespi-wasm`)
+
+| Module | Purpose |
+|--------|---------|
+| `analysis.rs` | Document analysis and caching |
+| `symbol_table.rs` | Symbol resolution and lookup |
+| `visitor.rs` | AST visitor for analysis |
+| `position.rs` | Source position utilities |
+
+---
+
+## WASM Crate
 
 ### crespi-wasm
 
 **WebAssembly bindings for browser execution.**
-Moved to [crespi-wasm](https://github.com/crespi-lang/crespi-wasm).
 
-### crespi-ide-support
+Provides WASM bindings for running Crespi in web environments. Used by the `crespi-learn` platform for interactive tutorials and challenges.
 
-**VS Code extension and Language Server.**
-Moved to [crespi-ide-support](https://github.com/crespi-lang/crespi-ide-support).
+**Features:**
+- Interpreter execution in browser
+- LSP-like features via `crespi-lsp-core`
+- Diagnostics and completions for web editors
 
 ---
 
@@ -273,6 +321,20 @@ Pack files live in `crespi-i18n/packs/`.
 **Language pack schema.**
 
 Defines the canonical enums for keywords, builtins, runtime types, and operator aliases used by packs and validation.
+
+---
+
+## External Repositories
+
+### crespi-docs
+
+**Documentation website.**
+Lives at [crespi-docs](https://github.com/crespi-lang/crespi-docs).
+
+### crespi-ide-support
+
+**VS Code extension.**
+Lives at [crespi-ide-support](https://github.com/crespi-lang/crespi-ide-support).
 
 ---
 
