@@ -66,6 +66,8 @@ fn parse(input: String) -> Int | Error {
     // Can return either Int or Error
 }
 ```
+Union types are **order-insensitive** in the static checker, so `Int | String` and
+`String | Int` are treated as the same type.
 
 ### Class Type Annotations
 

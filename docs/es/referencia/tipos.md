@@ -66,6 +66,8 @@ bloque parsear(entrada: String) -> Int | Error {
     // Puede devolver Int o Error
 }
 ```
+Los tipos unión son **insensibles al orden** en el verificador estático, así que
+`Int | String` y `String | Int` se consideran el mismo tipo.
 
 ### Anotaciones de Tipo en Clases
 
