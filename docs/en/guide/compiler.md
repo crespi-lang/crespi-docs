@@ -75,6 +75,19 @@ crespic hello.crespi
 
 ---
 
+## Experimental Native ABI Backend
+
+The `native-abi` Cargo feature enables an experimental backend that lowers
+typed numeric code to native ABI signatures. For now it supports `Int`,
+`Double`, `Bool`, and `print()` for those types.
+
+```bash
+cargo run --bin crespic --features native-abi -- examples/simple_scripts/native_abi_demo.crespi -o /tmp/crespi_native_abi_demo
+/tmp/crespi_native_abi_demo
+```
+
+---
+
 ## Supported Features
 
 The compiler supports most language features:

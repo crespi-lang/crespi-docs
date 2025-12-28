@@ -75,6 +75,19 @@ crespic hola.crespi
 
 ---
 
+## Backend ABI Nativo (Experimental)
+
+El feature `native-abi` de Cargo habilita un backend experimental que
+compila código numérico tipado con firmas ABI nativas. Por ahora soporta
+`Int`, `Double`, `Bool` y `print()` para esos tipos.
+
+```bash
+cargo run --bin crespic --features native-abi -- examples/simple_scripts/native_abi_demo.crespi -o /tmp/crespi_native_abi_demo
+/tmp/crespi_native_abi_demo
+```
+
+---
+
 ## Características Soportadas
 
 El compilador soporta la mayoría de características del lenguaje:
