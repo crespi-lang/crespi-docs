@@ -169,6 +169,8 @@ Complex types require wrapper functions for marshaling.
 | Custom `struct` | `class` | Auto-generated class |
 | Custom `enum` | `class` | Variant constructors |
 
+If a Rust type cannot be mapped, crespi-cargo falls back to `Any` so the item remains available.
+
 ### Smart Pointers
 
 Smart pointers are automatically unwrapped to their inner type.
@@ -189,6 +191,7 @@ Rust structs become Crespi classes with:
 - **Constructor**: Uses field names as parameters
 - **Field getters**: Methods returning field values
 - **Methods**: Instance methods from `impl` blocks
+- **Tuple structs**: Positional fields are exposed as `field0`, `field1`, ...
 
 **Rust:**
 ```rust
@@ -253,7 +256,8 @@ fn calculate_area(width: Double, height: Double) -> Double {
 
 ### Enum Mapping
 
-Rust enums become classes with static constructors for each variant:
+Rust enums become classes with static constructors for each variant. Tuple variants use positional
+parameters like `field0`, `field1`, and so on.
 
 **Rust:**
 ```rust
@@ -416,7 +420,7 @@ This approach:
 | **Static factory methods** | Methods without `&self` (e.g., `Point::origin()`) are incorrectly generated as instance methods | Use constructors with default values: `Point(0.0, 0.0)` instead of `Point::origin()` |
 | **Struct fields containing other structs** | Fields like `center: Point` in a `Circle` struct fail to marshal | Use primitive fields: `cx: f64, cy: f64` instead of `center: Point` |
 | **Methods taking owned struct parameters** | `fn move_to(self, center: Point)` expects owned value, not reference | Use references: `fn move_to(&self, center: &Point)` |
-| **Enums** | Rust enums are not yet generated | Use structs with tag fields as workaround |
+| **Enum marshalling** | Enum values are still treated as opaque pointers in FFI calls | Use wrapper functions that return primitives/structs where possible |
 | **Generics** | Generic functions and structs have limited support | Use concrete types in public APIs |
 | **Traits** | Trait objects (`dyn Trait`) are treated as opaque `Any` | Avoid trait objects in FFI boundaries |
 | **Lifetimes** | References with explicit lifetimes may not work correctly | Use owned types or `&T` without explicit lifetimes |

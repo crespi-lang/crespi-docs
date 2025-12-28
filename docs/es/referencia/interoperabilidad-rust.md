@@ -169,6 +169,8 @@ Los tipos complejos requieren funciones wrapper para el marshaling.
 | `struct` personalizado | `tipo` | Tipo auto-generado |
 | `enum` personalizado | `tipo` | Constructores de variantes |
 
+Si un tipo de Rust no se puede mapear, crespi-cargo usa `Any` para mantener el item disponible.
+
 ### Punteros Inteligentes
 
 Los punteros inteligentes se desenvuelven automáticamente a su tipo interno.
@@ -189,6 +191,7 @@ Los structs de Rust se convierten en clases de Crespi con:
 - **Constructor**: Usa los nombres de los campos como parámetros
 - **Getters de campos**: Métodos que devuelven valores de campos
 - **Métodos**: Métodos de instancia de los bloques `impl`
+- **Structs tupla**: Los campos posicionales se exponen como `field0`, `field1`, ...
 
 **Rust:**
 ```rust
@@ -253,7 +256,8 @@ bloque calcular_area(ancho: Double, alto: Double) -> Double {
 
 ### Mapeo de Enums
 
-Los enums de Rust se convierten en clases con constructores estáticos para cada variante:
+Los enums de Rust se convierten en clases con constructores estáticos para cada variante. Las
+variantes tupla usan parámetros posicionales como `field0`, `field1`, etc.
 
 **Rust:**
 ```rust
@@ -416,7 +420,7 @@ Este enfoque:
 | **Métodos factory estáticos** | Métodos sin `&self` (ej. `Point::origin()`) se generan incorrectamente como métodos de instancia | Usa constructores con valores por defecto: `Point(0.0, 0.0)` en lugar de `Point::origin()` |
 | **Campos struct que contienen otros structs** | Campos como `center: Point` en un struct `Circle` fallan al serializar | Usa campos primitivos: `cx: f64, cy: f64` en lugar de `center: Point` |
 | **Métodos que toman structs como propiedad** | `fn move_to(self, center: Point)` espera valor propio, no referencia | Usa referencias: `fn move_to(&self, center: &Point)` |
-| **Enums** | Los enums de Rust aún no se generan | Usa structs con campos de etiqueta como alternativa |
+| **Marshaling de enums** | Los valores de enums aún se tratan como punteros opacos en llamadas FFI | Usa funciones wrapper que devuelvan primitivos/structs cuando sea posible |
 | **Genéricos** | Funciones y structs genéricos tienen soporte limitado | Usa tipos concretos en APIs públicas |
 | **Traits** | Los objetos trait (`dyn Trait`) se tratan como `Any` opaco | Evita objetos trait en fronteras FFI |
 | **Tiempos de vida** | Las referencias con lifetimes explícitos pueden no funcionar | Usa tipos propios o `&T` sin lifetimes explícitos |
