@@ -18,6 +18,8 @@ Crespi has reserved words that cannot be used as identifiers. English keywords a
 | `internal` | `interno` | Declaration | Internal visibility modifier |
 | `fileprivate` | `fileprivate` | Declaration | File-private visibility modifier |
 | `fn` | `bloque` | Functions | Defines a function |
+| `async` | `asincrono` | Async | Marks a function as async (returns a `Task`) |
+| `await` | `esperar` | Async | Awaits a `Task` and unwraps its value |
 | `extern` | `externo` | Functions | Declares an external (FFI) function |
 | `return` | `resultado` | Functions | Returns a value from a function |
 | `if` | `si` | Control | Conditional |
@@ -125,6 +127,28 @@ fn power(base, exp = 2) {
     }
     return r
 }
+```
+
+### `async`
+
+Marks a function as asynchronous. Async functions execute eagerly for now and return a `Task[T]`.
+
+```crespi
+async fn get_answer() -> Int {
+    return 42
+}
+
+var task = get_answer()
+var value = await task
+```
+
+### `await`
+
+Unwraps a `Task` and yields its value. Using `await` on a non-task is an error.
+
+```crespi
+async fn value() -> String { return "ok" }
+var result = await value()
 ```
 
 ### `extern`

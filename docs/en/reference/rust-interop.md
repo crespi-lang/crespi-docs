@@ -424,7 +424,7 @@ This approach:
 | **Generics** | Generic functions and structs have limited support | Use concrete types in public APIs |
 | **Traits** | Trait objects (`dyn Trait`) are treated as opaque `Any` | Avoid trait objects in FFI boundaries |
 | **Lifetimes** | References with explicit lifetimes may not work correctly | Use owned types or `&T` without explicit lifetimes |
-| **Async** | Async functions are not yet supported | Use synchronous APIs |
+| **Async** | Crespi supports `async`/`await`, but Rust `async fn` (Future) interop is not supported | Expose sync wrappers or use blocking APIs |
 | **Callbacks** | Passing Crespi functions to Rust is not supported | Design APIs without callbacks |
 | **String/Vec returns** | Complex return types need marshaling | Currently limited - use primitives when possible |
 

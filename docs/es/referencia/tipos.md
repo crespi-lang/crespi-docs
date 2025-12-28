@@ -113,6 +113,7 @@ tipo Contenedor[T](immutable valor: T) {
 | `List[T]` | Arreglo dinámico de tipo T | `[1, 2]: List[Int]` |
 | `(T1, T2)` | Tupla de tamaño fijo | `(1, "a"): (Int, String)` |
 | `Dict[K, V]` | Mapa de claves a valores | `{"a": 1}: Dict[String, Int]` |
+| `Task[T]` | Tarea asincrona que produce un valor de tipo T | `Task[Int]` |
 
 ### Nombres de Tipo en Tiempo de Ejecución (de `tipo_de()`)
 
@@ -128,6 +129,20 @@ tipo Contenedor[T](immutable valor: T) {
 | `"diccionario"` | `Dict[K, V]` |
 | `"funcion"` | Funciones y lambdas |
 | `"instancia"` | Instancias de clase |
+| `"tarea"` | `Task[T]` |
+
+---
+
+## Tareas asincronas
+
+Las funciones asincronas devuelven `Task[T]`. Las tareas son ansiosas: la funcion se ejecuta
+de inmediato y el resultado se envuelve. Usa `esperar` para obtener el valor.
+
+```crespi
+asincrono bloque calcular() -> Int { resultado 10 }
+variable tarea: Task[Int] = calcular()
+variable valor = esperar tarea
+```
 
 ---
 

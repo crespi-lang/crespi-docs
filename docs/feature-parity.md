@@ -11,6 +11,7 @@ Legend: **Yes** = implemented, **Partial** = implemented but incomplete or missi
 | Variables and constants | Yes | Yes | `var`, `let`; `let` enforces immutability for collections |
 | Control flow | Yes | Yes | `if/else`, `while`, `for/in`, `break`, `continue`, `guard`, `when` |
 | Functions | Yes | Yes | Named, default params, single-expression syntax |
+| Async/await | Yes | Yes | Eager `Task` values; no scheduler yet |
 | Lambdas and closures | Yes | Yes | Capture works |
 | Classes and constructors | Yes | Yes | Primary (with `var`/`let` modifiers) + secondary constructors |
 | Inheritance | Yes | Yes | `:` syntax |
@@ -121,6 +122,7 @@ Crespi ensures that `public`, `internal`, and `private` declarations behave the 
 ## Notes and Known Gaps
 
 - **Type checking**: optional; only run when explicitly requested (`--check`).
+- **Concurrency runtime**: async/await tasks are eager today; no scheduler, threads, or actors yet.
 - **Assignment expressions**: not supported (statements only, by design).
 
 ## Verification Checklist
@@ -170,9 +172,9 @@ This appendix enumerates the full language surface to keep the parity table hone
 
 ### Syntax Summary
 
-- Declarations: `var`, `let`, `fn`, `class`, `trait`, `extension`, `import`, visibility modifiers (`public`, `private`, `internal`).
+- Declarations: `var`, `let`, `fn`, `async fn`, `class`, `trait`, `extension`, `import`, visibility modifiers (`public`, `private`, `internal`).
 - Statements: `return`, `break`, `continue`, `if/else`, `while`, `for/in`, `guard`, `when`.
-- Expressions: literals, arithmetic/comparison/logical ops, `?:`, `??`, calls, indexing, property access, lambdas (`=>`), assignment, class instantiation by call.
+- Expressions: literals, arithmetic/comparison/logical ops, `?:`, `??`, `await`, calls, indexing, property access, lambdas (`=>`), assignment, class instantiation by call.
 - Patterns: list `[a, b]`, dictionary `{"name": n}`, class destructuring `Person { name: n }`.
 
 ### Keywords (Canonical + Spanish Alias)
@@ -185,6 +187,8 @@ This appendix enumerates the full language surface to keep the parity table hone
 | Declaration | `private` | `privado` | Visibility modifier |
 | Declaration | `internal` | `interno` | Visibility modifier |
 | Functions | `fn` | `bloque` | Function declaration |
+| Functions | `async` | `asincrono` | Async function modifier |
+| Functions | `await` | `esperar` | Await task value |
 | Functions | `return` | `resultado` | Return from function |
 | Control | `if` | `si` | Conditional |
 | Control | `else` | `o` | Conditional branch |

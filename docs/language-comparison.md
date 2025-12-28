@@ -60,7 +60,7 @@ Crespi implements a **Reference Counting** system augmented with a **Cycle Detec
 
 ## 6. Missing Features (Gaps vs. Kotlin/Swift)
 
-*   **Concurrency**: Kotlin has **Coroutines** (suspend functions), Swift has **Async/Await** (Actors). Crespi currently lacks a dedicated concurrency model (async/await, threads, or actors).
+*   **Concurrency**: Kotlin has **Coroutines** (suspend functions), Swift has **Async/Await** (Actors). Crespi now has `async`/`await`, but still lacks a true concurrency runtime (scheduler, threads, or actors).
 *   **Properties**: Kotlin and Swift have sophisticated property observers (`get`/`set`, `willSet`, `didSet`). Crespi has basic fields and methods.
 *   **Advanced Generics**: Swift supports recursive protocol constraints and opaque types (`some View`). Crespi's generics are currently simpler, focusing on container parameterization.
 
@@ -68,6 +68,7 @@ Crespi implements a **Reference Counting** system augmented with a **Cycle Detec
 
 The following features have been added to close gaps with Kotlin/Swift:
 
+*   **`async`/`await` Syntax**: Async functions now return `Task` values, and `await` unwraps them (eager execution; no scheduler yet).
 *   **`fileprivate` Visibility**: Swift-style file-scoped visibility modifier now available (`fileprivate fn helper()`).
 *   **Increment/Decrement Operators**: `i++` and `i--` as postfix statement-only operators (equivalent to `i += 1` and `i -= 1`).
 *   **Generic Function Syntax**: Type parameters now come after `fn`: `fn [T] identity(x: T) -> T` (instead of `fn identity[T]()`).
@@ -112,8 +113,8 @@ This is the most significant functional gap between Crespi and its peers.
 
 *   **Swift**: **Structured Concurrency**. First-class `async`/`await` syntax, `Task` groups, and **Actors** for data isolation. The runtime manages a thread pool, and the compiler enforces thread safety via `Sendable` checks.
 *   **Kotlin**: **Coroutines**. Lightweight threads (suspend functions) that multiplex over system threads. Supports `async`/`await patterns and `Flow` for streams.
-*   **Crespi**: **No Native Concurrency**.
-    *   **Current State**: The runtime executes in a single thread. There are no `async`, `await`, `thread`, or `spawn` keywords.
+*   **Crespi**: **Eager async/await (single-threaded)**.
+    *   **Current State**: `async`/`await` is available, but async functions execute immediately and return completed `Task` values. There is still no scheduler, threads, or actors.
     *   **Runtime Hooks**: The GC implementation (`gc.rs`) mentions "atomic reference counting hooks" for future threading support, but the current `GcContext` is fundamentally single-threaded.
 
 ## 10. Error Handling & Diagnostics
