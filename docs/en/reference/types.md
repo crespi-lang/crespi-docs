@@ -68,6 +68,8 @@ fn parse(input: String) -> Int | Error {
 ```
 Union types are **order-insensitive** in the static checker, so `Int | String` and
 `String | Int` are treated as the same type.
+Values of a member type are assignable to the union (for example, `Int` can be
+used where `Int | String` is expected).
 
 ### Class Type Annotations
 
