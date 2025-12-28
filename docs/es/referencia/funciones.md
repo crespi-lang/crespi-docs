@@ -159,6 +159,7 @@ Obtiene el nombre del tipo de un valor como texto.
 | `{"a": 1}` | `"diccionario"` |
 | función | `"funcion"` |
 | instancia | `"instancia"` |
+| tarea | `"tarea"` |
 
 ```crespi
 mostrar(tipo_de(42))           // entero

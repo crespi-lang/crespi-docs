@@ -424,7 +424,7 @@ Este enfoque:
 | **Genéricos** | Funciones y structs genéricos tienen soporte limitado | Usa tipos concretos en APIs públicas |
 | **Traits** | Los objetos trait (`dyn Trait`) se tratan como `Any` opaco | Evita objetos trait en fronteras FFI |
 | **Tiempos de vida** | Las referencias con lifetimes explícitos pueden no funcionar | Usa tipos propios o `&T` sin lifetimes explícitos |
-| **Async** | Las funciones async aún no están soportadas | Usa APIs síncronas |
+| **Async** | Crespi soporta `asincrono`/`esperar`, pero no hay interop con `async fn` de Rust | Expone wrappers síncronos o usa APIs síncronas |
 | **Callbacks** | Pasar funciones Crespi a Rust no está soportado | Diseña APIs sin callbacks |
 | **Retornos String/Vec** | Tipos de retorno complejos necesitan serialización | Actualmente limitado - usa primitivos cuando sea posible |
 

@@ -159,6 +159,7 @@ Gets the type name of a value as text.
 | `{"a": 1}` | `"dict"` |
 | function | `"function"` |
 | instance | `"instance"` |
+| task | `"task"` |
 
 ```crespi
 print(typeof(42))           // int

@@ -113,6 +113,7 @@ class Container[T](let value: T) {
 | `List[T]` | Dynamic array of type T | `[1, 2]: List[Int]` |
 | `(T1, T2)` | Fixed-size tuple | `(1, "a"): (Int, String)` |
 | `Dict[K, V]` | Text-keyed map | `{"a": 1}: Dict[String, Int]` |
+| `Task[T]` | Async task that yields a value of type T | `Task[Int]` |
 
 ### Runtime Type Names (from `typeof()`)
 
@@ -128,6 +129,20 @@ class Container[T](let value: T) {
 | `"dict"` | `Dict[K, V]` |
 | `"function"` | Functions and lambdas |
 | `"instance"` | Class instances |
+| `"task"` | `Task[T]` values |
+
+---
+
+## Async Tasks
+
+Async functions return `Task[T]`. Tasks are eager: the function executes immediately and the result
+is wrapped. Use `await` to unwrap a task value.
+
+```crespi
+async fn compute() -> Int { return 10 }
+var task: Task[Int] = compute()
+var value = await task
+```
 
 ---
 

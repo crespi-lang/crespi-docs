@@ -56,11 +56,11 @@ letDecl
   ;
 
 functionDecl
-  : 'fn' IDENTIFIER typeParams? '(' parameters? ')' returnType? (block | '=' expression semi)
+  : 'async'? 'fn' IDENTIFIER typeParams? '(' parameters? ')' returnType? (block | '=' expression semi)
   ;
 
 extensionFunctionDecl
-  : 'fn' IDENTIFIER '.' IDENTIFIER typeParams? '(' parameters? ')' returnType? (block | '=' expression semi)
+  : 'async'? 'fn' IDENTIFIER '.' IDENTIFIER typeParams? '(' parameters? ')' returnType? (block | '=' expression semi)
   ;
 
 operatorDecl
@@ -109,7 +109,7 @@ traitDecl
   ;
 
 traitMember
-  : 'fn' IDENTIFIER '(' parameters? ')' returnType? block?
+  : 'async'? 'fn' IDENTIFIER '(' parameters? ')' returnType? block?
   ;
 
 extensionDecl
@@ -296,7 +296,7 @@ factor
   ;
 
 unary
-  : ('!' | '-' | '~') unary
+  : ('!' | '-' | '~' | 'await') unary
   | call
   ;
 

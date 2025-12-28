@@ -18,6 +18,8 @@ Crespi tiene palabras reservadas que no pueden usarse como identificadores. Las 
 | `interno` | internal | Declaración | Modificador de visibilidad interna |
 | `fileprivate` | fileprivate | Declaración | Modificador de visibilidad de archivo |
 | `bloque` | fn | Funciones | Define una función |
+| `asincrono` | async | Concurrencia | Marca una funcion asincrona (devuelve `Task`) |
+| `esperar` | await | Concurrencia | Espera una `Task` y obtiene su valor |
 | `externo` | extern | Funciones | Declara una función externa (FFI) |
 | `resultado` | return | Funciones | Retorna un valor de una función |
 | `si` | if | Control | Condicional |
@@ -124,6 +126,28 @@ bloque potencia(base, exp = 2) {
     }
     resultado r
 }
+```
+
+### `asincrono`
+
+Marca una función asincrona. Por ahora se ejecuta de inmediato y devuelve `Task[T]`.
+
+```crespi
+asincrono bloque obtener() -> Int {
+    resultado 42
+}
+
+variable tarea = obtener()
+variable valor = esperar tarea
+```
+
+### `esperar`
+
+Desenvuelve una `Task` y devuelve su valor. Usar `esperar` sobre algo que no es Task es un error.
+
+```crespi
+asincrono bloque valor() -> String { resultado "ok" }
+variable resultado = esperar valor()
 ```
 
 ### `externo`

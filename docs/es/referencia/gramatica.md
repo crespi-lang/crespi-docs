@@ -54,11 +54,11 @@ letDecl
   ;
 
 functionDecl
-  : 'bloque' IDENTIFIER typeParams? '(' parameters? ')' returnType? (block | '=' expression semi)
+  : 'asincrono'? 'bloque' IDENTIFIER typeParams? '(' parameters? ')' returnType? (block | '=' expression semi)
   ;
 
 extensionFunctionDecl
-  : 'bloque' IDENTIFIER '.' IDENTIFIER typeParams? '(' parameters? ')' returnType? (block | '=' expression semi)
+  : 'asincrono'? 'bloque' IDENTIFIER '.' IDENTIFIER typeParams? '(' parameters? ')' returnType? (block | '=' expression semi)
   ;
 
 operatorDecl
@@ -107,7 +107,7 @@ traitDecl
   ;
 
 traitMember
-  : 'bloque' IDENTIFIER '(' parameters? ')' returnType? block?
+  : 'asincrono'? 'bloque' IDENTIFIER '(' parameters? ')' returnType? block?
   ;
 
 extensionDecl
@@ -294,7 +294,7 @@ factor
   ;
 
 unary
-  : ('!' | '-' | '~') unary
+  : ('!' | '-' | '~' | 'esperar') unary
   | call
   ;
 
