@@ -116,7 +116,7 @@ Los parámetros de tipo se parsean pero no se verifican en tiempo de ejecución 
 - Ambos modos dependen de nombres canonicos en ingles despues del lexer.
 - Los builtins deben implementarse en `crespi-core` (interprete) y `crespi-runtime` (compilado), y registrarse en codegen (`lowering.rs`, `compiler.rs`).
 - Al agregar palabras clave/operadores/builtins/tipos, actualiza `crespi-schema`, los paquetes de idioma y la documentacion.
-- Constantes como `PI`/`E` se tratan como alias de `pi()`/`e()` durante la compilacion.
+- Las constantes `PI` y `E` se insertan como literales de tipo float durante la compilacion (no son llamadas a funciones).
 
 ---
 

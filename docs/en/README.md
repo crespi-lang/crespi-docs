@@ -1,10 +1,19 @@
 # Crespi - Documentation
 
-> **Language:** [Español](../es/README.md) | English
+> **Language:** [Espanol](../es/README.md) | English
 
 ---
 
-Crespi is a bilingual programming language with English as the primary syntax and Spanish available via language pack, designed to make programming more accessible to Spanish speakers.
+Crespi is a multilingual programming language (via language packs) with English as the primary syntax and Spanish available as the first language pack, designed to make programming more accessible to Spanish speakers and other language communities.
+
+## Type System
+
+Crespi is **statically typed** with Hindley-Milner style type inference. Type annotations are optional because the type checker can infer types from context. The language provides two execution modes with different strictness levels:
+
+- **Compiler (`crespic`)**: Strict mode - type errors block compilation
+- **Interpreter (`crespi`)**: Relaxed mode - type errors appear as warnings, execution continues
+
+This dual approach allows beginners to learn incrementally while ensuring production code is type-safe.
 
 ## Contents
 
@@ -49,9 +58,9 @@ Crespi is a bilingual programming language with English as the primary syntax an
 
 ## Key Features
 
-### Bilingual Syntax
+### Multilingual Syntax
 
-English is canonical; a Spanish language pack provides localized aliases. See the Spanish docs for localized examples.
+English is canonical; language packs provide localized aliases. Spanish is the first language pack, with the architecture designed to support additional languages in the future. See the Spanish docs for localized examples.
 
 ```crespi
 // English (primary)
@@ -136,4 +145,4 @@ cargo run -- program.crespi
 - [Examples](https://github.com/crespi-lang/crespi-lang/tree/main/examples) - Example programs
 - [IDE Support](https://github.com/crespi-lang/crespi-ide-support) - VS Code extension and LSP
 - [WASM Runtime](https://github.com/crespi-lang/crespi-wasm) - WebAssembly bindings
-- [Web Platform](https://crespi.dev) - Learn in the browser
+- [Web Platform](https://crespilang.izantech.app) - Learn in the browser

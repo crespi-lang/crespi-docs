@@ -63,8 +63,8 @@ Collection and string helpers are exposed as methods on their receivers (for exa
 | `log10` | `logaritmo10` | number | `float` | Base-10 log |
 | `log2` | `logaritmo2` | number | `float` | Base-2 log |
 | `hypot` | `hipotenusa` | x, y | `float` | sqrt(x^2 + y^2) |
-| `pi` | `pi` | - | `float` | π constant (call as `pi()`) |
-| `e` | `e` | - | `float` | Euler's number (call as `e()`) |
+| `PI` | `PI` | - | `float` | π constant (use directly: `PI`) |
+| `E` | `E` | - | `float` | Euler's number (use directly: `E`) |
 
 ### String Methods
 
@@ -471,12 +471,13 @@ var sum = add(10, 20)
 
 ## Math Functions
 
-Math builtins accept integers or floats. `min`/`max` accept either two numbers or a list. `pi()` and `e()` return constants (also available as `PI`/`E` in the interpreter).
+Math builtins accept integers or floats. `min`/`max` accept either two numbers or a list. `PI` and `E` are constants.
 
 ```crespi
 print(sqrt(9))        // 3
 print(min([3, 1, 2])) // 1
-print(pi())           // 3.14159...
+print(PI)             // 3.14159...
+var circumference = 2 * PI * radius
 ```
 
 ## String Methods

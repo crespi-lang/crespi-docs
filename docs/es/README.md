@@ -1,55 +1,58 @@
-# Crespi - Documentación
+# Crespi - Documentacion
 
-> **Idioma:** Español | [English](../en/README.md)
+> **Idioma:** Espanol | [English](../en/README.md)
 
 ---
 
-Crespi es un lenguaje de programación con sintaxis en español, diseñado para hacer la programación más accesible a hispanohablantes.
+Crespi es un lenguaje de programacion multilingue (mediante paquetes de idioma), disenado para hacer la programacion mas accesible. El espanol es el primer paquete de idioma, con arquitectura preparada para idiomas adicionales.
 
 ## Contenido
 
 ### Inicio
 
-- [Inicio Rápido](inicio-rapido.md) - Tu primer programa en Crespi
+- [Inicio Rapido](inicio-rapido.md) - Tu primer programa en Crespi
 
 ### Referencia del Lenguaje
 
 - [Palabras Clave](referencia/palabras-clave.md) - Todas las palabras reservadas
-- [Operadores](referencia/operadores.md) - Operadores aritméticos, de comparación y lógicos
+- [Operadores](referencia/operadores.md) - Operadores aritmeticos, de comparacion y logicos
 - [Funciones Integradas](referencia/funciones.md) - Funciones disponibles por defecto
 - [Tipos de Datos](referencia/tipos.md) - Sistema de tipos de Crespi
 - [Gramatica (ANTLR4)](referencia/gramatica.md) - Gramatica de referencia
+- [FFI](referencia/ffi.md) - Interfaz de Funciones Foraneas
 
-### Ejecución
+### Ejecucion
 
-- [Intérprete](guia/interprete.md) - Ejecutar código directamente
+- [Interprete](guia/interprete.md) - Ejecutar codigo directamente
 - [Compilador](guia/compilador.md) - Compilar a ejecutable nativo
-- [Paridad de Funcionalidades](../feature-parity.md) - Matriz intérprete vs compilador
+- [Paridad de Funcionalidades](../feature-parity.md) - Matriz interprete vs compilador
 
 ### Arquitectura
 
-- [Visión General](arquitectura/general.md) - Arquitectura de alto nivel
-- [Estructura de Crates](arquitectura/crates.md) - Organización de crates Rust
+- [Vision General](arquitectura/general.md) - Arquitectura de alto nivel
+- [Estructura de Crates](arquitectura/crates.md) - Organizacion de crates Rust
 
 ### Contribuir
 
-- [Guía de Contribución](contribuir/CONTRIBUTING.md) - Cómo contribuir
-- [Estilo de Código](contribuir/estilo-codigo.md) - Estándares de codificación
+- [Guia de Contribucion](contribuir/CONTRIBUTING.md) - Como contribuir
+- [Estilo de Codigo](contribuir/estilo-codigo.md) - Estandares de codificacion
 
-### Guía del Lenguaje
+### Guia del Lenguaje
 
 - [Variables y Constantes](guia/variables.md)
 - [Control de Flujo](guia/control-flujo.md)
 - [Funciones](guia/funciones.md)
 - [Listas y Diccionarios](guia/colecciones.md)
 - [Clases y Objetos](guia/clases.md)
-- [Características Avanzadas](guia/avanzado.md)
+- [Caracteristicas Avanzadas](guia/avanzado.md)
 
 ---
 
-## Características Principales
+## Caracteristicas Principales
 
-### Sintaxis en Español
+### Sintaxis Multilingue
+
+Crespi soporta sintaxis en multiples idiomas mediante paquetes de idioma. El espanol es el primer paquete disponible:
 
 ```crespi
 variable nombre = "Ana"
@@ -60,19 +63,26 @@ si nombre igualA "Ana" {
 }
 ```
 
+### Sistema de Tipos
+
+Crespi utiliza tipado estatico con inferencia de tipos estilo Hindley-Milner. Las anotaciones de tipo son opcionales gracias a la inferencia, pero el sistema subyacente es estatico:
+
+- **Compilador:** Verificacion de tipos estricta - los errores bloquean la compilacion
+- **Interprete:** Modo relajado - los errores de tipo aparecen como advertencias pero la ejecucion continua
+
 ### Operadores Legibles
 
-Crespi permite usar operadores en forma simbólica o textual:
+Crespi permite usar operadores en forma simbolica o textual:
 
 ```crespi
-// Forma simbólica
+// Forma simbolica
 variable suma = 5 + 3
 
 // Forma textual (equivalente)
 variable suma = 5 mas 3
 ```
 
-### Programación Orientada a Objetos
+### Programacion Orientada a Objetos
 
 ```crespi
 tipo Persona(immutable nombre, immutable edad) {
@@ -101,7 +111,7 @@ mostrar(aplicar(duplicar, 5))  // 10
 
 ---
 
-## Instalación
+## Instalacion
 
 ### Requisitos
 
@@ -131,6 +141,6 @@ cargo run -- programa.crespi
 ## Recursos
 
 - [Ejemplos](https://github.com/crespi-lang/crespi-lang/tree/main/examples) - Programas de ejemplo
-- [Soporte IDE](https://github.com/crespi-lang/crespi-ide-support) - Extensión VS Code y LSP
+- [Soporte IDE](https://github.com/crespi-lang/crespi-ide-support) - Extension VS Code y LSP
 - [Runtime WASM](https://github.com/crespi-lang/crespi-wasm) - Bindings de WebAssembly
-- [Plataforma Web](https://crespi.dev) - Aprende en el navegador
+- [Plataforma Web](https://crespilang.izantech.app) - Aprende en el navegador

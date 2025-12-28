@@ -82,6 +82,7 @@ nav:
           - Built-in Functions: en/reference/functions.md
           - Data Types: en/reference/types.md
           - Grammar (ANTLR4): en/reference/grammar.md
+          - FFI: en/reference/ffi.md
       - Execution:
           - Interpreter: en/guide/interpreter.md
           - Compiler: en/guide/compiler.md

@@ -50,7 +50,7 @@ extra:
     - name: English
       link: ../
       lang: en
-    - name: Español
+    - name: Espanol
       link: ./
       lang: es
 
@@ -79,6 +79,7 @@ nav:
       - Funciones Integradas: es/referencia/funciones.md
       - Tipos de Datos: es/referencia/tipos.md
       - Gramatica (ANTLR4): es/referencia/gramatica.md
+      - FFI: es/referencia/ffi.md
   - Ejecucion:
       - Interprete: es/guia/interprete.md
       - Compilador: es/guia/compilador.md

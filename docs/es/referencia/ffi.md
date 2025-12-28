@@ -1,21 +1,23 @@
-# Interoperabilidad con Rust
+# FFI (Interfaz de Funciones Foraneas)
 
-> **Idioma:** Español | [English](../../en/reference/rust-interop.md)
+> **Idioma:** Espanol | [English](../../en/reference/ffi.md)
 
 ---
 
-Crespi proporciona integración transparente con bibliotecas de Rust, permitiéndote aprovechar todo el ecosistema de Rust desde tus programas Crespi. Esto se logra a través de la herramienta `crespigen`, que genera automáticamente bindings FFI para cualquier crate de Rust.
+Crespi proporciona un sistema FFI (Foreign Function Interface) que permite integracion con codigo nativo. Actualmente, Rust es el lenguaje principal soportado, con la arquitectura preparada para soportar idiomas adicionales en el futuro.
 
-## Descripción General
+> **Nota:** El sistema FFI esta disenado para ser extensible. Aunque Rust es el primer lenguaje soportado, la arquitectura permite anadir soporte para otros lenguajes nativos en versiones futuras.
 
-El sistema de interoperabilidad con Rust funciona de la siguiente manera:
+## Descripcion General
 
-1. Analiza la API pública de un crate de Rust usando rustdoc JSON
-2. Genera funciones wrapper que sirven de puente entre el sistema de valores de Crespi y los tipos nativos de Rust
+El sistema FFI funciona de la siguiente manera:
+
+1. Analiza la API publica de un crate de Rust usando rustdoc JSON
+2. Genera funciones wrapper que sirven de puente entre el sistema de valores de Crespi y los tipos nativos
 3. Produce un archivo facade de Crespi (`.crespi`) con definiciones de clases y funciones
-4. Compila todo en una biblioteca estática que se enlaza con tu programa Crespi
+4. Compila todo en una biblioteca estatica que se enlaza con tu programa Crespi
 
-## Inicio Rápido
+## Inicio Rapido
 
 ### 1. Crear la Estructura del Proyecto
 
@@ -24,7 +26,7 @@ mi_proyecto/
 ├── main.crespi          # Tu programa Crespi
 ├── Cargo.toml           # Dependencias de Rust
 └── src/
-    └── lib.rs           # (Opcional) Tu código de biblioteca Rust
+    └── lib.rs           # (Opcional) Tu codigo de biblioteca Rust
 ```
 
 ### 2. Configurar Cargo.toml
@@ -43,7 +45,7 @@ crate-type = ["rlib"]
 [workspace]
 
 [dependencies]
-# Añade cualquier crate de Rust
+# Anade cualquier crate de Rust
 regex = "1.10"
 ```
 
@@ -61,11 +63,11 @@ crate-type = ["rlib"]
 [workspace]
 ```
 
-> **Nota:** La sección vacía `[workspace]` es necesaria para evitar problemas de herencia del workspace de Cargo.
+> **Nota:** La seccion vacia `[workspace]` es necesaria para evitar problemas de herencia del workspace de Cargo.
 
-### 3. Escribir Código Rust (Opcional)
+### 3. Escribir Codigo Rust (Opcional)
 
-Si estás creando tu propia biblioteca:
+Si estas creando tu propia biblioteca:
 
 ```rust
 // src/lib.rs
@@ -107,7 +109,7 @@ crespigen mi_proyecto/
 
 Esto genera:
 - `mi_proyecto/target/crespi-gen/bindings.crespi` - Archivo facade de Crespi
-- `mi_proyecto/target/crespi-gen/target/release/lib_crespi_bindings.a` - Biblioteca estática
+- `mi_proyecto/target/crespi-gen/target/release/lib_crespi_bindings.a` - Biblioteca estatica
 
 ### 5. Usar en Crespi
 
@@ -123,11 +125,11 @@ bloque main() {
     variable p1 = Punto(0.0, 0.0)
     variable p2 = Punto(3.0, 4.0)
 
-    // Los métodos funcionan naturalmente
+    // Los metodos funcionan naturalmente
     variable dist = p1.distancia(p2)
     mostrar(dist)  // 5.0
 
-    // Funciones libres con parámetros struct
+    // Funciones libres con parametros struct
     variable medio = punto_medio(p1, p2)
     mostrar(medio.x())  // 1.5
     mostrar(medio.y())  // 2.0
@@ -138,7 +140,7 @@ bloque main() {
 
 ### Tipos Primitivos (FFI Directa)
 
-Los tipos primitivos se pasan directamente sin sobrecarga de conversión.
+Los tipos primitivos se pasan directamente sin sobrecarga de conversion.
 
 | Tipo Rust | Tipo Crespi | Notas |
 |-----------|-------------|-------|
@@ -155,13 +157,13 @@ Los tipos primitivos se pasan directamente sin sobrecarga de conversión.
 | `bool` | `Bool` | Mapeo directo |
 | `()` | `Unit` | Tipo void/unit |
 
-### Tipos Complejos (Generación de Wrappers)
+### Tipos Complejos (Generacion de Wrappers)
 
 Los tipos complejos requieren funciones wrapper para el marshaling.
 
 | Tipo Rust | Tipo Crespi | Notas |
 |-----------|-------------|-------|
-| `String`, `&str` | `String` | Conversión automática |
+| `String`, `&str` | `String` | Conversion automatica |
 | `Vec<T>` | `List[T]` | Lista con tipo de elemento |
 | `HashMap<K, V>` | `Dict[K, V]` | Mapeo de diccionario |
 | `Option<T>` | `T?` | Tipo nullable |
@@ -173,7 +175,7 @@ Si un tipo de Rust no se puede mapear, crespi-cargo usa `Any` para mantener el i
 
 ### Punteros Inteligentes
 
-Los punteros inteligentes se desenvuelven automáticamente a su tipo interno.
+Los punteros inteligentes se desenvuelven automaticamente a su tipo interno.
 
 | Tipo Rust | Tipo Crespi |
 |-----------|-------------|
@@ -188,9 +190,9 @@ Los punteros inteligentes se desenvuelven automáticamente a su tipo interno.
 
 Los structs de Rust se convierten en clases de Crespi con:
 
-- **Constructor**: Usa los nombres de los campos como parámetros
-- **Getters de campos**: Métodos que devuelven valores de campos
-- **Métodos**: Métodos de instancia de los bloques `impl`
+- **Constructor**: Usa los nombres de los campos como parametros
+- **Getters de campos**: Metodos que devuelven valores de campos
+- **Metodos**: Metodos de instancia de los bloques `impl`
 - **Structs tupla**: Los campos posicionales se exponen como `field0`, `field1`, ...
 
 **Rust:**
@@ -206,7 +208,7 @@ impl Persona {
     }
 
     pub fn saludar(&self) -> String {
-        format!("Hola, soy {} y tengo {} años", self.nombre, self.edad)
+        format!("Hola, soy {} y tengo {} anos", self.nombre, self.edad)
     }
 }
 ```
@@ -256,8 +258,8 @@ bloque calcular_area(ancho: Double, alto: Double) -> Double {
 
 ### Mapeo de Enums
 
-Los enums de Rust se convierten en clases con constructores estáticos para cada variante. Las
-variantes tupla usan parámetros posicionales como `field0`, `field1`, etc.
+Los enums de Rust se convierten en clases con constructores estaticos para cada variante. Las
+variantes tupla usan parametros posicionales como `field0`, `field1`, etc.
 
 **Rust:**
 ```rust
@@ -297,22 +299,22 @@ crespigen [OPCIONES] <DIRECTORIO_PROYECTO>
 
 ### Argumentos
 
-| Argumento | Descripción |
+| Argumento | Descripcion |
 |-----------|-------------|
 | `<DIRECTORIO_PROYECTO>` | Ruta al proyecto Rust (directorio que contiene Cargo.toml) |
 
 ### Opciones
 
-| Opción | Descripción |
+| Opcion | Descripcion |
 |--------|-------------|
 | `-o, --output <DIR>` | Directorio de salida para los bindings generados (por defecto: `<proyecto>/target/crespi-gen`) |
 | `--no-build` | Solo generar bindings, no compilar |
 | `-h, --help` | Mostrar ayuda |
-| `-V, --version` | Mostrar versión |
+| `-V, --version` | Mostrar version |
 
 ### Archivos de Salida
 
-Después de ejecutar `crespigen`, encontrarás:
+Despues de ejecutar `crespigen`, encontraras:
 
 ```
 mi_proyecto/
@@ -324,7 +326,7 @@ mi_proyecto/
         ├── bindings.crespi      # Archivo facade de Crespi
         └── target/
             └── release/
-                └── lib_crespi_bindings.a  # Biblioteca estática
+                └── lib_crespi_bindings.a  # Biblioteca estatica
 ```
 
 ## Requisitos
@@ -343,28 +345,28 @@ rustup default nightly
 cargo +nightly ...
 ```
 
-### Configuración de PATH
+### Configuracion de PATH
 
-Asegúrate de que `cargo` esté disponible en tu PATH. Añade a tu configuración de shell:
+Asegurate de que `cargo` este disponible en tu PATH. Anade a tu configuracion de shell:
 
 ```bash
 # ~/.zshrc o ~/.bashrc
 export PATH="$HOME/.cargo/bin:$PATH"
 ```
 
-## Cómo Funciona
+## Como Funciona
 
 ### Arquitectura
 
 ```
 ┌─────────────────┐     ┌──────────────┐     ┌─────────────────┐
-│   Crate Rust    │────▶│  crespigen   │────▶│  bindings.crespi│
+│   Crate Rust    │────>│  crespigen   │────>│  bindings.crespi│
 │   (Cargo.toml)  │     │              │     │  lib_crespi_*.a │
 └─────────────────┘     └──────────────┘     └─────────────────┘
                               │
                     ┌─────────┴─────────┐
                     │                   │
-               ┌────▼────┐       ┌──────▼──────┐
+               ┌────v────┐       ┌──────v──────┐
                │ rustdoc │       │ Embebidos   │
                │  JSON   │       │ crespi-ffi  │
                │         │       │ crespi-runtime
@@ -373,73 +375,73 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 ### Flujo del Proceso
 
-1. **Generación de JSON Rustdoc**: `crespigen` ejecuta `cargo +nightly doc` con salida JSON para extraer la API pública
-2. **Parseo de API**: El JSON de rustdoc se parsea para descubrir funciones, structs, enums y métodos
+1. **Generacion de JSON Rustdoc**: `crespigen` ejecuta `cargo +nightly doc` con salida JSON para extraer la API publica
+2. **Parseo de API**: El JSON de rustdoc se parsea para descubrir funciones, structs, enums y metodos
 3. **Mapeo de Tipos**: Los tipos de Rust se mapean a tipos de Crespi
-4. **Generación de Wrappers**: Se generan funciones wrapper de Rust que:
+4. **Generacion de Wrappers**: Se generan funciones wrapper de Rust que:
    - Aceptan argumentos `CrespiValue`
    - Convierten valores a tipos nativos de Rust
    - Llaman a las funciones originales
    - Convierten resultados de vuelta a `CrespiValue`
-5. **Generación de Facade**: Se genera un archivo `.crespi` con:
+5. **Generacion de Facade**: Se genera un archivo `.crespi` con:
    - Declaraciones `externo bloque` para las funciones FFI
    - Definiciones de tipo para structs
-   - Funciones wrapper para API ergonómica
-6. **Compilación**: El crate wrapper se compila a biblioteca estática
+   - Funciones wrapper para API ergonomica
+6. **Compilacion**: El crate wrapper se compila a biblioteca estatica
 
 ### Punteros Opacos
 
 Los structs personalizados se manejan como punteros opacos:
 
 - Las instancias de struct se encapsulan en Box y se almacenan como punteros raw en `CrespiValue`
-- Los métodos reciben el puntero, lo desreferencian y llaman al método
+- Los metodos reciben el puntero, lo desreferencian y llaman al metodo
 - Los valores de retorno que son structs se encapsulan y devuelven como punteros opacos
 
 Este enfoque:
 - Evita copiar structs grandes
-- Preserva la semántica de propiedad de Rust
-- Permite llamar métodos en instancias
+- Preserva la semantica de propiedad de Rust
+- Permite llamar metodos en instancias
 
 ## Limitaciones
 
 ### Limitaciones Actuales
 
 #### Totalmente Soportado
-- Tipos numéricos primitivos (enteros con/sin signo, `f32`/`f64`, `bool`) en funciones y campos de struct
-- Structs con campos primitivos únicamente
-- Métodos con receptor `&self`
-- Métodos que toman referencias `&StructType` como parámetros
-- Métodos que devuelven `Self` u otros tipos struct
-- Funciones libres con parámetros primitivos
-- Funciones libres con parámetros `&StructType`
+- Tipos numericos primitivos (enteros con/sin signo, `f32`/`f64`, `bool`) en funciones y campos de struct
+- Structs con campos primitivos unicamente
+- Metodos con receptor `&self`
+- Metodos que toman referencias `&StructType` como parametros
+- Metodos que devuelven `Self` u otros tipos struct
+- Funciones libres con parametros primitivos
+- Funciones libres con parametros `&StructType`
 
-#### Aún No Soportado (Planificado)
+#### Aun No Soportado (Planificado)
 
-| Característica | Problema | Alternativa |
+| Caracteristica | Problema | Alternativa |
 |----------------|----------|-------------|
-| **Métodos factory estáticos** | Métodos sin `&self` (ej. `Point::origin()`) se generan incorrectamente como métodos de instancia | Usa constructores con valores por defecto: `Point(0.0, 0.0)` en lugar de `Point::origin()` |
+| **Metodos factory estaticos** | Metodos sin `&self` (ej. `Point::origin()`) se generan incorrectamente como metodos de instancia | Usa constructores con valores por defecto: `Point(0.0, 0.0)` en lugar de `Point::origin()` |
 | **Campos struct que contienen otros structs** | Campos como `center: Point` en un struct `Circle` fallan al serializar | Usa campos primitivos: `cx: f64, cy: f64` en lugar de `center: Point` |
-| **Métodos que toman structs como propiedad** | `fn move_to(self, center: Point)` espera valor propio, no referencia | Usa referencias: `fn move_to(&self, center: &Point)` |
-| **Marshaling de enums** | Los valores de enums aún se tratan como punteros opacos en llamadas FFI | Usa funciones wrapper que devuelvan primitivos/structs cuando sea posible |
-| **Genéricos** | Funciones y structs genéricos tienen soporte limitado | Usa tipos concretos en APIs públicas |
+| **Metodos que toman structs como propiedad** | `fn move_to(self, center: Point)` espera valor propio, no referencia | Usa referencias: `fn move_to(&self, center: &Point)` |
+| **Marshaling de enums** | Los valores de enums aun se tratan como punteros opacos en llamadas FFI | Usa funciones wrapper que devuelvan primitivos/structs cuando sea posible |
+| **Genericos** | Funciones y structs genericos tienen soporte limitado | Usa tipos concretos en APIs publicas |
 | **Traits** | Los objetos trait (`dyn Trait`) se tratan como `Any` opaco | Evita objetos trait en fronteras FFI |
-| **Tiempos de vida** | Las referencias con lifetimes explícitos pueden no funcionar | Usa tipos propios o `&T` sin lifetimes explícitos |
-| **Async** | Crespi soporta `asincrono`/`esperar`, pero no hay interop con `async fn` de Rust | Expone wrappers síncronos o usa APIs síncronas |
-| **Callbacks** | Pasar funciones Crespi a Rust no está soportado | Diseña APIs sin callbacks |
-| **Retornos String/Vec** | Tipos de retorno complejos necesitan serialización | Actualmente limitado - usa primitivos cuando sea posible |
+| **Tiempos de vida** | Las referencias con lifetimes explicitos pueden no funcionar | Usa tipos propios o `&T` sin lifetimes explicitos |
+| **Async** | Crespi soporta `asincrono`/`esperar`, pero no hay interop con `async fn` de Rust | Expone wrappers sincronos o usa APIs sincronas |
+| **Callbacks** | Pasar funciones Crespi a Rust no esta soportado | Disena APIs sin callbacks |
+| **Retornos String/Vec** | Tipos de retorno complejos necesitan serializacion | Actualmente limitado - usa primitivos cuando sea posible |
 
-### Recomendaciones de Diseño
+### Recomendaciones de Diseno
 
-1. **Usa tipos concretos** en APIs públicas cuando sea posible
-2. **Prefiere métodos `&self`** sobre métodos que consumen `self`
+1. **Usa tipos concretos** en APIs publicas cuando sea posible
+2. **Prefiere metodos `&self`** sobre metodos que consumen `self`
 3. **Devuelve `Result` u `Option`** para operaciones que pueden fallar
 4. **Deriva `Clone`** para structs que necesiten ser copiados
-5. **Mantén las APIs públicas simples** - la complejidad interna está bien
+5. **Manten las APIs publicas simples** - la complejidad interna esta bien
 
 ### Helper de Tokio
 
 `crespi-tokio` ofrece un wrapper bloqueante sobre Tokio pensado para Crespi. Expone
-`sleep_ms`, `join_sleep_ms`, `race_sleep_ms`, y un wrapper `Runtime` que puedes usar vía `crespi-cargo`.
+`sleep_ms`, `join_sleep_ms`, `race_sleep_ms`, y un wrapper `Runtime` que puedes usar via `crespi-cargo`.
 
 ```crespi
 externo bloque sleep_ms(ms: Int)
@@ -475,7 +477,7 @@ bloque main() {
     variable patron = Regex("[0-9]+")
 
     si patron.is_match("abc123") {
-        mostrar("¡Se encontraron dígitos!")
+        mostrar("Se encontraron digitos!")
     }
 
     variable coincidencias = patron.find_all("a1b2c3")
@@ -485,7 +487,7 @@ bloque main() {
 }
 ```
 
-### Biblioteca Matemática Local
+### Biblioteca Matematica Local
 
 ```rust
 // src/lib.rs
@@ -539,7 +541,7 @@ bloque main() {
 }
 ```
 
-## Solución de Problemas
+## Solucion de Problemas
 
 ### "Se requiere Rust Nightly"
 
@@ -547,36 +549,36 @@ bloque main() {
 Error: cargo +nightly failed
 ```
 
-**Solución:** Instala y configura Rust nightly:
+**Solucion:** Instala y configura Rust nightly:
 ```bash
 rustup install nightly
 rustup default nightly
 ```
 
-### "El paquete cree que está en un workspace"
+### "El paquete cree que esta en un workspace"
 
 ```
 Error: current package believes it's in a workspace when it's not
 ```
 
-**Solución:** Añade una sección `[workspace]` vacía a tu Cargo.toml:
+**Solucion:** Anade una seccion `[workspace]` vacia a tu Cargo.toml:
 ```toml
 [workspace]
 ```
 
 ### "El tipo X no implementa FromCrespi"
 
-Esto ocurre cuando el generador intenta usar un tipo que no puede ser convertido automáticamente.
+Esto ocurre cuando el generador intenta usar un tipo que no puede ser convertido automaticamente.
 
-**Solución:** Asegúrate de que tus structs usen tipos de campo soportados, o reporta un issue para el tipo no soportado.
+**Solucion:** Asegurate de que tus structs usen tipos de campo soportados, o reporta un issue para el tipo no soportado.
 
 ### Funciones Faltantes en los Bindings Generados
 
 Solo las funciones e items `pub` se incluyen en los bindings generados.
 
-**Solución:** Marca como `pub` los items que quieras exponer a Crespi.
+**Solucion:** Marca como `pub` los items que quieras exponer a Crespi.
 
-## Ver También
+## Ver Tambien
 
 - [Referencia de Tipos](tipos.md) - Sistema de tipos de Crespi
 - [Referencia de Funciones](funciones.md) - Funciones incorporadas

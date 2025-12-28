@@ -64,7 +64,7 @@ let APP_NAME = "My Application"
 print(PI)  // 3.14159
 ```
 
-Note: `PI` and `E` are built-in constants. In native-compiled code they are lowered to `pi()` and `e()` built-ins.
+Note: `PI` and `E` are built-in constants. Use them directly: `print(PI)` or `var circumference = 2 * PI * radius`.
 
 ### Immutability
 

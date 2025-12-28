@@ -315,11 +315,11 @@ Aliases in parentheses refer to the Spanish language pack or English aliases.
 - `log10` (`logaritmo10`)
 - `log2` (`logaritmo2`)
 - `hypot` (`hipotenusa`)
-- `pi` (`pi`, alias `PI`)
-- `e` (`e`, alias `E`)
+- `PI` - Mathematical constant π (3.14159...)
+- `E` - Euler's number e (2.71828...)
 
 Notes:
-- `PI` and `E` behave as constants in the interpreter. In compiled code, use `pi()` and `e()` calls.
+- `PI` and `E` are constants (not functions). Use them directly: `print(PI)` or `var area = PI * r * r`
 
 ### Grammar Cheat Sheet (Canonical English)
 

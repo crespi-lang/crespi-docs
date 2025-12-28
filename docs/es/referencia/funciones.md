@@ -63,8 +63,8 @@ Los helpers de colecciones y texto se exponen como **métodos** sobre el recepto
 | `logaritmo10` | `log10` | número | `decimal` | Logaritmo base 10 |
 | `logaritmo2` | `log2` | número | `decimal` | Logaritmo base 2 |
 | `hipotenusa` | `hypot` | x, y | `decimal` | sqrt(x^2 + y^2) |
-| `pi` | `pi` | - | `decimal` | Constante π (llamar como `pi()`) |
-| `e` | `e` | - | `decimal` | Número de Euler (llamar como `e()`) |
+| `PI` | `PI` | - | `decimal` | Constante π (usar directamente: `PI`) |
+| `E` | `E` | - | `decimal` | Número de Euler (usar directamente: `E`) |
 
 ### Métodos de Texto
 
@@ -472,12 +472,13 @@ variable suma = sumar(10, 20)
 
 ## Funciones Matemáticas
 
-Las funciones matemáticas aceptan enteros o decimales. `minimo`/`maximo` aceptan una lista o dos números. `pi()` y `e()` devuelven constantes (en el intérprete también se pueden usar `PI`/`E`).
+Las funciones matemáticas aceptan enteros o decimales. `minimo`/`maximo` aceptan una lista o dos números. `PI` y `E` son constantes.
 
 ```crespi
 mostrar(raiz(9))            // 3
 mostrar(minimo([3, 1, 2]))  // 1
-mostrar(pi())               // 3.14159...
+mostrar(PI)                 // 3.14159...
+variable circunferencia = 2 * PI * radio
 ```
 
 ## Métodos de Texto

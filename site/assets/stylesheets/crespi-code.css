@@ -1,0 +1,31 @@
+/* Fix for MkDocs Material + Highlight.js (Dracula) */
+
+/* Force the background of the code block wrapper to match Dracula's dark background */
+:root {
+  --md-code-bg-color: #282a36;
+  --md-code-fg-color: #f8f8f2;
+}
+
+/* Target the container that MkDocs Material creates */
+.md-typeset .highlight {
+    background-color: #282a36 !important;
+    border-radius: .1rem;
+}
+
+.md-typeset pre {
+    background-color: #282a36 !important;
+}
+
+.md-typeset pre > code {
+    background-color: #282a36 !important;
+    color: #f8f8f2 !important;
+}
+
+/* Ensure the scrollbar looks decent if needed */
+.md-typeset pre::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.md-typeset pre::-webkit-scrollbar-track {
+    background-color: transparent;
+}

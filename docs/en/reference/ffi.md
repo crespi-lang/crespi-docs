@@ -1,14 +1,16 @@
-# Rust Interoperability
+# FFI (Foreign Function Interface)
 
-> **Language:** [Español](../../es/referencia/interoperabilidad-rust.md) | English
+> **Language:** [Espanol](../../es/referencia/ffi.md) | English
 
 ---
 
-Crespi provides seamless integration with Rust libraries, allowing you to leverage the entire Rust ecosystem from your Crespi programs. This is achieved through the `crespigen` tool, which automatically generates FFI bindings for any Rust crate.
+Crespi provides a Foreign Function Interface (FFI) for seamless integration with native libraries. Currently, Rust is the primary supported language, with the architecture designed to support additional languages in the future.
+
+The Rust FFI integration allows you to leverage the entire Rust ecosystem from your Crespi programs. This is achieved through the `crespigen` tool, which automatically generates FFI bindings for any Rust crate.
 
 ## Overview
 
-The Rust interop system works by:
+The FFI system works by:
 
 1. Analyzing the public API of a Rust crate using rustdoc JSON
 2. Generating wrapper functions that bridge between Crespi's value system and native Rust types
@@ -358,13 +360,13 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 ```
 ┌─────────────────┐     ┌──────────────┐     ┌─────────────────┐
-│   Rust Crate    │────▶│  crespigen   │────▶│  bindings.crespi│
+│   Rust Crate    │────>│  crespigen   │────>│  bindings.crespi│
 │   (Cargo.toml)  │     │              │     │  lib_crespi_*.a │
 └─────────────────┘     └──────────────┘     └─────────────────┘
                               │
                     ┌─────────┴─────────┐
                     │                   │
-               ┌────▼────┐       ┌──────▼──────┐
+               ┌────v────┐       ┌──────v──────┐
                │ rustdoc │       │ Embedded    │
                │  JSON   │       │ crespi-ffi  │
                │         │       │ crespi-runtime
@@ -575,6 +577,10 @@ This occurs when the generator tries to use a type that can't be automatically m
 Only `pub` functions and items are included in the generated bindings.
 
 **Solution:** Mark items as `pub` that you want to expose to Crespi.
+
+## Future Work
+
+The FFI system is designed with multi-language interoperability in mind. While Rust is currently the primary supported language, the architecture allows for future expansion to support additional languages through the same marshaling layer.
 
 ## See Also
 

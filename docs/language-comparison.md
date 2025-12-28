@@ -1,6 +1,6 @@
 # Crespi vs. Kotlin vs. Swift: Feature Comparison Report
 
-**Crespi** is a modern, dynamically typed language with an optional static type checker. It blends the ergonomic syntax of **Kotlin** with the structural patterns of **Swift** and the keyword brevity of **Rust**. It runs on a dual-engine architecture: a tree-walking interpreter for development/scripting and an LLVM-based native compiler for production.
+**Crespi** is a modern, statically typed language with Hindley-Milner style type inference. It blends the ergonomic syntax of **Kotlin** with the structural patterns of **Swift** and the keyword brevity of **Rust**. It runs on a dual-engine architecture: a tree-walking interpreter for development/scripting and an LLVM-based native compiler for production.
 
 ## 1. Core Syntax & Keywords
 
@@ -26,8 +26,8 @@
 
 | Feature | **Crespi** | **Kotlin** | **Swift** | Analysis |
 | :--- | :--- | :--- | :--- | :--- |
-| **Typing** | Dynamic (Optional Checker) | Static (Strong) | Static (Strong) | Crespi is dynamic at runtime, with an opt-in static checker. |
-| **Type Inference** | Hindley-Milner style (Checker) | Flow-sensitive | Bidirectional | Crespi's optional checker uses constraint-based type inference with type variable unification. |
+| **Typing** | Static (HM inference) | Static (Strong) | Static (Strong) | Crespi is statically typed with Hindley-Milner style inference. Type annotations are optional due to inference. The interpreter provides relaxed mode (warnings only) for beginners, while the compiler enforces strict type checking. |
+| **Type Inference** | Hindley-Milner style | Flow-sensitive | Bidirectional | Crespi's type checker uses constraint-based type inference with type variable unification. |
 | **Null Safety** | `T?`, `??` (Coalesce) | `T?`, `?:` (Elvis) | `T?`, `??` (Coalesce) | Crespi uses Swift's `??` operator instead of Kotlin's `?:`. |
 | **Union Types** | `Int \| String` | (Smart casts / `Any`) | (Enums / `Result`) | Crespi supports ad-hoc union types (`|`) natively, a feature neither Kotlin nor Swift has directly (they use sealed classes/enums). |
 | **Type Aliases** | `type UserId = Int` | `typealias` | `typealias` | Crespi supports type aliases for semantic clarity without runtime overhead. |
@@ -133,7 +133,7 @@ This is the most significant functional gap between Crespi and its peers.
     *   **Runtime Registry**: Crespi supports calling Rust-defined functions via a `NativeFn` registry in the runtime (`crespi-runtime`). These functions must follow the `extern "C"` ABI.
     *   **Marshaling Layer**: The `crespi-ffi` crate provides `FromCrespi` and `ToCrespi` traits for automatic type conversion between Crespi values and Rust types. Supported types include primitives (`i32`, `i64`, `f64`, `bool`, `String`), collections (`Vec<T>`, `HashMap<String, T>`), and `Option<T>`.
     *   **Native Function Signature**: `extern "C" fn(&mut GcContext, *const CrespiValue, usize) -> CrespiValue`
-    *   **Automation**: Unlike Swift/Kotlin, Crespi does not yet have a tool to auto-generate bindings from `.h` files. However, the marshaling traits significantly reduce boilerplate for common use cases.
+    *   **Multi-Language Vision**: The FFI architecture is designed to support additional languages in the future through the C ABI foundation.
 
 ## 12. Ecosystem & Tooling
 
@@ -151,7 +151,7 @@ This is the most significant functional gap between Crespi and its peers.
 *   **Kotlin**: **Full Reflection**. Built on JVM reflection, providing deep access to properties, methods, and annotations at runtime.
 *   **Crespi**: **Basic Introspection**.
     *   **Built-in**: `typeof(x)` returns a string representation of the type.
-*   **Dynamic**: Crespi is dynamic by default; the optional checker adds static guarantees without changing the runtime model. It still lacks a formal "Reflection" library for modifying behavior at runtime.
+    *   **Static Typing with Relaxed Mode**: Crespi is statically typed with optional annotations (due to HM inference). The interpreter provides a relaxed mode where type errors appear as warnings but execution continues, making it beginner-friendly while maintaining type safety in compiled code.
 
 ## 14. Type System Nuances
 

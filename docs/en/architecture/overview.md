@@ -1,68 +1,68 @@
 # Architecture Overview
 
-> **Language:** [Español](../../es/arquitectura/general.md) | English
+> **Language:** [Espanol](../../es/arquitectura/general.md) | English
 
 ---
 
-Crespi is a bilingual programming language implemented in Rust. It features a tree-walking interpreter for development and an LLVM-based native compiler for production.
+Crespi is a multilingual programming language (via language packs) implemented in Rust. It features a tree-walking interpreter for development and an LLVM-based native compiler for production.
 
 ## High-Level Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                           Source Code                                │
-│                        (.crespi files)                               │
-└─────────────────────────────────────────────────────────────────────┘
-                                  │
-                                  ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                         Lexer/Scanner                                │
-│              (Tokenization with ASI, keyword mapping)                │
-│                   English → Token ← Spanish                          │
-└─────────────────────────────────────────────────────────────────────┘
-                                  │
-                                  ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                            Parser                                    │
-│           (Recursive descent with climbing precedence)               │
-│                         Produces AST                                 │
-└─────────────────────────────────────────────────────────────────────┘
-                                  │
-                    ┌─────────────┴─────────────┐
-                    ▼                           ▼
-┌───────────────────────────┐     ┌───────────────────────────────────┐
-│       Interpreter         │     │         Native Compiler            │
-│   (Tree-walking eval)     │     │                                    │
-│                           │     │    ┌─────────────────────────┐    │
-│  ┌─────────────────────┐  │     │    │   HIR (High-level IR)   │    │
-│  │    Environment      │  │     │    │  (Lowering from AST)    │    │
-│  │  (Lexical scoping)  │  │     │    └─────────────────────────┘    │
-│  └─────────────────────┘  │     │                │                   │
-│                           │     │                ▼                   │
-│  ┌─────────────────────┐  │     │    ┌─────────────────────────┐    │
-│  │   Value (Rc-based)  │  │     │    │       LLVM IR          │    │
-│  │   Interpreter types │  │     │    │   (Code generation)     │    │
-│  └─────────────────────┘  │     │    └─────────────────────────┘    │
-└───────────────────────────┘     │                │                   │
-            │                     │                ▼                   │
-            ▼                     │    ┌─────────────────────────┐    │
-┌───────────────────────────┐     │    │    Native Executable    │    │
-│        Output             │     │    │    (+ crespi-runtime)   │    │
-└───────────────────────────┘     │    └─────────────────────────┘    │
-                                  └───────────────────────────────────┘
++---------------------------------------------------------------------------+
+|                           Source Code                                      |
+|                        (.crespi files)                                     |
++---------------------------------------------------------------------------+
+                                  |
+                                  v
++---------------------------------------------------------------------------+
+|                         Lexer/Scanner                                      |
+|              (Tokenization with ASI, keyword mapping)                      |
+|                   English -> Token <- Spanish                              |
++---------------------------------------------------------------------------+
+                                  |
+                                  v
++---------------------------------------------------------------------------+
+|                            Parser                                          |
+|           (Recursive descent with climbing precedence)                     |
+|                         Produces AST                                       |
++---------------------------------------------------------------------------+
+                                  |
+                    +-------------+-------------+
+                    v                           v
++---------------------------+     +-----------------------------------+
+|       Interpreter         |     |         Native Compiler            |
+|   (Tree-walking eval)     |     |                                    |
+|                           |     |    +-------------------------+    |
+|  +---------------------+  |     |    |   HIR (High-level IR)   |    |
+|  |    Environment      |  |     |    |  (Lowering from AST)    |    |
+|  |  (Lexical scoping)  |  |     |    +-------------------------+    |
+|  +---------------------+  |     |                |                   |
+|                           |     |                v                   |
+|  +---------------------+  |     |    +-------------------------+    |
+|  |   Value (Rc-based)  |  |     |    |       LLVM IR          |    |
+|  |   Interpreter types |  |     |    |   (Code generation)     |    |
+|  +---------------------+  |     |    +-------------------------+    |
++---------------------------+     |                |                   |
+            |                     |                v                   |
+            v                     |    +-------------------------+    |
++---------------------------+     |    |    Native Executable    |    |
+|        Output             |     |    |    (+ crespi-runtime)   |    |
++---------------------------+     |    +-------------------------+    |
+                                  +-----------------------------------+
 ```
 
 ---
 
 ## Key Design Decisions
 
-### 1. English-First Bilingual Support
+### 1. English-First Multilingual Support
 
 The language core uses **English as the canonical form**:
 - English keywords (`var`, `class`, `fn`, `this`) are primary
 - Spanish keywords (`variable`, `tipo`, `bloque`, `yo`) are aliases defined in the lexer
 - All internal code, compiler passes, and runtime use English identifiers
-- Spanish translation happens at the lexer level (token → same TokenKind)
+- Spanish translation happens at the lexer level (token -> same TokenKind)
 
 This ensures:
 - Consistent internal representation
@@ -112,7 +112,7 @@ Type parameters are parsed but not enforced at runtime (duck typing).
 - Both modes rely on English canonical names after lexing.
 - Builtins must be implemented in `crespi-core` (interpreter) and `crespi-runtime` (compiled), plus registered in codegen (`lowering.rs`, `compiler.rs`).
 - When adding keywords/operators/builtins, update `crespi-schema`, language packs, and the reference docs together.
-- Constants like `PI`/`E` are aliases for `pi()`/`e()` during compilation.
+- Constants `PI` and `E` are inlined as float literals during compilation (not function calls).
 
 ---
 
@@ -121,18 +121,18 @@ Type parameters are parsed but not enforced at runtime (duck typing).
 ### Interpretation Flow
 
 ```
-Source → Lexer → Parser → AST → Interpreter → Value
-                                     ↓
+Source -> Lexer -> Parser -> AST -> Interpreter -> Value
+                                     |
                               Environment (scopes)
 ```
 
 ### Compilation Flow
 
 ```
-Source → Lexer → Parser → AST → HIR (lowering) → LLVM IR → Object Code
-                                      ↓                              ↓
+Source -> Lexer -> Parser -> AST -> HIR (lowering) -> LLVM IR -> Object Code
+                                      |                              |
                             Variable resolution              Link with runtime
-                            Free variable analysis                   ↓
+                            Free variable analysis                   |
                             Builtin translation              Native Executable
 ```
 
@@ -156,7 +156,7 @@ import fn Utils.format          // Specific function
 3. Additional `-I` search paths
 
 **File naming:**
-- `snake_case.crespi` → `PascalCase` module name
+- `snake_case.crespi` -> `PascalCase` module name
 - Directories create nested modules
 
 ---

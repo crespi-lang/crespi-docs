@@ -64,7 +64,7 @@ immutable NOMBRE_APP = "Mi Aplicación"
 mostrar(PI)  // 3.14159
 ```
 
-Nota: `PI` y `E` son constantes integradas. En codigo compilado se traducen a los builtins `pi()` y `e()`.
+Nota: `PI` y `E` son constantes integradas. Úsalas directamente: `mostrar(PI)` o `variable circunferencia = 2 * PI * radio`.
 
 ### Inmutabilidad
 
