@@ -132,6 +132,8 @@ fn power(base, exp = 2) {
 Declares an external function from a native (Rust/C) library. Used for FFI (Foreign Function Interface).
 
 ```crespi
+// Bind to a different native symbol name
+#[link_name = "my_add_impl"]
 extern fn my_add(a: Int, b: Int) -> Int
 extern fn my_sin(x: Float) -> Float
 

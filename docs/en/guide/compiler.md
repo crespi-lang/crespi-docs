@@ -103,6 +103,10 @@ Crespi supports calling external native functions from Rust or C libraries using
 extern fn my_add(a: Int, b: Int) -> Int
 extern fn my_sin(x: Double) -> Double
 
+// Bind to a different native symbol name
+#[link_name = "my_add_impl"]
+extern fn my_add(a: Int, b: Int) -> Int
+
 fn main() {
     print(my_add(10, 32))  // Output: 42
     print(my_sin(1.57))    // Output: ~1.0

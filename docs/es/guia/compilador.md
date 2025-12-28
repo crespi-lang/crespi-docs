@@ -100,6 +100,8 @@ Crespi permite llamar funciones nativas externas de bibliotecas Rust o C usando 
 ### 1. Declarar en Crespi
 
 ```crespi
+// Enlazar a un simbolo nativo con nombre distinto
+#[link_name = "mi_suma_impl"]
 externo bloque mi_suma(a: Int, b: Int) -> Int
 externo bloque mi_seno(x: Double) -> Double
 

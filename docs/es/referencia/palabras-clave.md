@@ -126,6 +126,22 @@ bloque potencia(base, exp = 2) {
 }
 ```
 
+### `externo`
+
+Declara una función externa (FFI) implementada en Rust/C. Puedes usar `#[link_name = "simbolo"]`
+para enlazar con un nombre nativo distinto.
+
+```crespi
+// Enlazar con un simbolo nativo distinto
+#[link_name = "mi_suma_impl"]
+externo bloque mi_suma(a: Int, b: Int) -> Int
+externo bloque mi_seno(x: Double) -> Double
+
+bloque main() {
+    mostrar(mi_suma(10, 32))
+}
+```
+
 ### `resultado`
 
 Retorna un valor de una función y termina su ejecución.
