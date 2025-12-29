@@ -72,6 +72,7 @@ nav:
       - Funciones: es/guia/funciones.md
       - Listas y Diccionarios: es/guia/colecciones.md
       - Clases y Objetos: es/guia/clases.md
+      - Enums y Pattern Matching: es/guia/enums.md
       - Caracteristicas Avanzadas: es/guia/avanzado.md
   - Referencia:
       - Palabras Clave: es/referencia/palabras-clave.md
