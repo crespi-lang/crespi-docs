@@ -12,9 +12,9 @@ La declaración `cuando` empareja un valor contra patrones usando cláusulas `es
 
 ```crespi
 cuando valor {
-    es Patron1 => { /* código */ }
-    es Patron2 => { /* código */ }
-    defecto => { /* respaldo */ }
+    es P{ atron1 -> { /* código */ }
+    es P{ atron2 -> { /* código */ }
+    defecto -> { /* respaldo */ }
 }
 ```
 
@@ -34,10 +34,10 @@ enumerado Estado {
 variable estado = Estado.Activo
 
 cuando estado {
-    es Activo => { mostrar("Activo") }
-    es Inactivo => { mostrar("Inactivo") }
-    es Pendiente => { mostrar("Pendiente") }
-    defecto => { mostrar("Desconocido") }
+    es A{ ctivo -> { mostrar("Activo") }
+    es I{ nactivo -> { mostrar("Inactivo") }
+    es P{ endiente -> { mostrar("Pendiente") }
+    defecto -> { mostrar("Desconocido") }
 }
 ```
 
@@ -54,11 +54,11 @@ variable dir = Direccion.Norte
 
 // No necesitas "Direccion.Norte", solo usa "Norte"
 cuando dir {
-    es Norte => { mostrar("Yendo al norte") }
-    es Sur => { mostrar("Yendo al sur") }
-    es Este => { mostrar("Yendo al este") }
-    es Oeste => { mostrar("Yendo al oeste") }
-    defecto => { mostrar("Desconocido") }
+    es N{ orte -> { mostrar("Yendo al norte") }
+    es S{ ur -> { mostrar("Yendo al sur") }
+    es E{ ste -> { mostrar("Yendo al este") }
+    es O{ este -> { mostrar("Yendo al oeste") }
+    defecto -> { mostrar("Desconocido") }
 }
 ```
 
@@ -79,9 +79,9 @@ enumerado Opcion[T] {
 variable valor = Opcion.Alguno(42)
 
 cuando valor {
-    es Alguno(v) => { mostrar("Valor: " + texto(v)) }
-    es Ninguno => { mostrar("Sin valor") }
-    defecto => { mostrar("Desconocido") }
+    es Alguno{ v -> { mostrar("Valor: " + texto(v)) }
+    es N{ inguno -> { mostrar("Sin valor") }
+    defecto -> { mostrar("Desconocido") }
 }
 ```
 
@@ -96,13 +96,13 @@ enumerado Forma {
 variable forma = Forma.Rectangulo(10.0, 20.0)
 
 cuando forma {
-    es Circulo(r) => {
+    es Circulo{ r -> {
         mostrar("Círculo con radio " + texto(r))
     }
-    es Rectangulo(a, al) => {
+    es Rectangulo{ a, al -> {
         mostrar("Rectángulo: " + texto(a) + " x " + texto(al))
     }
-    defecto => {
+    defecto -> {
         mostrar("Forma desconocida")
     }
 }
@@ -119,13 +119,13 @@ enumerado Mensaje {
 variable msg = Mensaje.CambiarColor(255, 128, 0)
 
 cuando msg {
-    es Mover(x, y) => {
+    es Mover{ x, y -> {
         mostrar("Mover a (" + texto(x) + ", " + texto(y) + ")")
     }
-    es CambiarColor(r, g, b) => {
+    es CambiarColor{ r, g, b -> {
         mostrar("RGB(" + texto(r) + ", " + texto(g) + ", " + texto(b) + ")")
     }
-    defecto => {
+    defecto -> {
         mostrar("Mensaje desconocido")
     }
 }
@@ -147,9 +147,9 @@ enumerado Opcion[T] {
 
 bloque tieneValor(opt: Opcion) -> Booleano {
     cuando opt {
-        es Alguno(_) => { resultado verdadero }
-        es Ninguno => { resultado falso }
-        defecto => { resultado falso }
+        es Alguno{ _ -> { resultado verdadero }
+        es N{ inguno -> { resultado falso }
+        defecto -> { resultado falso }
     }
 }
 ```
@@ -168,10 +168,10 @@ enumerado Forma {
 variable rect = Forma.Rectangulo(10.0, 20.0)
 
 cuando rect {
-    es Circulo(_) => { mostrar("Es un círculo (radio ignorado)") }
-    es Rectangulo(a, _) => { mostrar("Ancho del rectángulo: " + texto(a)) }
-    es Triangulo(_, al) => { mostrar("Altura del triángulo: " + texto(al)) }
-    defecto => { mostrar("Forma desconocida") }
+    es Circulo{ _ -> { mostrar("Es un círculo (radio ignorado)") }
+    es Rectangulo{ a, _ -> { mostrar("Ancho del rectángulo: " + texto(a)) }
+    es Triangulo{ _, al -> { mostrar("Altura del triángulo: " + texto(al)) }
+    defecto -> { mostrar("Forma desconocida") }
 }
 ```
 
@@ -195,15 +195,15 @@ enumerado Resultado[T, E] {
 variable anidado = Opcion.Alguno(Resultado.Ok(42))
 
 cuando anidado {
-    es Alguno(resultado) => {
+    es Alguno{ resultado -> {
         cuando resultado {
-            es Ok(valor) => { mostrar("Valor: " + texto(valor)) }
-            es Error(msg) => { mostrar("Error: " + msg) }
-            defecto => { mostrar("Resultado desconocido") }
+            es Ok{ valor -> { mostrar("Valor: " + texto(valor)) }
+            es Error{ msg -> { mostrar("Error: " + msg) }
+            defecto -> { mostrar("Resultado desconocido") }
         }
     }
-    es Ninguno => { mostrar("Sin valor") }
-    defecto => { mostrar("Desconocido") }
+    es N{ inguno -> { mostrar("Sin valor") }
+    defecto -> { mostrar("Desconocido") }
 }
 ```
 
@@ -222,8 +222,8 @@ variable color = Color.Rojo
 
 // Sin defecto, el compilador requeriría todas las variantes
 cuando color {
-    es Rojo => { mostrar("rojo") }
-    defecto => { mostrar("no rojo") }  // Maneja Verde, Azul
+    es R{ ojo -> { mostrar("rojo") }
+    defecto -> { mostrar("no rojo") }  // Maneja Verde, Azul
 }
 ```
 
@@ -241,13 +241,13 @@ variable estado = Estado.Activo
 
 // Error: Falta caso para 'Inactivo'
 // cuando estado {
-//     es Activo => { mostrar("activo") }
+//     es A{ ctivo -> { mostrar("activo") }
 // }
 
 // Válido con defecto
 cuando estado {
-    es Activo => { mostrar("activo") }
-    defecto => { mostrar("no activo") }
+    es A{ ctivo -> { mostrar("activo") }
+    defecto -> { mostrar("no activo") }
 }
 ```
 
@@ -265,16 +265,16 @@ enumerado Temperatura {
 
     bloque aKelvin() -> Decimal {
         cuando yo {
-            es Celsius(c) => {
+            es Celsius{ c -> {
                 resultado c + 273.15
             }
-            es Fahrenheit(f) => {
+            es Fahrenheit{ f -> {
                 resultado (f - 32.0) * 5.0 / 9.0 + 273.15
             }
-            es Kelvin(k) => {
+            es Kelvin{ k -> {
                 resultado k
             }
-            defecto => {
+            defecto -> {
                 resultado 0.0
             }
         }
@@ -304,9 +304,9 @@ enumerado Resultado[T, E] {
 
     bloque mapear(f) -> Resultado {
         cuando yo {
-            es Ok(valor) => { resultado Resultado.Ok(f(valor)) }
-            es Error(e) => { resultado Resultado.Error(e) }
-            defecto => { resultado yo }
+            es Ok{ valor -> { resultado Resultado.Ok(f(valor)) }
+            es Error{ e -> { resultado Resultado.Error(e) }
+            defecto -> { resultado yo }
         }
     }
 }
@@ -321,9 +321,9 @@ bloque dividir(a: Entero, b: Entero) -> Resultado[Entero, Texto] {
 variable resultado = dividir(10, 2)
 
 cuando resultado {
-    es Ok(valor) => { mostrar("Resultado: " + texto(valor)) }
-    es Error(msg) => { mostrar("Error: " + msg) }
-    defecto => { mostrar("Desconocido") }
+    es Ok{ valor -> { mostrar("Resultado: " + texto(valor)) }
+    es Error{ msg -> { mostrar("Error: " + msg) }
+    defecto -> { mostrar("Desconocido") }
 }
 ```
 
@@ -342,9 +342,9 @@ enumerado Estado {
 
 // Bueno: Todos los casos explícitos
 cuando estado {
-    es Activo => { /* ... */ }
-    es Inactivo => { /* ... */ }
-    defecto => { /* requerido por ahora */ }
+    es A{ ctivo -> { /* ... */ }
+    es I{ nactivo -> { /* ... */ }
+    defecto -> { /* requerido por ahora */ }
 }
 ```
 
@@ -355,16 +355,16 @@ No vincules valores que no usarás:
 ```crespi
 // Bueno: Usar _ para valores no usados
 cuando opt {
-    es Alguno(_) => { mostrar("tiene valor") }
-    es Ninguno => { mostrar("vacío") }
-    defecto => { /* ... */ }
+    es Alguno{ _ -> { mostrar("tiene valor") }
+    es N{ inguno -> { mostrar("vacío") }
+    defecto -> { /* ... */ }
 }
 
 // Vinculación innecesaria
 cuando opt {
-    es Alguno(sinUsar) => { mostrar("tiene valor") }  // variable sin usar
-    es Ninguno => { mostrar("vacío") }
-    defecto => { /* ... */ }
+    es Alguno{ sinUsar -> { mostrar("tiene valor") }  // variable sin usar
+    es N{ inguno -> { mostrar("vacío") }
+    defecto -> { /* ... */ }
 }
 ```
 
@@ -374,18 +374,18 @@ Para enums profundamente anidados, usa declaraciones `cuando` secuenciales con n
 
 ```crespi
 cuando opcionExterna {
-    es Alguno(resultado) => {
+    es Alguno{ resultado -> {
         cuando resultado {
-            es Ok(datos) => {
+            es Ok{ datos -> {
                 cuando datos {
-                    es Valido(valor) => { /* usar valor */ }
-                    defecto => { /* ... */ }
+                    es Valido{ valor -> { /* usar valor */ }
+                    defecto -> { /* ... */ }
                 }
             }
-            defecto => { /* ... */ }
+            defecto -> { /* ... */ }
         }
     }
-    defecto => { /* ... */ }
+    defecto -> { /* ... */ }
 }
 ```
 

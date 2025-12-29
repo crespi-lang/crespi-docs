@@ -18,11 +18,11 @@ enumerado Direccion {
 variable dir = Direccion.Norte
 
 cuando dir {
-    es Norte => { mostrar("Yendo al norte") }
-    es Sur => { mostrar("Yendo al sur") }
-    es Este => { mostrar("Yendo al este") }
-    es Oeste => { mostrar("Yendo al oeste") }
-    defecto => { mostrar("Dirección desconocida") }
+    es N{ orte -> { mostrar("Yendo al norte") }
+    es S{ ur -> { mostrar("Yendo al sur") }
+    es E{ ste -> { mostrar("Yendo al este") }
+    es O{ este -> { mostrar("Yendo al oeste") }
+    defecto -> { mostrar("Dirección desconocida") }
 }
 ```
 
@@ -101,9 +101,9 @@ variable valor = Opcion.Alguno(42)
 variable vacio = Opcion.Ninguno
 
 cuando valor {
-    es Alguno(v) => { mostrar("Valor: " + texto(v)) }
-    es Ninguno => { mostrar("Sin valor") }
-    defecto => { mostrar("Desconocido") }
+    es Alguno{ v -> { mostrar("Valor: " + texto(v)) }
+    es N{ inguno -> { mostrar("Sin valor") }
+    defecto -> { mostrar("Desconocido") }
 }
 ```
 
@@ -125,19 +125,19 @@ variable msg2 = Mensaje.Escribir("Hola")
 variable msg3 = Mensaje.CambiarColor(255, 0, 0)
 
 cuando msg1 {
-    es Mover(x, y) => {
+    es Mover{ x, y -> {
         mostrar("Mover a posición (" + texto(x) + ", " + texto(y) + ")")
     }
-    es Escribir(texto) => {
+    es Escribir{ texto -> {
         mostrar("Escribir mensaje: " + texto)
     }
-    es CambiarColor(r, g, b) => {
+    es CambiarColor{ r, g, b -> {
         mostrar("Cambiar color a RGB(" + texto(r) + ", " + texto(g) + ", " + texto(b) + ")")
     }
-    es Salir => {
+    es S{ alir -> {
         mostrar("Salir")
     }
-    defecto => {
+    defecto -> {
         mostrar("Mensaje desconocido")
     }
 }
@@ -165,13 +165,13 @@ bloque dividir(a: Entero, b: Entero) -> Resultado[Entero, Texto] {
 variable resultado = dividir(10, 2)
 
 cuando resultado {
-    es Ok(valor) => {
+    es Ok{ valor -> {
         mostrar("Resultado: " + texto(valor))
     }
-    es Error(msg) => {
+    es Error{ msg -> {
         mostrar("Error: " + msg)
     }
-    defecto => {
+    defecto -> {
         mostrar("Desconocido")
     }
 }
@@ -199,25 +199,25 @@ enumerado Opcion[T] {
 
     bloque esAlguno() -> Booleano {
         cuando yo {
-            es Alguno(_) => { resultado verdadero }
-            es Ninguno => { resultado falso }
-            defecto => { resultado falso }
+            es Alguno{ _ -> { resultado verdadero }
+            es N{ inguno -> { resultado falso }
+            defecto -> { resultado falso }
         }
     }
 
     bloque esNinguno() -> Booleano {
         cuando yo {
-            es Alguno(_) => { resultado falso }
-            es Ninguno => { resultado verdadero }
-            defecto => { resultado falso }
+            es Alguno{ _ -> { resultado falso }
+            es N{ inguno -> { resultado verdadero }
+            defecto -> { resultado falso }
         }
     }
 
     bloque desenvolverO(valorPorDefecto: T) -> T {
         cuando yo {
-            es Alguno(valor) => { resultado valor }
-            es Ninguno => { resultado valorPorDefecto }
-            defecto => { resultado valorPorDefecto }
+            es Alguno{ valor -> { resultado valor }
+            es N{ inguno -> { resultado valorPorDefecto }
+            defecto -> { resultado valorPorDefecto }
         }
     }
 }
@@ -243,16 +243,16 @@ enumerado Forma {
 
     bloque area() -> Decimal {
         cuando yo {
-            es Circulo(r) => {
+            es Circulo{ r -> {
                 resultado 3.14159 * r * r
             }
-            es Rectangulo(a, al) => {
+            es Rectangulo{ a, al -> {
                 resultado a * al
             }
-            es Triangulo(b, al) => {
+            es Triangulo{ b, al -> {
                 resultado 0.5 * b * al
             }
-            defecto => {
+            defecto -> {
                 resultado 0.0
             }
         }
@@ -260,16 +260,16 @@ enumerado Forma {
 
     bloque escalar(factor: Decimal) -> Forma {
         cuando yo {
-            es Circulo(r) => {
+            es Circulo{ r -> {
                 resultado Forma.Circulo(r * factor)
             }
-            es Rectangulo(a, al) => {
+            es Rectangulo{ a, al -> {
                 resultado Forma.Rectangulo(a * factor, al * factor)
             }
-            es Triangulo(b, al) => {
+            es Triangulo{ b, al -> {
                 resultado Forma.Triangulo(b * factor, al * factor)
             }
-            defecto => {
+            defecto -> {
                 resultado yo
             }
         }
@@ -294,11 +294,11 @@ indirecto enumerado Arbol[T] {
 
     bloque tamaño() -> Entero {
         cuando yo {
-            es Vacio => { resultado 0 }
-            es Nodo(_, izq, der) => {
+            es V{ acio -> { resultado 0 }
+            es Nodo{ _, izq, der -> {
                 resultado 1 + izq.tamaño() + der.tamaño()
             }
-            defecto => { resultado 0 }
+            defecto -> { resultado 0 }
         }
     }
 }
@@ -327,9 +327,9 @@ indirecto enumerado Lista[T] {
 
     bloque longitud() -> Entero {
         cuando yo {
-            es Nulo => { resultado 0 }
-            es Cons(_, cola) => { resultado 1 + cola.longitud() }
-            defecto => { resultado 0 }
+            es N{ ulo -> { resultado 0 }
+            es Cons{ _, cola -> { resultado 1 + cola.longitud() }
+            defecto -> { resultado 0 }
         }
     }
 }
@@ -365,11 +365,11 @@ tipo Conexion {
 
     bloque obtenerEstado() -> Texto {
         cuando yo.estado {
-            es Desconectado => { resultado "No conectado" }
-            es Conectando => { resultado "Conectando..." }
-            es Conectado(id) => { resultado "Conectado: " + id }
-            es Error(msg) => { resultado "Error: " + msg }
-            defecto => { resultado "Desconocido" }
+            es D{ esconectado -> { resultado "No conectado" }
+            es C{ onectando -> { resultado "Conectando..." }
+            es Conectado{ id -> { resultado "Conectado: " + id }
+            es Error{ msg -> { resultado "Error: " + msg }
+            defecto -> { resultado "Desconocido" }
         }
     }
 }
@@ -384,15 +384,15 @@ enumerado Opcion[T] {
 
     bloque mapear(f) -> Opcion {
         cuando yo {
-            es Alguno(valor) => { resultado Opcion.Alguno(f(valor)) }
-            es Ninguno => { resultado Opcion.Ninguno }
-            defecto => { resultado Opcion.Ninguno }
+            es Alguno{ valor -> { resultado Opcion.Alguno(f(valor)) }
+            es N{ inguno -> { resultado Opcion.Ninguno }
+            defecto -> { resultado Opcion.Ninguno }
         }
     }
 }
 
 variable valor = Opcion.Alguno(5)
-variable duplicado = valor.mapear(x => x * 2)  // Opcion.Alguno(10)
+variable duplicado = valor.mapear({ x -> x * 2)  // Opcion.Alguno(10)
 ```
 
 ### Tipo Resultado
@@ -404,19 +404,19 @@ enumerado Resultado[T, E] {
 
     bloque esOk() -> Booleano {
         cuando yo {
-            es Ok(_) => { resultado verdadero }
-            es Error(_) => { resultado falso }
-            defecto => { resultado falso }
+            es Ok{ _ -> { resultado verdadero }
+            es Error{ _ -> { resultado falso }
+            defecto -> { resultado falso }
         }
     }
 
     bloque desenvolver() -> T {
         cuando yo {
-            es Ok(valor) => { resultado valor }
-            es Error(msg) => {
+            es Ok{ valor -> { resultado valor }
+            es Error{ msg -> {
                 lanzar ErrorEjecucion("desenvolver en Error: " + texto(msg))
             }
-            defecto => {
+            defecto -> {
                 lanzar ErrorEjecucion("desenvolver en Resultado inválido")
             }
         }
@@ -447,8 +447,8 @@ enumerado Estado {
 tipo Usuario(nombre, estado) {
     bloque estaActivo() -> Booleano {
         cuando yo.estado {
-            es Activo => { resultado verdadero }
-            defecto => { resultado falso }
+            es A{ ctivo -> { resultado verdadero }
+            defecto -> { resultado falso }
         }
     }
 }
@@ -468,10 +468,10 @@ variable colores = [Color.Rojo, Color.Verde, Color.Azul]
 
 repetir color en colores {
     cuando color {
-        es Rojo => { mostrar("rojo") }
-        es Verde => { mostrar("verde") }
-        es Azul => { mostrar("azul") }
-        defecto => { mostrar("desconocido") }
+        es R{ ojo -> { mostrar("rojo") }
+        es V{ erde -> { mostrar("verde") }
+        es A{ zul -> { mostrar("azul") }
+        defecto -> { mostrar("desconocido") }
     }
 }
 
@@ -491,11 +491,11 @@ enumerado Direccion {
 extension Direccion {
     bloque opuesto() -> Direccion {
         cuando yo {
-            es Norte => { resultado Direccion.Sur }
-            es Sur => { resultado Direccion.Norte }
-            es Este => { resultado Direccion.Oeste }
-            es Oeste => { resultado Direccion.Este }
-            defecto => { resultado yo }
+            es N{ orte -> { resultado Direccion.Sur }
+            es S{ ur -> { resultado Direccion.Norte }
+            es E{ ste -> { resultado Direccion.Oeste }
+            es O{ este -> { resultado Direccion.Este }
+            defecto -> { resultado yo }
         }
     }
 }

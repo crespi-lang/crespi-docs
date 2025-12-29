@@ -12,9 +12,9 @@ The `when` statement matches a value against patterns using `is` clauses:
 
 ```crespi
 when value {
-    is Pattern1 => { /* code */ }
-    is Pattern2 => { /* code */ }
-    default => { /* fallback */ }
+    case .Pattern1 -> { /* code */ }
+    case .Pattern2 -> { /* code */ }
+    default -> { /* fallback */ }
 }
 ```
 
@@ -34,10 +34,10 @@ enum Status {
 var status = Status.Active
 
 when status {
-    is Active => { print("Active") }
-    is Inactive => { print("Inactive") }
-    is Pending => { print("Pending") }
-    default => { print("Unknown") }
+    case .Active -> { print("Active") }
+    case .Inactive -> { print("Inactive") }
+    case .Pending -> { print("Pending") }
+    default -> { print("Unknown") }
 }
 ```
 
@@ -54,11 +54,11 @@ var dir = Direction.North
 
 // No need for "Direction.North", just use "North"
 when dir {
-    is North => { print("Going north") }
-    is South => { print("Going south") }
-    is East => { print("Going east") }
-    is West => { print("Going west") }
-    default => { print("Unknown") }
+    case .North -> { print("Going north") }
+    case .South -> { print("Going south") }
+    case .East -> { print("Going east") }
+    case .West -> { print("Going west") }
+    default -> { print("Unknown") }
 }
 ```
 
@@ -79,9 +79,9 @@ enum Option[T] {
 var value = Option.Some(42)
 
 when value {
-    is Some(v) => { print("Value: " + str(v)) }
-    is None => { print("No value") }
-    default => { print("Unknown") }
+    case .Some(v) => { print("Value: " + str(v)) }
+    case .None -> { print("No value") }
+    default -> { print("Unknown") }
 }
 ```
 
@@ -96,13 +96,13 @@ enum Shape {
 var shape = Shape.Rectangle(10.0, 20.0)
 
 when shape {
-    is Circle(r) => {
+    case .Circle(r) => {
         print("Circle with radius " + str(r))
     }
-    is Rectangle(w, h) => {
+    case .Rectangle(w, h) => {
         print("Rectangle: " + str(w) + " x " + str(h))
     }
-    default => {
+    default -> {
         print("Unknown shape")
     }
 }
@@ -119,13 +119,13 @@ enum Message {
 var msg = Message.ChangeColor(255, 128, 0)
 
 when msg {
-    is Move(x, y) => {
+    case .Move(x, y) => {
         print("Move to (" + str(x) + ", " + str(y) + ")")
     }
-    is ChangeColor(r, g, b) => {
+    case .ChangeColor(r, g, b) => {
         print("RGB(" + str(r) + ", " + str(g) + ", " + str(b) + ")")
     }
-    default => {
+    default -> {
         print("Unknown message")
     }
 }
@@ -147,9 +147,9 @@ enum Option[T] {
 
 fn hasValue(opt: Option) -> Bool {
     when opt {
-        is Some(_) => { return true }
-        is None => { return false }
-        default => { return false }
+        case .Some(_) => { return true }
+        case .None -> { return false }
+        default -> { return false }
     }
 }
 ```
@@ -168,10 +168,10 @@ enum Shape {
 var rect = Shape.Rectangle(10.0, 20.0)
 
 when rect {
-    is Circle(_) => { print("It's a circle (radius ignored)") }
-    is Rectangle(w, _) => { print("Rectangle width: " + str(w)) }
-    is Triangle(_, h) => { print("Triangle height: " + str(h)) }
-    default => { print("Unknown shape") }
+    case .Circle(_) => { print("It's a circle (radius ignored)") }
+    case .Rectangle(w, _) => { print("Rectangle width: " + str(w)) }
+    case .Triangle(_, h) => { print("Triangle height: " + str(h)) }
+    default -> { print("Unknown shape") }
 }
 ```
 
@@ -195,15 +195,15 @@ enum Result[T, E] {
 var nested = Option.Some(Result.Ok(42))
 
 when nested {
-    is Some(result) => {
+    case .Some(result) => {
         when result {
-            is Ok(value) => { print("Value: " + str(value)) }
-            is Err(msg) => { print("Error: " + msg) }
-            default => { print("Unknown result") }
+            case .Ok(value) => { print("Value: " + str(value)) }
+            case .Err(msg) => { print("Error: " + msg) }
+            default -> { print("Unknown result") }
         }
     }
-    is None => { print("No value") }
-    default => { print("Unknown") }
+    case .None -> { print("No value") }
+    default -> { print("Unknown") }
 }
 ```
 
@@ -222,8 +222,8 @@ var color = Color.Red
 
 // Without default, the compiler would require all variants
 when color {
-    is Red => { print("red") }
-    default => { print("not red") }  // Handles Green, Blue
+    case .Red -> { print("red") }
+    default -> { print("not red") }  // Handles Green, Blue
 }
 ```
 
@@ -241,13 +241,13 @@ var status = Status.Active
 
 // Error: Missing case for 'Inactive'
 // when status {
-//     is Active => { print("active") }
+//     case .Active -> { print("active") }
 // }
 
 // Valid with default
 when status {
-    is Active => { print("active") }
-    default => { print("not active") }
+    case .Active -> { print("active") }
+    default -> { print("not active") }
 }
 ```
 
@@ -265,16 +265,16 @@ enum Temperature {
 
     fn toKelvin() -> Float {
         when this {
-            is Celsius(c) => {
+            case .Celsius(c) => {
                 return c + 273.15
             }
-            is Fahrenheit(f) => {
+            case .Fahrenheit(f) => {
                 return (f - 32.0) * 5.0 / 9.0 + 273.15
             }
-            is Kelvin(k) => {
+            case .Kelvin(k) => {
                 return k
             }
-            default => {
+            default -> {
                 return 0.0
             }
         }
@@ -304,9 +304,9 @@ enum Result[T, E] {
 
     fn map(f) -> Result {
         when this {
-            is Ok(value) => { return Result.Ok(f(value)) }
-            is Err(e) => { return Result.Err(e) }
-            default => { return this }
+            case .Ok(value) => { return Result.Ok(f(value)) }
+            case .Err(e) => { return Result.Err(e) }
+            default -> { return this }
         }
     }
 }
@@ -321,9 +321,9 @@ fn divide(a: Int, b: Int) -> Result[Int, String] {
 var result = divide(10, 2)
 
 when result {
-    is Ok(value) => { print("Result: " + str(value)) }
-    is Err(msg) => { print("Error: " + msg) }
-    default => { print("Unknown") }
+    case .Ok(value) => { print("Result: " + str(value)) }
+    case .Err(msg) => { print("Error: " + msg) }
+    default -> { print("Unknown") }
 }
 ```
 
@@ -342,9 +342,9 @@ enum Status {
 
 // Good: All cases explicit
 when status {
-    is Active => { /* ... */ }
-    is Inactive => { /* ... */ }
-    default => { /* required for now */ }
+    case .Active -> { /* ... */ }
+    case .Inactive -> { /* ... */ }
+    default -> { /* required for now */ }
 }
 ```
 
@@ -355,16 +355,16 @@ Don't bind values you won't use:
 ```crespi
 // Good: Use _ for unused values
 when opt {
-    is Some(_) => { print("has value") }
-    is None => { print("empty") }
-    default => { /* ... */ }
+    case .Some(_) => { print("has value") }
+    case .None -> { print("empty") }
+    default -> { /* ... */ }
 }
 
 // Unnecessary binding
 when opt {
-    is Some(unused) => { print("has value") }  // unused variable
-    is None => { print("empty") }
-    default => { /* ... */ }
+    case .Some(unused) => { print("has value") }  // unused variable
+    case .None -> { print("empty") }
+    default -> { /* ... */ }
 }
 ```
 
@@ -374,18 +374,18 @@ For deeply nested enums, use sequential `when` statements with clear variable na
 
 ```crespi
 when outerOption {
-    is Some(result) => {
+    case .Some(result) => {
         when result {
-            is Ok(data) => {
+            case .Ok(data) => {
                 when data {
-                    is Valid(value) => { /* use value */ }
-                    default => { /* ... */ }
+                    case .Valid(value) => { /* use value */ }
+                    default -> { /* ... */ }
                 }
             }
-            default => { /* ... */ }
+            default -> { /* ... */ }
         }
     }
-    default => { /* ... */ }
+    default -> { /* ... */ }
 }
 ```
 

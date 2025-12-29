@@ -354,7 +354,7 @@ fn [T, U] transform(value: T, f: (T) -> U) -> U {
     return f(value)
 }
 
-var doubled = transform(5, x => x * 2)
+var doubled = transform(5, { x -> x * 2)
 print(doubled)  // 10
 ```
 
@@ -365,7 +365,7 @@ print(doubled)  // 10
 Async lambdas use the same `async` prefix as functions and return `Task[T]`.
 
 ```crespi
-var increment = async x => x + 1
+var increment = async { x -> x + 1
 var result = await increment(41)
 print(result)  // 42
 ```

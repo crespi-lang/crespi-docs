@@ -18,11 +18,11 @@ enum Direction {
 var dir = Direction.North
 
 when dir {
-    is North => { print("Going north") }
-    is South => { print("Going south") }
-    is East => { print("Going east") }
-    is West => { print("Going west") }
-    default => { print("Unknown direction") }
+    case .North -> { print("Going north") }
+    case .South -> { print("Going south") }
+    case .East -> { print("Going east") }
+    case .West -> { print("Going west") }
+    default -> { print("Unknown direction") }
 }
 ```
 
@@ -101,9 +101,9 @@ var value = Option.Some(42)
 var empty = Option.None
 
 when value {
-    is Some(v) => { print("Value: " + str(v)) }
-    is None => { print("No value") }
-    default => { print("Unknown") }
+    case .Some(v) => { print("Value: " + str(v)) }
+    case .None -> { print("No value") }
+    default -> { print("Unknown") }
 }
 ```
 
@@ -125,19 +125,19 @@ var msg2 = Message.Write("Hello")
 var msg3 = Message.ChangeColor(255, 0, 0)
 
 when msg1 {
-    is Move(x, y) => {
+    case .Move(x, y) => {
         print("Move to (" + str(x) + ", " + str(y) + ")")
     }
-    is Write(text) => {
+    case .Write(text) => {
         print("Write: " + text)
     }
-    is ChangeColor(r, g, b) => {
+    case .ChangeColor(r, g, b) => {
         print("Color RGB(" + str(r) + ", " + str(g) + ", " + str(b) + ")")
     }
-    is Quit => {
+    case .Quit -> {
         print("Quit")
     }
-    default => {
+    default -> {
         print("Unknown message")
     }
 }
@@ -165,13 +165,13 @@ fn divide(a: Int, b: Int) -> Result[Int, String] {
 var result = divide(10, 2)
 
 when result {
-    is Ok(value) => {
+    case .Ok(value) => {
         print("Result: " + str(value))
     }
-    is Err(msg) => {
+    case .Err(msg) => {
         print("Error: " + msg)
     }
-    default => {
+    default -> {
         print("Unknown")
     }
 }
@@ -199,25 +199,25 @@ enum Option[T] {
 
     fn isSome() -> Bool {
         when this {
-            is Some(_) => { return true }
-            is None => { return false }
-            default => { return false }
+            case .Some(_) => { return true }
+            case .None -> { return false }
+            default -> { return false }
         }
     }
 
     fn isNone() -> Bool {
         when this {
-            is Some(_) => { return false }
-            is None => { return true }
-            default => { return false }
+            case .Some(_) => { return false }
+            case .None -> { return true }
+            default -> { return false }
         }
     }
 
     fn unwrapOr(defaultValue: T) -> T {
         when this {
-            is Some(value) => { return value }
-            is None => { return defaultValue }
-            default => { return defaultValue }
+            case .Some(value) => { return value }
+            case .None -> { return defaultValue }
+            default -> { return defaultValue }
         }
     }
 }
@@ -243,16 +243,16 @@ enum Shape {
 
     fn area() -> Float {
         when this {
-            is Circle(r) => {
+            case .Circle(r) => {
                 return 3.14159 * r * r
             }
-            is Rectangle(w, h) => {
+            case .Rectangle(w, h) => {
                 return w * h
             }
-            is Triangle(b, h) => {
+            case .Triangle(b, h) => {
                 return 0.5 * b * h
             }
-            default => {
+            default -> {
                 return 0.0
             }
         }
@@ -260,16 +260,16 @@ enum Shape {
 
     fn scale(factor: Float) -> Shape {
         when this {
-            is Circle(r) => {
+            case .Circle(r) => {
                 return Shape.Circle(r * factor)
             }
-            is Rectangle(w, h) => {
+            case .Rectangle(w, h) => {
                 return Shape.Rectangle(w * factor, h * factor)
             }
-            is Triangle(b, h) => {
+            case .Triangle(b, h) => {
                 return Shape.Triangle(b * factor, h * factor)
             }
-            default => {
+            default -> {
                 return this
             }
         }
@@ -294,11 +294,11 @@ indirect enum Tree[T] {
 
     fn size() -> Int {
         when this {
-            is Empty => { return 0 }
-            is Node(_, left, right) => {
+            case .Empty -> { return 0 }
+            case .Node(_, left, right) => {
                 return 1 + left.size() + right.size()
             }
-            default => { return 0 }
+            default -> { return 0 }
         }
     }
 }
@@ -327,9 +327,9 @@ indirect enum List[T] {
 
     fn length() -> Int {
         when this {
-            is Nil => { return 0 }
-            is Cons(_, tail) => { return 1 + tail.length() }
-            default => { return 0 }
+            case .Nil -> { return 0 }
+            case .Cons(_, tail) => { return 1 + tail.length() }
+            default -> { return 0 }
         }
     }
 }
@@ -365,11 +365,11 @@ class Connection {
 
     fn getStatus() -> String {
         when this.state {
-            is Disconnected => { return "Not connected" }
-            is Connecting => { return "Connecting..." }
-            is Connected(id) => { return "Connected: " + id }
-            is Error(msg) => { return "Error: " + msg }
-            default => { return "Unknown" }
+            case .Disconnected -> { return "Not connected" }
+            case .Connecting -> { return "Connecting..." }
+            case .Connected(id) => { return "Connected: " + id }
+            case .Error(msg) => { return "Error: " + msg }
+            default -> { return "Unknown" }
         }
     }
 }
@@ -384,17 +384,17 @@ enum Option[T] {
 
     fn map(f) -> Option {
         when this {
-            is Some(value) => { return Option.Some(f(value)) }
-            is None => { return Option.None }
-            default => { return Option.None }
+            case .Some(value) => { return Option.Some(f(value)) }
+            case .None -> { return Option.None }
+            default -> { return Option.None }
         }
     }
 
     fn flatMap(f) -> Option {
         when this {
-            is Some(value) => { return f(value) }
-            is None => { return Option.None }
-            default => { return Option.None }
+            case .Some(value) => { return f(value) }
+            case .None -> { return Option.None }
+            default -> { return Option.None }
         }
     }
 }
@@ -412,19 +412,19 @@ enum Result[T, E] {
 
     fn isOk() -> Bool {
         when this {
-            is Ok(_) => { return true }
-            is Err(_) => { return false }
-            default => { return false }
+            case .Ok(_) => { return true }
+            case .Err(_) => { return false }
+            default -> { return false }
         }
     }
 
     fn unwrap() -> T {
         when this {
-            is Ok(value) => { return value }
-            is Err(msg) => {
+            case .Ok(value) => { return value }
+            case .Err(msg) => {
                 throw RuntimeError("unwrap on Err: " + str(msg))
             }
-            default => {
+            default -> {
                 throw RuntimeError("unwrap on invalid Result")
             }
         }
@@ -455,8 +455,8 @@ enum Status {
 class User(name, status) {
     fn isActive() -> Bool {
         when this.status {
-            is Active => { return true }
-            default => { return false }
+            case .Active -> { return true }
+            default -> { return false }
         }
     }
 }
@@ -476,10 +476,10 @@ var colors = [Color.Red, Color.Green, Color.Blue]
 
 for color in colors {
     when color {
-        is Red => { print("red") }
-        is Green => { print("green") }
-        is Blue => { print("blue") }
-        default => { print("unknown") }
+        case .Red -> { print("red") }
+        case .Green -> { print("green") }
+        case .Blue -> { print("blue") }
+        default -> { print("unknown") }
     }
 }
 
@@ -499,11 +499,11 @@ enum Direction {
 extension Direction {
     fn opposite() -> Direction {
         when this {
-            is North => { return Direction.South }
-            is South => { return Direction.North }
-            is East => { return Direction.West }
-            is West => { return Direction.East }
-            default => { return this }
+            case .North -> { return Direction.South }
+            case .South -> { return Direction.North }
+            case .East -> { return Direction.West }
+            case .West -> { return Direction.East }
+            default -> { return this }
         }
     }
 }
