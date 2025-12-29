@@ -8,14 +8,11 @@ Crespi proporciona enums al estilo Swift con valores asociados, permitiendo el m
 
 ## Enums Básicos
 
-Los enums más simples son enumeraciones simples sin valores asociados:
+Los enums más simples son enumeraciones simples sin valores asociados. Usa la palabra clave `caso` para declarar variantes:
 
 ```crespi
 enumerado Direccion {
-    Norte
-    Sur
-    Este
-    Oeste
+    caso Norte, Sur, Este, Oeste
 }
 
 variable dir = Direccion.Norte
@@ -29,12 +26,62 @@ cuando dir {
 }
 ```
 
+Las variantes también pueden declararse en líneas separadas:
+
+```crespi
+enumerado Estado {
+    caso Activo
+    caso Inactivo
+    caso Pendiente
+}
+```
+
 ### Características Clave
 
+- **Palabra clave `caso`**: Requerida antes de cada declaración de variante
+- **Separadas por comas**: Múltiples variantes pueden aparecer en una línea separadas por comas
 - **Nomenclatura PascalCase**: Las variantes usan PascalCase (ej., `Norte`, `Alguno`, `Ok`)
-- **Sin comas**: Las variantes se declaran en líneas separadas sin comas
 - **Notación de punto**: Accede a variantes usando `NombreEnum.NombreVariante`
 - **Visibilidad**: Los enums admiten modificadores `publico`, `privado`, `interno`
+
+---
+
+## Iterando Sobre Casos con `todosCasos`
+
+Los enums simples (aquellos sin valores asociados) automáticamente proporcionan una propiedad `todosCasos` que devuelve una lista de todas las variantes en orden de declaración:
+
+```crespi
+enumerado Direccion {
+    caso Norte, Sur, Este, Oeste
+}
+
+// Iterar sobre todos los casos
+repetir dir en Direccion.todosCasos {
+    mostrar(dir)
+}
+// Salida:
+// Direccion.Norte
+// Direccion.Sur
+// Direccion.Este
+// Direccion.Oeste
+
+// Obtener el conteo de casos
+mostrar(longitud(Direccion.todosCasos))  // 4
+```
+
+### Restricciones
+
+`todosCasos` solo está disponible para enums donde **todas las variantes no tienen valores asociados**:
+
+```crespi
+enumerado Opcion[T] {
+    caso Alguno(T)
+    caso Ninguno
+}
+
+// ERROR: todosCasos no está disponible para enum 'Opcion' porque tiene variantes con valores asociados
+// variable casos = Opcion.todosCasos
+```
 
 ---
 
@@ -46,8 +93,8 @@ Las variantes pueden transportar datos usando valores asociados posicionales o n
 
 ```crespi
 enumerado Opcion[T] {
-    Alguno(T)
-    Ninguno
+    caso Alguno(T)
+    caso Ninguno
 }
 
 variable valor = Opcion.Alguno(42)
@@ -66,10 +113,10 @@ Los campos nombrados proporcionan mejor documentación y permiten construcción 
 
 ```crespi
 enumerado Mensaje {
-    Salir
-    Mover(x: Entero, y: Entero)
-    Escribir(texto: Texto)
-    CambiarColor(r: Entero, g: Entero, b: Entero)
+    caso Salir
+    caso Mover(x: Entero, y: Entero)
+    caso Escribir(texto: Texto)
+    caso CambiarColor(r: Entero, g: Entero, b: Entero)
 }
 
 // Construcción con argumentos nombrados
@@ -104,8 +151,8 @@ Los enums pueden tener parámetros de tipo usando sintaxis de corchetes:
 
 ```crespi
 enumerado Resultado[T, E] {
-    Ok(T)
-    Error(E)
+    caso Ok(T)
+    caso Error(E)
 }
 
 bloque dividir(a: Entero, b: Entero) -> Resultado[Entero, Texto] {
@@ -141,106 +188,14 @@ variable ninguno = Opcion.Ninguno     // Inferido del contexto
 
 ---
 
-## Emparejamiento de Patrones
-
-Los enums se integran con la declaración `cuando` para un poderoso emparejamiento de patrones.
-
-### Emparejamiento Básico
-
-```crespi
-enumerado Estado {
-    Activo
-    Inactivo
-    Pendiente
-}
-
-variable estado = Estado.Activo
-
-cuando estado {
-    es Activo => { mostrar("Activo") }
-    es Inactivo => { mostrar("Inactivo") }
-    es Pendiente => { mostrar("Pendiente") }
-    defecto => { mostrar("Desconocido") }
-}
-```
-
-### Desestructuración de Valores
-
-Extrae valores asociados directamente en patrones:
-
-```crespi
-enumerado Forma {
-    Circulo(radio: Decimal)
-    Rectangulo(ancho: Decimal, alto: Decimal)
-}
-
-variable forma = Forma.Rectangulo(10.0, 20.0)
-
-cuando forma {
-    es Circulo(r) => {
-        mostrar("Círculo con radio " + texto(r))
-    }
-    es Rectangulo(a, al) => {
-        mostrar("Rectángulo: " + texto(a) + " x " + texto(al))
-    }
-    defecto => {
-        mostrar("Forma desconocida")
-    }
-}
-```
-
-### Patrones Comodín
-
-Usa `_` para emparejar sin vincular:
-
-```crespi
-cuando forma {
-    es Circulo(_) => { mostrar("Es un círculo") }
-    es Rectangulo(_, al) => { mostrar("Altura: " + texto(al)) }
-    defecto => { mostrar("Desconocido") }
-}
-```
-
-### Patrones Anidados
-
-Las declaraciones `cuando` secuenciales manejan enums anidados:
-
-```crespi
-enumerado Opcion[T] {
-    Alguno(T)
-    Ninguno
-}
-
-enumerado Resultado[T, E] {
-    Ok(T)
-    Error(E)
-}
-
-variable anidado = Opcion.Alguno(Resultado.Ok(42))
-
-cuando anidado {
-    es Alguno(resultado) => {
-        cuando resultado {
-            es Ok(valor) => { mostrar("Valor: " + texto(valor)) }
-            es Error(msg) => { mostrar("Error: " + msg) }
-            defecto => { mostrar("Resultado desconocido") }
-        }
-    }
-    es Ninguno => { mostrar("Sin valor") }
-    defecto => { mostrar("Desconocido") }
-}
-```
-
----
-
 ## Métodos en Enums
 
 Los enums pueden tener métodos declarados dentro de su cuerpo:
 
 ```crespi
 enumerado Opcion[T] {
-    Alguno(T)
-    Ninguno
+    caso Alguno(T)
+    caso Ninguno
 
     bloque esAlguno() -> Booleano {
         cuando yo {
@@ -282,9 +237,9 @@ Los métodos pueden usar `cuando yo` para emparejar el valor enum:
 
 ```crespi
 enumerado Forma {
-    Circulo(radio: Decimal)
-    Rectangulo(ancho: Decimal, alto: Decimal)
-    Triangulo(base: Decimal, altura: Decimal)
+    caso Circulo(radio: Decimal)
+    caso Rectangulo(ancho: Decimal, alto: Decimal)
+    caso Triangulo(base: Decimal, altura: Decimal)
 
     bloque area() -> Decimal {
         cuando yo {
@@ -334,8 +289,8 @@ Usa la palabra clave `indirecto` para tipos enum recursivos:
 
 ```crespi
 indirecto enumerado Arbol[T] {
-    Vacio
-    Nodo(valor: T, izquierda: Arbol[T], derecha: Arbol[T])
+    caso Vacio
+    caso Nodo(valor: T, izquierda: Arbol[T], derecha: Arbol[T])
 
     bloque tamaño() -> Entero {
         cuando yo {
@@ -367,8 +322,8 @@ mostrar(arbol.tamaño())  // 4
 
 ```crespi
 indirecto enumerado Lista[T] {
-    Nulo
-    Cons(cabeza: T, cola: Lista[T])
+    caso Nulo
+    caso Cons(cabeza: T, cola: Lista[T])
 
     bloque longitud() -> Entero {
         cuando yo {
@@ -385,49 +340,16 @@ mostrar(lista.longitud())  // 3
 
 ---
 
-## Verificación de Exhaustividad
-
-El compilador verifica que todas las variantes enum se manejen en declaraciones `cuando`:
-
-```crespi
-enumerado Color {
-    Rojo
-    Verde
-    Azul
-}
-
-variable color = Color.Rojo
-
-// Error: Faltan casos para Verde y Azul
-cuando color {
-    es Rojo => { mostrar("rojo") }
-    defecto => { mostrar("otro") }  // 'defecto' lo hace válido
-}
-```
-
-### Rama Predeterminada
-
-Una rama `defecto` satisface la exhaustividad:
-
-```crespi
-cuando color {
-    es Rojo => { mostrar("rojo") }
-    defecto => { mostrar("no rojo") }
-}
-```
-
----
-
 ## Patrones Comunes
 
 ### Máquinas de Estado
 
 ```crespi
 enumerado EstadoConexion {
-    Desconectado
-    Conectando
-    Conectado(idSesion: Texto)
-    Error(mensaje: Texto)
+    caso Desconectado
+    caso Conectando
+    caso Conectado(idSesion: Texto)
+    caso Error(mensaje: Texto)
 }
 
 tipo Conexion {
@@ -457,8 +379,8 @@ tipo Conexion {
 
 ```crespi
 enumerado Opcion[T] {
-    Alguno(T)
-    Ninguno
+    caso Alguno(T)
+    caso Ninguno
 
     bloque mapear(f) -> Opcion {
         cuando yo {
@@ -473,6 +395,43 @@ variable valor = Opcion.Alguno(5)
 variable duplicado = valor.mapear(x => x * 2)  // Opcion.Alguno(10)
 ```
 
+### Tipo Resultado
+
+```crespi
+enumerado Resultado[T, E] {
+    caso Ok(T)
+    caso Error(E)
+
+    bloque esOk() -> Booleano {
+        cuando yo {
+            es Ok(_) => { resultado verdadero }
+            es Error(_) => { resultado falso }
+            defecto => { resultado falso }
+        }
+    }
+
+    bloque desenvolver() -> T {
+        cuando yo {
+            es Ok(valor) => { resultado valor }
+            es Error(msg) => {
+                lanzar ErrorEjecucion("desenvolver en Error: " + texto(msg))
+            }
+            defecto => {
+                lanzar ErrorEjecucion("desenvolver en Resultado inválido")
+            }
+        }
+    }
+}
+
+bloque analizarNumero(s: Texto) -> Resultado[Entero, Texto] {
+    variable n = entero(s)
+    si tipode(n) == "Entero" {
+        resultado Resultado.Ok(n)
+    }
+    resultado Resultado.Error("Número inválido: " + s)
+}
+```
+
 ---
 
 ## Integración con Otras Características
@@ -481,8 +440,8 @@ variable duplicado = valor.mapear(x => x * 2)  // Opcion.Alguno(10)
 
 ```crespi
 enumerado Estado {
-    Activo
-    Inactivo
+    caso Activo
+    caso Inactivo
 }
 
 tipo Usuario(nombre, estado) {
@@ -502,9 +461,7 @@ mostrar(usuario.estaActivo())  // verdadero
 
 ```crespi
 enumerado Color {
-    Rojo
-    Verde
-    Azul
+    caso Rojo, Verde, Azul
 }
 
 variable colores = [Color.Rojo, Color.Verde, Color.Azul]
@@ -517,16 +474,18 @@ repetir color en colores {
         defecto => { mostrar("desconocido") }
     }
 }
+
+// O iterar usando todosCasos
+repetir color en Color.todosCasos {
+    mostrar(color)
+}
 ```
 
 ### Enums con Extensiones
 
 ```crespi
 enumerado Direccion {
-    Norte
-    Sur
-    Este
-    Oeste
+    caso Norte, Sur, Este, Oeste
 }
 
 extension Direccion {
@@ -553,6 +512,7 @@ Los enums admiten alias en español mediante el paquete de idioma. El código an
 
 - `enumerado` - enum
 - `indirecto` - indirect
+- `caso` - case
 - `cuando` - when
 - `es` - is
 - `defecto` - default
@@ -568,13 +528,12 @@ También puedes usar las palabras clave en inglés:
 
 ```crespi
 enum Direction {
-    North
-    South
+    case North, South
 }
 
 indirect enum Tree[T] {
-    Empty
-    Node(value: T, left: Tree[T], right: Tree[T])
+    case Empty
+    case Node(value: T, left: Tree[T], right: Tree[T])
 }
 ```
 
@@ -582,6 +541,7 @@ indirect enum Tree[T] {
 
 ## Ver También
 
+- [Emparejamiento de Patrones](emparejamiento-patrones.md) - Guía detallada de emparejamiento de patrones
 - [Control de Flujo](control-flujo.md) - Emparejamiento de patrones con `cuando`
 - [Clases](clases.md) - Programación orientada a objetos
 - [Genéricos](genericos.md) - Parámetros de tipo

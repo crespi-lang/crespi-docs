@@ -8,14 +8,11 @@ Crespi provides Swift-style enums with associated values, enabling type-safe mod
 
 ## Basic Enums
 
-The simplest enums are simple enumerations without associated values:
+The simplest enums are simple enumerations without associated values. Use the `case` keyword to declare variants:
 
 ```crespi
 enum Direction {
-    North
-    South
-    East
-    West
+    case North, South, East, West
 }
 
 var dir = Direction.North
@@ -29,12 +26,62 @@ when dir {
 }
 ```
 
+Variants can also be declared on separate lines:
+
+```crespi
+enum Status {
+    case Active
+    case Inactive
+    case Pending
+}
+```
+
 ### Key Features
 
+- **`case` keyword**: Required before each variant declaration
+- **Comma-separated**: Multiple variants can appear on one line with commas
 - **PascalCase naming**: Variants use PascalCase (e.g., `North`, `Some`, `Ok`)
-- **No commas**: Variants are declared on separate lines without commas
 - **Dot notation**: Access variants using `EnumName.VariantName`
 - **Visibility**: Enums support `public`, `private`, `internal` modifiers
+
+---
+
+## Iterating Over Cases with `allCases`
+
+Simple enums (those without associated values) automatically provide an `allCases` property that returns a list of all variants in declaration order:
+
+```crespi
+enum Direction {
+    case North, South, East, West
+}
+
+// Iterate over all cases
+for dir in Direction.allCases {
+    print(dir)
+}
+// Output:
+// Direction.North
+// Direction.South
+// Direction.East
+// Direction.West
+
+// Get the count of cases
+print(length(Direction.allCases))  // 4
+```
+
+### Restrictions
+
+`allCases` is only available for enums where **all variants have no associated values**:
+
+```crespi
+enum Option[T] {
+    case Some(T)
+    case None
+}
+
+// ERROR: allCases is not available for enum 'Option' because it has variants with associated values
+// var cases = Option.allCases
+```
 
 ---
 
@@ -46,8 +93,8 @@ Variants can carry data using positional or named associated values:
 
 ```crespi
 enum Option[T] {
-    Some(T)
-    None
+    case Some(T)
+    case None
 }
 
 var value = Option.Some(42)
@@ -66,10 +113,10 @@ Named fields provide better documentation and allow flexible construction:
 
 ```crespi
 enum Message {
-    Quit
-    Move(x: Int, y: Int)
-    Write(text: String)
-    ChangeColor(r: Int, g: Int, b: Int)
+    case Quit
+    case Move(x: Int, y: Int)
+    case Write(text: String)
+    case ChangeColor(r: Int, g: Int, b: Int)
 }
 
 // Construction with named arguments
@@ -104,8 +151,8 @@ Enums can have type parameters using square bracket syntax:
 
 ```crespi
 enum Result[T, E] {
-    Ok(T)
-    Err(E)
+    case Ok(T)
+    case Err(E)
 }
 
 fn divide(a: Int, b: Int) -> Result[Int, String] {
@@ -141,106 +188,14 @@ var none = Option.None       // Inferred from context
 
 ---
 
-## Pattern Matching
-
-Enums integrate with the `when` statement for powerful pattern matching.
-
-### Basic Matching
-
-```crespi
-enum Status {
-    Active
-    Inactive
-    Pending
-}
-
-var status = Status.Active
-
-when status {
-    is Active => { print("Active") }
-    is Inactive => { print("Inactive") }
-    is Pending => { print("Pending") }
-    default => { print("Unknown") }
-}
-```
-
-### Destructuring Values
-
-Extract associated values directly in patterns:
-
-```crespi
-enum Shape {
-    Circle(radius: Float)
-    Rectangle(width: Float, height: Float)
-}
-
-var shape = Shape.Rectangle(10.0, 20.0)
-
-when shape {
-    is Circle(r) => {
-        print("Circle with radius " + str(r))
-    }
-    is Rectangle(w, h) => {
-        print("Rectangle: " + str(w) + " x " + str(h))
-    }
-    default => {
-        print("Unknown shape")
-    }
-}
-```
-
-### Wildcard Patterns
-
-Use `_` to match without binding:
-
-```crespi
-when shape {
-    is Circle(_) => { print("It's a circle") }
-    is Rectangle(_, h) => { print("Height: " + str(h)) }
-    default => { print("Unknown") }
-}
-```
-
-### Nested Patterns
-
-Sequential `when` statements handle nested enums:
-
-```crespi
-enum Option[T] {
-    Some(T)
-    None
-}
-
-enum Result[T, E] {
-    Ok(T)
-    Err(E)
-}
-
-var nested = Option.Some(Result.Ok(42))
-
-when nested {
-    is Some(result) => {
-        when result {
-            is Ok(value) => { print("Value: " + str(value)) }
-            is Err(msg) => { print("Error: " + msg) }
-            default => { print("Unknown result") }
-        }
-    }
-    is None => { print("No value") }
-    default => { print("Unknown") }
-}
-```
-
----
-
 ## Methods on Enums
 
 Enums can have methods declared inside their body:
 
 ```crespi
 enum Option[T] {
-    Some(T)
-    None
+    case Some(T)
+    case None
 
     fn isSome() -> Bool {
         when this {
@@ -282,9 +237,9 @@ Methods can use `when this` to match on the enum value:
 
 ```crespi
 enum Shape {
-    Circle(radius: Float)
-    Rectangle(width: Float, height: Float)
-    Triangle(base: Float, height: Float)
+    case Circle(radius: Float)
+    case Rectangle(width: Float, height: Float)
+    case Triangle(base: Float, height: Float)
 
     fn area() -> Float {
         when this {
@@ -334,8 +289,8 @@ Use the `indirect` keyword for recursive enum types:
 
 ```crespi
 indirect enum Tree[T] {
-    Empty
-    Node(value: T, left: Tree[T], right: Tree[T])
+    case Empty
+    case Node(value: T, left: Tree[T], right: Tree[T])
 
     fn size() -> Int {
         when this {
@@ -367,8 +322,8 @@ print(tree.size())  // 4
 
 ```crespi
 indirect enum List[T] {
-    Nil
-    Cons(head: T, tail: List[T])
+    case Nil
+    case Cons(head: T, tail: List[T])
 
     fn length() -> Int {
         when this {
@@ -385,49 +340,16 @@ print(list.length())  // 3
 
 ---
 
-## Exhaustiveness Checking
-
-The compiler verifies that all enum variants are handled in `when` statements:
-
-```crespi
-enum Color {
-    Red
-    Green
-    Blue
-}
-
-var color = Color.Red
-
-// Error: Missing cases for Green and Blue
-when color {
-    is Red => { print("red") }
-    default => { print("other") }  // 'default' makes it valid
-}
-```
-
-### Default Branch
-
-A `default` branch satisfies exhaustiveness:
-
-```crespi
-when color {
-    is Red => { print("red") }
-    default => { print("not red") }
-}
-```
-
----
-
 ## Common Patterns
 
 ### State Machines
 
 ```crespi
 enum ConnectionState {
-    Disconnected
-    Connecting
-    Connected(sessionId: String)
-    Error(message: String)
+    case Disconnected
+    case Connecting
+    case Connected(sessionId: String)
+    case Error(message: String)
 }
 
 class Connection {
@@ -457,8 +379,8 @@ class Connection {
 
 ```crespi
 enum Option[T] {
-    Some(T)
-    None
+    case Some(T)
+    case None
 
     fn map(f) -> Option {
         when this {
@@ -485,8 +407,8 @@ var doubled = value.map(x => x * 2)  // Option.Some(10)
 
 ```crespi
 enum Result[T, E] {
-    Ok(T)
-    Err(E)
+    case Ok(T)
+    case Err(E)
 
     fn isOk() -> Bool {
         when this {
@@ -526,8 +448,8 @@ fn parseNumber(s: String) -> Result[Int, String] {
 
 ```crespi
 enum Status {
-    Active
-    Inactive
+    case Active
+    case Inactive
 }
 
 class User(name, status) {
@@ -547,9 +469,7 @@ print(user.isActive())  // true
 
 ```crespi
 enum Color {
-    Red
-    Green
-    Blue
+    case Red, Green, Blue
 }
 
 var colors = [Color.Red, Color.Green, Color.Blue]
@@ -562,16 +482,18 @@ for color in colors {
         default => { print("unknown") }
     }
 }
+
+// Or iterate using allCases
+for color in Color.allCases {
+    print(color)
+}
 ```
 
 ### Enums with Extensions
 
 ```crespi
 enum Direction {
-    North
-    South
-    East
-    West
+    case North, South, East, West
 }
 
 extension Direction {
@@ -599,16 +521,13 @@ Enums support Spanish aliases via the language pack:
 ```crespi
 // Spanish keyword: enumerado
 enumerado Direccion {
-    Norte
-    Sur
-    Este
-    Oeste
+    caso Norte, Sur, Este, Oeste
 }
 
 // Indirect keyword: indirecto
 indirecto enumerado Arbol[T] {
-    Vacio
-    Nodo(valor: T, izquierda: Arbol[T], derecha: Arbol[T])
+    caso Vacio
+    caso Nodo(valor: T, izquierda: Arbol[T], derecha: Arbol[T])
 }
 ```
 
@@ -616,6 +535,7 @@ indirecto enumerado Arbol[T] {
 
 ## See Also
 
+- [Pattern Matching](pattern-matching.md) - Detailed pattern matching guide
 - [Control Flow](control-flow.md) - Pattern matching with `when`
 - [Classes](classes.md) - Object-oriented programming
 - [Generics](generics.md) - Type parameters
