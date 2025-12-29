@@ -237,11 +237,11 @@ fn readFile(path) throws {
 
 ## Result Type
 
-The `Result[T, E]` type provides functional-style error handling as an alternative to exceptions:
+The `T | E` type provides functional-style error handling as an alternative to exceptions:
 
 ```crespi
 // Function returning Result instead of throwing
-fn divide(a, b) -> Result[Int, String] {
+fn divide(a, b) -> Int | String {
     if b == 0 {
         return Result.Err("Division by zero")
     }
@@ -323,11 +323,11 @@ var wrapped = result.mapErr(e => "Error: " + e)
 Chain multiple Result-returning operations:
 
 ```crespi
-fn parseNumber(s) -> Result[Int, String] {
+fn parseNumber(s) -> Int | String {
     // Parse string to number
 }
 
-fn divideBy(n) -> Result[Int, String] {
+fn divideBy(n) -> Int | String {
     return x => {
         if x == 0 {
             return Result.Err("Division by zero")
@@ -346,7 +346,7 @@ var result = parseNumber("2")
 The `?` operator provides early return for Result types:
 
 ```crespi
-fn compute() -> Result[Int, String] {
+fn compute() -> Int | String {
     var a = parseNumber("10")?  // Returns Err if parse fails
     var b = parseNumber("5")?   // Returns Err if parse fails
     return Result.Ok(a + b)
@@ -447,7 +447,7 @@ if result.isOk() {
 ### Use ? for concise error propagation
 
 ```crespi
-fn pipeline() -> Result[String, String] {
+fn pipeline() -> String | String {
     var data = loadData()?
     var validated = validate(data)?
     var processed = process(validated)?
@@ -498,7 +498,7 @@ bloque leerArchivo(ruta) lanza -> Texto {
 - **defer**: Schedule cleanup code that always runs
 - **try?**: Convert errors to null
 - **try!**: Force unwrap (crash on error)
-- **Result[T, E]**: Functional-style error handling
+- **T | E**: Functional-style error handling
 - **?** operator: Early return on Err values
 - **Error trait**: All throwable types implement `message()`
 
