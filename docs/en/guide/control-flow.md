@@ -123,6 +123,8 @@ when [1, 2] {
 
 `default` is required to ensure exhaustive matching.
 
+### Class Patterns
+
 Class instances can be matched by name and fields:
 
 ```crespi
@@ -136,6 +138,42 @@ when person {
     default => { print("no") }
 }
 ```
+
+### Enum Patterns
+
+Enums integrate seamlessly with pattern matching:
+
+```crespi
+enum Result[T, E] {
+    Ok(T)
+    Err(E)
+}
+
+var result = Result.Ok(42)
+
+when result {
+    is Ok(value) => { print("Success: " + str(value)) }
+    is Err(msg) => { print("Error: " + msg) }
+    default => { print("Unknown") }
+}
+```
+
+Wildcard patterns (`_`) match without binding:
+
+```crespi
+enum Option[T] {
+    Some(T)
+    None
+}
+
+when option {
+    is Some(_) => { print("Has value") }
+    is None => { print("No value") }
+    default => { print("Unknown") }
+}
+```
+
+For detailed enum usage, see the [Enums Guide](enums.md).
 
 ---
 

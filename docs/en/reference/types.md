@@ -114,6 +114,7 @@ class Container[T](let value: T) {
 | `(T1, T2)` | Fixed-size tuple | `(1, "a"): (Int, String)` |
 | `Dict[K, V]` | Text-keyed map | `{"a": 1}: Dict[String, Int]` |
 | `Task[T]` | Async task that yields a value of type T | `Task[Int]` |
+| `Result[T, E]` | Result of an operation: Ok or Err | `Result[Int, String]` |
 
 ### Runtime Type Names (from `typeof()`)
 
@@ -130,6 +131,7 @@ class Container[T](let value: T) {
 | `"function"` | Functions and lambdas |
 | `"instance"` | Class instances |
 | `"task"` | `Task[T]` values |
+| `"result"` | `Result[T, E]` values |
 
 ---
 
@@ -143,6 +145,72 @@ async fn compute() -> Int { return 10 }
 var task: Task[Int] = compute()
 var value = await task
 ```
+
+---
+
+## Result Type
+
+The `Result[T, E]` type represents the result of an operation that can succeed with a value of type `T` or fail with an error of type `E`. This provides functional-style error handling as an alternative to exceptions.
+
+```crespi
+// Function returning Result
+fn divide(a: Int, b: Int) -> Result[Int, String] {
+    if b == 0 {
+        return Result.Err("Division by zero")
+    }
+    return Result.Ok(a / b)
+}
+
+var result = divide(10, 2)
+print(result.unwrap())  // 5
+```
+
+### Creating Results
+
+Use `Result.Ok()` and `Result.Err()` to create Result values:
+
+```crespi
+var success: Result[Int, String] = Result.Ok(42)
+var failure: Result[Int, String] = Result.Err("something failed")
+```
+
+### Checking Results
+
+```crespi
+if result.isOk() {
+    print("Success: " + str(result.unwrap()))
+} else {
+    print("Error: " + result.unwrapErr())
+}
+```
+
+### Result Methods
+
+| Method | Description | Example |
+|--------|-------------|---------|
+| `isOk()` | Returns true if Ok | `result.isOk()` |
+| `isErr()` | Returns true if Err | `result.isErr()` |
+| `unwrap()` | Get value or crash | `result.unwrap()` |
+| `unwrapOr(default)` | Get value or default | `result.unwrapOr(0)` |
+| `unwrapOrElse(fn)` | Get value or compute | `result.unwrapOrElse(e => -1)` |
+| `unwrapErr()` | Get error or crash | `result.unwrapErr()` |
+| `map(fn)` | Transform Ok value | `result.map(x => x * 2)` |
+| `mapErr(fn)` | Transform Err value | `result.mapErr(e => "Error: " + e)` |
+| `flatMap(fn)` | Chain Result operations | `result.flatMap(x => divide(x, 2))` |
+
+### Error Propagation Operator (?)
+
+Use `?` to early-return on Err values:
+
+```crespi
+fn compute() -> Result[Int, String] {
+    var a = parseNumber("10")?  // Returns Err if parse fails
+    var b = parseNumber("5")?   // Returns Err if parse fails
+    return Result.Ok(a + b)
+}
+```
+
+For more details on error handling, see the [Error Handling guide](../guide/error-handling.md).
 
 ---
 
