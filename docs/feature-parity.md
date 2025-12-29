@@ -174,8 +174,8 @@ This appendix enumerates the full language surface to keep the parity table hone
 
 - Declarations: `var`, `let`, `fn`, `async fn`, `class`, `trait`, `extension`, `import`, visibility modifiers (`public`, `private`, `internal`).
 - Statements: `return`, `break`, `continue`, `if/else`, `while`, `for/in`, `guard`, `when`.
-- Expressions: literals, arithmetic/comparison/logical ops, `?:`, `??`, `await`, calls, indexing, property access, lambdas (`=>`), assignment, class instantiation by call.
-- Patterns: list `[a, b]`, dictionary `{"name": n}`, class destructuring `Person { name: n }`.
+- Expressions: literals, arithmetic/comparison/logical ops, `?:`, `??`, `await`, calls, indexing, property access, lambdas (`{ x -> expr }`), assignment, class instantiation by call.
+- Patterns: list `[a, b]`, dictionary `["name": n]`, class destructuring `Person { name: n }`.
 
 ### Keywords (Canonical + Spanish Alias)
 
@@ -646,13 +646,15 @@ primary
   ;
 
 lambdaExpr
-  : IDENTIFIER '=>' lambdaBody
-  | '(' parameters? ')' returnType? '=>' lambdaBody
+  : 'async'? '{' lambdaParams? '->' lambdaBody '}'
+  ;
+
+lambdaParams
+  : IDENTIFIER (',' IDENTIFIER)*
   ;
 
 lambdaBody
-  : block
-  | expression
+  : statement* expression?
   ;
 
 tupleLiteral
@@ -664,11 +666,12 @@ arrayLiteral
   ;
 
 dictLiteral
-  : '{' (dictEntry (',' dictEntry)*)? '}'
+  : '[' ':' ']'                              // empty dict
+  | '[' dictEntry (',' dictEntry)* ','? ']'  // non-empty
   ;
 
 dictEntry
-  : (IDENTIFIER | STRING) ':' expression
+  : expression ':' expression
   ;
 
 pattern
@@ -692,11 +695,11 @@ listPattern
   ;
 
 dictPattern
-  : '{' (patternEntry (',' patternEntry)*)? '}'
+  : '[' (patternEntry (',' patternEntry)*)? ']'
   ;
 
 patternEntry
-  : (IDENTIFIER | STRING) ':' pattern
+  : STRING ':' pattern
   ;
 
 operatorName

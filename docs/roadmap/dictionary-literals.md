@@ -1,39 +1,37 @@
-# Roadmap: Dictionary Literal Parsing
+# Dictionary Literal Parsing
 
-> **Status:** Planned
-> **Priority:** High (6 tests blocked)
+> **Status:** Completed
+> **Completed:** December 2024
 > **Affects:** Lexer, Parser, AST, Interpreter, Compiler
 
 ---
 
 ## Summary
 
-Implement parsing for dictionary literal syntax `["key": value, ...]`. Currently, dictionaries can only be created via the `Dict()` constructor or by building them incrementally.
+Dictionary literal syntax `["key": value, ...]` is now fully implemented. Dictionaries can be created using literal syntax, constructor, or incrementally.
 
 ---
 
-## Current State
+## Syntax
 
-### What Works
+### Dictionary Literals
 
 ```crespi
-// Constructor-based creation
-var dict = Dict()
-dict["name"] = "Alice"
-dict["age"] = 30
+// Literal syntax
+var dict = ["name": "Alice", "age": 30]
+
+// Empty dictionary
+var empty = [:]
 
 // Access and modification
 print(dict["name"])  // "Alice"
 dict["age"] = 31
 ```
 
-### What Doesn't Work
+### Pattern Matching
 
 ```crespi
-// Literal syntax - NOT YET IMPLEMENTED
-var dict = ["name": "Alice", "age": 30]
-
-// Pattern matching on dictionaries - blocked
+// Pattern matching on dictionaries
 when data {
     is ["name": n, "age": a] -> { print(n) }
     default -> { print("no match") }

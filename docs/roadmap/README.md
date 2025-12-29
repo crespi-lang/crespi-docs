@@ -12,7 +12,8 @@ This folder contains planned features and enhancements for the Crespi language.
 
 | Feature | Status | Priority | Description |
 |---------|--------|----------|-------------|
-| [Dictionary Literals](dictionary-literals.md) | Planned | High | `["key": value]` syntax parsing |
+| [Dictionary Literals](dictionary-literals.md) | Completed | High | `["key": value]` syntax parsing |
+| [Anonymous Functions](anonymous-functions.md) | Planned | Medium | `fun(x: Int = 5) = x * x` syntax |
 | [Compile-Time Constants](const.md) | Planned | Medium | `const` keyword for compile-time evaluation |
 | [Exhaustive Pattern Matching](exhaustive-pattern-matching.md) | Planned | Medium | Remove mandatory `default` when all cases covered |
 | [Standard Library](standard-library.md) | Planned | Medium | Organize built-ins into `std.*` modules |

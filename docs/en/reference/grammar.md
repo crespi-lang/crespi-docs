@@ -329,13 +329,15 @@ primary
   ;
 
 lambdaExpr
-  : 'async'? IDENTIFIER '=>' lambdaBody
-  | 'async'? '(' parameters? ')' returnType? '=>' lambdaBody
+  : 'async'? '{' lambdaParams? '->' lambdaBody '}'
+  ;
+
+lambdaParams
+  : IDENTIFIER (',' IDENTIFIER)*
   ;
 
 lambdaBody
-  : block
-  | expression
+  : statement* expression?
   ;
 
 tupleLiteral
@@ -347,11 +349,12 @@ arrayLiteral
   ;
 
 dictLiteral
-  : '{' (dictEntry (',' dictEntry)*)? '}'
+  : '[' ':' ']'                              // empty dict
+  | '[' dictEntry (',' dictEntry)* ','? ']'  // non-empty
   ;
 
 dictEntry
-  : (IDENTIFIER | STRING) ':' expression
+  : expression ':' expression
   ;
 
 pattern
@@ -375,11 +378,11 @@ listPattern
   ;
 
 dictPattern
-  : '{' (patternEntry (',' patternEntry)*)? '}'
+  : '[' (patternEntry (',' patternEntry)*)? ']'
   ;
 
 patternEntry
-  : (IDENTIFIER | STRING) ':' pattern
+  : STRING ':' pattern
   ;
 
 operatorName
