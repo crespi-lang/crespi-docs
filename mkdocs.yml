@@ -73,6 +73,7 @@ nav:
           - Variables and Constants: en/guide/variables.md
           - Control Flow: en/guide/control-flow.md
           - Functions: en/guide/functions.md
+          - Standard Library: en/guide/standard-library.md
           - Lists and Dictionaries: en/guide/collections.md
           - Classes and Objects: en/guide/classes.md
           - Enums and Pattern Matching: en/guide/enums.md

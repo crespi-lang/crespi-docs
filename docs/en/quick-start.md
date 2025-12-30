@@ -188,6 +188,24 @@ greet("Ana")    // Hello, Ana
 
 ---
 
+## Standard Library (std)
+
+Builtins are grouped under virtual `std.*` modules. You can import them or access them directly.
+
+```crespi
+import std.math { sqrt, PI }
+import std.string as s
+
+print(s.trim("  hi  "))
+print(std.math.sqrt(81))
+```
+
+Global builtins still work (`print`, `sqrt`).
+
+See [Standard Library](guide/standard-library.md) for the module list and more examples.
+
+---
+
 ## Lists and Dictionaries
 
 ### Lists
@@ -236,4 +254,5 @@ print(rect.area())  // 15
 
 - [Keywords Reference](reference/keywords.md)
 - [Built-in Functions](reference/functions.md)
+- [Standard Library](guide/standard-library.md)
 - [Examples](https://github.com/crespi-lang/crespi-lang/tree/main/examples)

@@ -188,6 +188,24 @@ saludar("Ana")    // Hola, Ana
 
 ---
 
+## Biblioteca Estándar (std)
+
+Los builtins se agrupan en módulos virtuales `std.*`. Puedes importarlos o accederlos directamente.
+
+```crespi
+importar std.math { raiz, PI }
+importar std.string como s
+
+mostrar(s.recortar("  hola  "))
+mostrar(std.math.raiz(81))
+```
+
+Los builtins globales siguen funcionando (`mostrar`, `raiz`).
+
+Ver [Biblioteca Estándar](guia/biblioteca-estandar.md) para la lista de módulos y más ejemplos.
+
+---
+
 ## Listas y Diccionarios
 
 ### Listas
@@ -236,4 +254,5 @@ mostrar(rect.area())  // 15
 
 - [Referencia de Palabras Clave](referencia/palabras-clave.md)
 - [Funciones Integradas](referencia/funciones.md)
+- [Biblioteca Estándar](guia/biblioteca-estandar.md)
 - [Ejemplos](https://github.com/crespi-lang/crespi-lang/tree/main/examples)

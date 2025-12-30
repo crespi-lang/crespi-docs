@@ -70,6 +70,7 @@ nav:
       - Variables y Constantes: es/guia/variables.md
       - Control de Flujo: es/guia/control-flujo.md
       - Funciones: es/guia/funciones.md
+      - Biblioteca Estandar: es/guia/biblioteca-estandar.md
       - Listas y Diccionarios: es/guia/colecciones.md
       - Clases y Objetos: es/guia/clases.md
       - Enums y Pattern Matching: es/guia/enums.md
