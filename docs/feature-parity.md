@@ -115,7 +115,7 @@ Crespi ensures that `public`, `internal`, and `private` declarations behave the 
 | --- | --- | --- | --- |
 | CLI REPL | Yes | No | Interpreter-only REPL and file runner |
 | VSCode extension | Yes | Yes | External ([crespi-ide-support](https://github.com/crespi-lang/crespi-ide-support) repo) |
-| LSP diagnostics | Partial (visibility-aware) | Partial (visibility-aware) | External ([crespi-ide-support](https://github.com/crespi-lang/crespi-ide-support) repo). Supports diagnostics, hover, go-to-definition, and completions. |
+| LSP features | Partial (visibility-aware) | Partial (visibility-aware) | External ([crespi-ide-support](https://github.com/crespi-lang/crespi-ide-support) repo). Supports diagnostics, hover, go-to-definition, completions, find references, rename symbol, and document symbols. |
 | WASM execution (web) | Yes | No | External ([crespi-wasm](https://github.com/crespi-lang/crespi-wasm) repo) |
 | Language packs | Yes | Yes | Built-in Spanish pack; validator supports custom packs |
 
