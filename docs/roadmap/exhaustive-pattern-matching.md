@@ -1,8 +1,9 @@
 # Roadmap: Exhaustive Pattern Matching
 
-> **Status:** Planned
+> **Status:** Completed
 > **Priority:** Medium
 > **Affects:** Parser, Type Checker, Interpreter, Compiler
+> **Completed:** December 2025
 
 ---
 

@@ -1,6 +1,7 @@
-# Roadmap: Anonymous Functions (`fun`)
+# Roadmap: Anonymous Functions (`fn`)
 
-> **Status:** Planned
+> **Status:** Completed
+> **Completed:** December 2025
 > **Priority:** Medium
 > **Affects:** Lexer, Parser, AST, HIR, Interpreter, Compiler, Type Checker
 
@@ -8,7 +9,7 @@
 
 ## Summary
 
-Add anonymous function expressions using the `fun` keyword. Unlike lambdas (`{ x -> expr }`), anonymous functions support full function features including type annotations, default parameters, and explicit return types.
+Add anonymous function expressions using the `fn` keyword. Unlike lambdas (`{ x -> expr }`), anonymous functions support full function features including type annotations, default parameters, and explicit return types.
 
 ---
 

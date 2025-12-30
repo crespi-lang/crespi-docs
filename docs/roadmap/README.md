@@ -13,10 +13,10 @@ This folder contains planned features and enhancements for the Crespi language.
 | Feature | Status | Priority | Description |
 |---------|--------|----------|-------------|
 | [Dictionary Literals](dictionary-literals.md) | Completed | High | `["key": value]` syntax parsing |
-| [Anonymous Functions](anonymous-functions.md) | Planned | Medium | `fun(x: Int = 5) = x * x` syntax |
+| [Anonymous Functions](anonymous-functions.md) | Completed | Medium | `fn(x: Int = 5) = x * x` syntax |
 | [Compile-Time Constants](const.md) | Planned | Medium | `const` keyword for compile-time evaluation |
-| [Exhaustive Pattern Matching](exhaustive-pattern-matching.md) | Planned | Medium | Remove mandatory `default` when all cases covered |
-| [Standard Library](standard-library.md) | Planned | Medium | Organize built-ins into `std.*` modules |
+| [Exhaustive Pattern Matching](exhaustive-pattern-matching.md) | Completed | Medium | Remove mandatory `default` when all cases covered |
+| [Standard Library](standard-library.md) | In Progress | Medium | Organize built-ins into `std.*` modules |
 | [Compiled REPL](compiled-repl.md) | Planned | Low | REPL using native compiler backend |
 
 ## Contributing
@@ -32,4 +32,3 @@ When adding a new roadmap item:
 
 - [Feature Parity](../feature-parity.md) - Interpreter vs Compiler feature comparison
 - [Language Comparison](../language-comparison.md) - Crespi vs other languages
-

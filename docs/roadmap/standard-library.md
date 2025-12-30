@@ -1,6 +1,6 @@
 # Roadmap: Standard Library Modules
 
-> **Status:** Planned
+> **Status:** In Progress
 > **Priority:** Medium
 > **Affects:** Runtime, Interpreter, Compiler, Documentation
 
