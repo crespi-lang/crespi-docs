@@ -125,6 +125,7 @@ Crespi ensures that `public`, `internal`, and `private` declarations behave the 
 - **Concurrency runtime**: async/await tasks are eager today; no scheduler, threads, or actors yet.
 - **Assignment expressions**: not supported (statements only, by design).
 - **Error handling**: `try/catch/throw`, `defer`, and built-in error types (`RuntimeError`, `TypeError`, `ValueError`, `IOError`) work in interpreter; compiler has partial support (type checking works, runtime behavior incomplete).
+- **Enums**: Basic enum definitions compile; pattern matching on enum variants has runtime differences between interpreter and compiler.
 
 ## Verification Checklist
 
