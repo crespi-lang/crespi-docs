@@ -256,6 +256,50 @@ print(byFive())   // 10
 
 ---
 
+## Block Lambdas
+
+Crespi supports block lambda syntax `{ params -> body }` for anonymous functions:
+
+```crespi
+var double = { x -> x * 2 }
+print(double(5))  // 10
+
+var add = { a, b -> a + b }
+print(add(3, 4))  // 7
+```
+
+### Typed Parameters
+
+You can add type annotations to lambda parameters:
+
+```crespi
+// Single typed parameter
+var square = { x: Int -> x * x }
+print(square(4))  // 16
+
+// Multiple typed parameters
+var concat = { a: String, b: String -> a + b }
+print(concat("Hello, ", "world!"))  // Hello, world!
+
+// Mixed typed and untyped
+var multiply = { a: Int, b -> a * b }
+print(multiply(3, 4))  // 12
+```
+
+### Multi-Line Lambdas
+
+For complex logic, use braces with multiple statements:
+
+```crespi
+var process = { x: Int ->
+    var result = x * 2
+    result + 1
+}
+print(process(5))  // 11
+```
+
+---
+
 ## Recursion
 
 Functions can call themselves:
