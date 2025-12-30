@@ -8,11 +8,11 @@ Legend: **Yes** = implemented, **Partial** = implemented but incomplete or missi
 
 | Feature | Interpreter | Compiler | Notes |
 | --- | --- | --- | --- |
-| Variables and constants | Yes | Yes | `var`, `let`; `let` enforces immutability for collections |
+| Variables and constants | Yes | Yes | `var`, `let`, `const`; `let` enforces immutability for collections |
 | Control flow | Yes | Yes | `if/else`, `while`, `for/in`, `break`, `continue`, `guard`, `when` |
 | Functions | Yes | Yes | Named, default params, single-expression syntax |
 | Async/await | Yes | Yes | Eager `Task` values; no scheduler yet |
-| Lambdas and closures | Yes | Yes | Capture works |
+| Lambdas and closures | Yes | Yes | Capture works; typed params `{ x: Int -> x * 2 }` |
 | Classes and constructors | Yes | Yes | Primary (with `var`/`let` modifiers) + secondary constructors |
 | Inheritance | Yes | Yes | `:` syntax |
 | Operator overloading | Yes | Yes | All operators in the reference |
