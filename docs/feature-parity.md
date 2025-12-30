@@ -63,7 +63,7 @@ Legend: **Yes** = implemented, **Partial** = implemented but incomplete or missi
 
 | Feature | Interpreter | Compiler | Notes |
 | --- | --- | --- | --- |
-| Integers, floats, booleans, null | Yes | Yes | `int`, `float`, `bool`, `null` |
+| Integers, floats, booleans, null | Yes | Yes | `Int`, `Float` (f32), `Double` (f64), `Bool`, `null` |
 | Strings | Yes | Yes | UTF-8 text values |
 | Lists | Yes | Yes | Literals, indexing, iteration |
 | Dictionaries | Yes | Yes | Text-keyed maps |
