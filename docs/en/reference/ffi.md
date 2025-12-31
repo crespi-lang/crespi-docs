@@ -724,9 +724,160 @@ let result = add(gc: gc, a: 10, b: 20)
 // gc is automatically destroyed when it goes out of scope
 ```
 
+## Java and Kotlin Interoperability
+
+Crespi supports JVM integration through JNI (Java Native Interface) using the `crespi-jvm-ffi` crate.
+
+### Generating Java Classes
+
+Generate Java native method declarations from Crespi source:
+
+```rust
+use crespi_jvm_ffi::generate_java_class;
+
+let source = r#"
+    fn add(a: Int, b: Int) -> Int {
+        return a + b
+    }
+"#;
+
+let java = generate_java_class(source, "com.example", "MathLib").unwrap();
+```
+
+This generates a Java class:
+
+```java
+package com.example;
+
+public class MathLib {
+    static {
+        System.loadLibrary("mathlib");
+        initGC();
+    }
+
+    private static native void initGC();
+    private static native void destroyGC();
+
+    /**
+     * Calls Crespi function 'add'.
+     * @param a long
+     * @param b long
+     * @return long
+     */
+    public static native long add(long a, long b);
+}
+```
+
+### Type Mapping (Java)
+
+| Crespi Type | Java Type | JNI Type |
+|-------------|-----------|----------|
+| `Int` | `long` | `jlong` |
+| `Int32` | `int` | `jint` |
+| `Int16` | `short` | `jshort` |
+| `Int8` | `byte` | `jbyte` |
+| `Double` | `double` | `jdouble` |
+| `Float` | `float` | `jfloat` |
+| `Bool` | `boolean` | `jboolean` |
+| `String` | `String` | `jstring` |
+| `List<T>` | `java.util.List<T>` | `jobject` |
+| `Dict<K,V>` | `java.util.Map<K,V>` | `jobject` |
+
+### Generating Kotlin Wrappers
+
+Generate idiomatic Kotlin code that wraps the Java native methods:
+
+```rust
+use crespi_jvm_ffi::generate_kotlin_wrapper;
+
+let kotlin = generate_kotlin_wrapper(source, "com.example", "MathLib").unwrap();
+```
+
+This generates a Kotlin object:
+
+```kotlin
+package com.example
+
+/**
+ * Crespi native library bindings for Kotlin.
+ */
+object MathLib {
+    private val native = MathLib
+
+    /**
+     * Calls Crespi function 'add'.
+     * @param a [Long]
+     * @param b [Long]
+     * @return [Long]
+     */
+    fun add(a: Long, b: Long): Long {
+        return MathLib.add(a, b)
+    }
+}
+```
+
+### Type Mapping (Kotlin)
+
+| Crespi Type | Kotlin Type |
+|-------------|-------------|
+| `Int` | `Long` |
+| `Int32` | `Int` |
+| `UInt` | `ULong` |
+| `UInt32` | `UInt` |
+| `Double` | `Double` |
+| `Float` | `Float` |
+| `Bool` | `Boolean` |
+| `String` | `String` |
+| `List<T>` | `List<T>` |
+| `Dict<K,V>` | `Map<K, V>` |
+| `T?` | `T?` |
+
+### JNI Header Generation
+
+Generate JNI C headers for implementing the native methods:
+
+```rust
+use crespi_jvm_ffi::generate_jni_header;
+
+let header = generate_jni_header(&hir_program, &java_opts).unwrap();
+```
+
+This generates a JNI-compatible C header:
+
+```c
+#include <jni.h>
+
+JNIEXPORT jlong JNICALL Java_com_example_MathLib_add(
+    JNIEnv *env,
+    jclass clazz,
+    jlong a,
+    jlong b
+);
+```
+
+### Android Integration
+
+For Android projects, use the generated Java classes with Gradle:
+
+```groovy
+// build.gradle
+android {
+    defaultConfig {
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+}
+```
+
 ## Future Work
 
-The FFI system is designed with multi-language interoperability in mind. Rust is the primary supported language for calling native code from Crespi, while C and Swift support enables embedding Crespi in native applications.
+The FFI system is designed with multi-language interoperability in mind. Rust is the primary supported language for calling native code from Crespi, while C, Swift, Java, and Kotlin support enables embedding Crespi in native applications across all major platforms.
 
 ## See Also
 
