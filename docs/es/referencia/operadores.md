@@ -137,6 +137,79 @@ mostrar(0 ?? 5)                    // 0
 
 ---
 
+## Operadores de Verificación de Tipo
+
+Crespi proporciona operadores de verificación de tipo estilo Kotlin para introspección de tipos en tiempo de ejecución:
+
+| Operador | Palabra | Descripción | Ejemplo |
+|----------|---------|-------------|---------|
+| `is` | `es` | Verifica tipo (devuelve verdadero si el valor es del tipo) | `42 is Entero` |
+| `!is` | `!es` | Verifica tipo negado (devuelve verdadero si el valor NO es del tipo) | `"hola" !is Entero` |
+
+### Tipos Disponibles
+
+- `Int` / `Entero` - Números enteros
+- `Float` / `Decimal` - Números decimales
+- `String` / `Texto` - Valores de texto
+- `Bool` / `Booleano` - Valores booleanos (`verdadero`/`falso`)
+- `List` / `Lista` - Valores de lista/arreglo
+- `Dictionary` / `Diccionario` - Mapas clave-valor
+- `Null` / `Nada` - El valor nulo
+- Nombres de clases personalizadas (ej., `Punto`, `Animal`)
+
+### Ejemplos
+
+```crespi
+// Verificaciones básicas de tipo
+mostrar(42 is Entero)           // verdadero
+mostrar(3.14 is Decimal)        // verdadero
+mostrar("hola" is Texto)        // verdadero
+mostrar(verdadero is Booleano)  // verdadero
+mostrar([1, 2, 3] is Lista)     // verdadero
+
+// Verificaciones negadas de tipo
+mostrar(42 !is Texto)           // verdadero
+mostrar("texto" !is Entero)     // verdadero
+mostrar(nada !is Texto)         // verdadero
+
+// Verificaciones de tipo de clase
+tipo Animal(nombre) {}
+tipo Perro(nombre) extiende Animal {}
+
+variable perro = Perro("Rex")
+mostrar(perro is Perro)         // verdadero
+mostrar(perro is Animal)        // verdadero (verifica herencia)
+mostrar(perro !is Texto)        // verdadero
+```
+
+### Casos de Uso
+
+La verificación de tipos es útil para:
+
+1. **Validación en tiempo de ejecución**: Verificar tipos de entrada antes de procesarlos
+2. **Manejo polimórfico**: Comportamiento diferente según el tipo real
+3. **Conversión segura**: Verificar tipo antes de acceder a métodos específicos del tipo
+
+```crespi
+bloque describir(valor) {
+    si valor is Entero {
+        resultado "Entero: " + texto(valor)
+    } o si valor is Texto {
+        resultado "Texto: " + valor
+    } o si valor is Lista {
+        resultado "Lista con " + texto(valor.length()) + " elementos"
+    } o {
+        resultado "Tipo desconocido"
+    }
+}
+
+mostrar(describir(42))          // Entero: 42
+mostrar(describir("hola"))      // Texto: hola
+mostrar(describir([1, 2, 3]))   // Lista con 3 elementos
+```
+
+---
+
 ## Operadores de Bits
 
 | Símbolo | Descripción | Ejemplo |
@@ -356,7 +429,7 @@ De menor a mayor precedencia:
 | 5 | `^` (XOR de bits) | Izquierda |
 | 6 | `&` (AND de bits) | Izquierda |
 | 7 | `==`, `!=`, `igualA`, `diferenteDe` | Izquierda |
-| 8 | `<`, `>`, `<=`, `>=`, `in`, `menorQue`, etc. | Izquierda |
+| 8 | `<`, `>`, `<=`, `>=`, `in`, `is`, `!is`, `menorQue`, etc. | Izquierda |
 | 9 | `<<`, `>>` (desplazamiento) | Izquierda |
 | 10 | `+`, `-`, `mas`, `menos` | Izquierda |
 | 11 | `*`, `/`, `%`, `por`, `entre`, `modulo` | Izquierda |

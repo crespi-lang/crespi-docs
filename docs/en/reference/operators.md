@@ -116,6 +116,79 @@ print(0 ?? 5)          // 0
 
 ---
 
+## Type Checking Operators
+
+Crespi provides Kotlin-style type checking operators for runtime type introspection:
+
+| Operator | Spanish Alias | Description | Example |
+|----------|---------------|-------------|---------|
+| `is` | `es` | Type check (returns true if value is of type) | `42 is Int` |
+| `!is` | `!es` | Negated type check (returns true if value is NOT of type) | `"hello" !is Int` |
+
+### Available Types
+
+- `Int` - Integer numbers
+- `Float` - Decimal numbers
+- `String` - Text values
+- `Bool` - Boolean values (`true`/`false`)
+- `List` - Array/list values
+- `Dictionary` - Key-value maps
+- `Null` - The null value
+- Custom class names (e.g., `Point`, `Animal`)
+
+### Examples
+
+```crespi
+// Basic type checks
+print(42 is Int)           // true
+print(3.14 is Float)       // true
+print("hello" is String)   // true
+print(true is Bool)        // true
+print([1, 2, 3] is List)   // true
+
+// Negated type checks
+print(42 !is String)       // true
+print("text" !is Int)      // true
+print(null !is String)     // true
+
+// Class type checks
+class Animal(name) {}
+class Dog(name) extends Animal {}
+
+var dog = Dog("Rex")
+print(dog is Dog)          // true
+print(dog is Animal)       // true (inheritance check)
+print(dog !is String)      // true
+```
+
+### Use Cases
+
+Type checking is useful for:
+
+1. **Runtime validation**: Verify input types before processing
+2. **Polymorphic handling**: Different behavior based on actual type
+3. **Safe casting**: Check type before accessing type-specific methods
+
+```crespi
+fn describe(value) {
+    if value is Int {
+        return "Integer: " + str(value)
+    } else if value is String {
+        return "Text: " + value
+    } else if value is List {
+        return "List with " + str(value.length()) + " elements"
+    } else {
+        return "Unknown type"
+    }
+}
+
+print(describe(42))          // Integer: 42
+print(describe("hello"))     // Text: hello
+print(describe([1, 2, 3]))   // List with 3 elements
+```
+
+---
+
 ## Bitwise Operators
 
 | Symbol | Description | Example |
@@ -343,7 +416,7 @@ From lowest to highest precedence:
 | 5 | `^` (bitwise XOR) | Left |
 | 6 | `&` (bitwise AND) | Left |
 | 7 | `==`, `!=` | Left |
-| 8 | `<`, `>`, `<=`, `>=`, `in` | Left |
+| 8 | `<`, `>`, `<=`, `>=`, `in`, `is`, `!is` | Left |
 | 9 | `<<`, `>>` (shift) | Left |
 | 10 | `+`, `-` | Left |
 | 11 | `*`, `/`, `%` | Left |
