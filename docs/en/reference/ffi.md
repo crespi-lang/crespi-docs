@@ -879,6 +879,20 @@ android {
 
 The FFI system is designed with multi-language interoperability in mind. Rust is the primary supported language for calling native code from Crespi, while C, Swift, Java, and Kotlin support enables embedding Crespi in native applications across all major platforms.
 
+## Examples
+
+Runnable examples demonstrating FFI interoperability with each language are available in the repository:
+
+| Language | Location | Description |
+|----------|----------|-------------|
+| **Rust** | `examples/cargo_projects/rust_ffi/` | Native Rust integration via `cargo crespi` |
+| **C** | `examples/ffi_examples/c_example/` | GC context pattern and function signatures |
+| **Swift** | `examples/ffi_examples/swift_example/` | Swift Package Manager integration (macOS) |
+| **Java** | `examples/ffi_examples/java_example/` | JNI bindings with Gradle |
+| **Kotlin** | `examples/ffi_examples/kotlin_example/` | Idiomatic Kotlin wrappers + extensions |
+
+All FFI examples share a common Crespi library (`examples/ffi_examples/shared/mathlib.crespi`) with math functions demonstrating various type mappings.
+
 ## See Also
 
 - [Types Reference](types.md) - Crespi type system
