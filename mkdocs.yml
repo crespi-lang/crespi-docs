@@ -83,6 +83,14 @@ nav:
           - Keywords: en/reference/keywords.md
           - Operators: en/reference/operators.md
           - Built-in Functions: en/reference/functions.md
+          - Standard Library:
+              - Overview: en/reference/std/index.md
+              - std.io: en/reference/std/io.md
+              - std.convert: en/reference/std/convert.md
+              - std.math: en/reference/std/math.md
+              - std.string: en/reference/std/string.md
+              - std.collections: en/reference/std/collections.md
+              - std.functional: en/reference/std/functional.md
           - Data Types: en/reference/types.md
           - Grammar (ANTLR4): en/reference/grammar.md
           - FFI: en/reference/ffi.md

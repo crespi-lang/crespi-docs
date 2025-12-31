@@ -4,6 +4,8 @@
 
 ---
 
+> **Ver tambien:** [Modulos de Biblioteca Estandar](std/index.md) para documentacion organizada por modulo con ejemplos detallados.
+
 Crespi incluye funciones integradas disponibles globalmente. Los nombres en inglés son canónicos; los paquetes de idioma proveen alias localizados que se normalizan durante el escaneo.
 
 Los helpers de colecciones y texto se exponen como **métodos** sobre el receptor (por ejemplo `lista.longitud()`, `texto.recortar()`, `diccionario.claves()`), no como funciones globales.

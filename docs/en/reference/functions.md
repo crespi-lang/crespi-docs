@@ -4,6 +4,8 @@
 
 ---
 
+> **See also:** [Standard Library Modules](std/index.md) for organized module documentation with detailed examples.
+
 Crespi includes built-in functions available globally. English names are canonical; language packs provide localized aliases that are normalized during lexing.
 
 Collection and string helpers are exposed as methods on their receivers (for example `list.length()`, `text.trim()`, `dict.keys()`), not as global functions.
