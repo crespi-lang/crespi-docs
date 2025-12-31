@@ -284,7 +284,7 @@ var value = result.unwrap()  // Panics if Err
 var value = result.unwrapOr(0)  // Returns 0 if Err
 
 // unwrapOrElse() - Get value or compute from error
-var value = result.unwrapOrElse(err => -1)  // Computes fallback
+var value = result.unwrapOrElse { err -> -1 }  // Computes fallback
 
 // unwrapErr() - Get error or crash
 var error = result.unwrapErr()  // Panics if Ok
@@ -300,11 +300,11 @@ Transform the value inside an Ok, leaving Err unchanged:
 
 ```crespi
 var result = Result.Ok(21)
-var doubled = result.map(x => x * 2)
+var doubled = result.map { x -> x * 2 }
 // doubled is Result.Ok(42)
 
 var error = Result.Err("failed")
-var mapped = error.map(x => x * 2)
+var mapped = error.map { x -> x * 2 }
 // mapped is still Result.Err("failed")
 ```
 
@@ -314,7 +314,7 @@ Transform the error inside an Err, leaving Ok unchanged:
 
 ```crespi
 var result = Result.Err("not found")
-var wrapped = result.mapErr(e => "Error: " + e)
+var wrapped = result.mapErr { e -> "Error: " + e }
 // wrapped is Result.Err("Error: not found")
 ```
 
@@ -328,7 +328,7 @@ fn parseNumber(s) -> Int | String {
 }
 
 fn divideBy(n) -> Int | String {
-    return x => {
+    return { x ->
         if x == 0 {
             return Result.Err("Division by zero")
         }
@@ -433,7 +433,7 @@ fn processLargeFile(path) throws {
 
 ```crespi
 var result = parseInput(userInput)
-    .map(x => x * 2)
+    .map { x -> x * 2 }
     .flatMap(validate)
     .map(format)
 

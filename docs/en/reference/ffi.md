@@ -6,7 +6,7 @@
 
 Crespi provides a Foreign Function Interface (FFI) for seamless integration with native libraries. Currently, Rust is the primary supported language, with the architecture designed to support additional languages in the future.
 
-The Rust FFI integration allows you to leverage the entire Rust ecosystem from your Crespi programs. This is achieved through the `crespigen` tool, which automatically generates FFI bindings for any Rust crate.
+The Rust FFI integration allows you to leverage the entire Rust ecosystem from your Crespi programs. This is achieved through the `crespi-bindgen` tool, which automatically generates FFI bindings for any Rust crate.
 
 ## Overview
 
@@ -104,7 +104,7 @@ pub fn midpoint(p1: &Point, p2: &Point) -> Point {
 ### 4. Generate Bindings
 
 ```bash
-crespigen my_project/
+crespi-bindgen my_project/
 ```
 
 This generates:
@@ -289,12 +289,12 @@ class Color {
 }
 ```
 
-## crespigen Command
+## crespi-bindgen Command
 
 ### Usage
 
 ```bash
-crespigen [OPTIONS] <PROJECT_DIR>
+crespi-bindgen [OPTIONS] <PROJECT_DIR>
 ```
 
 ### Arguments
@@ -314,7 +314,7 @@ crespigen [OPTIONS] <PROJECT_DIR>
 
 ### Output Files
 
-After running `crespigen`, you'll find:
+After running `crespi-bindgen`, you'll find:
 
 ```
 my_project/
@@ -333,7 +333,7 @@ my_project/
 
 ### Rust Nightly
 
-The `crespigen` tool requires Rust nightly for rustdoc JSON output:
+The `crespi-bindgen` tool requires Rust nightly for rustdoc JSON output:
 
 ```bash
 # Install nightly
@@ -360,7 +360,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 ```
 ┌─────────────────┐     ┌──────────────┐     ┌─────────────────┐
-│   Rust Crate    │────>│  crespigen   │────>│  bindings.crespi│
+│   Rust Crate    │────>│crespi-bindgen│────>│  bindings.crespi│
 │   (Cargo.toml)  │     │              │     │  lib_crespi_*.a │
 └─────────────────┘     └──────────────┘     └─────────────────┘
                               │
@@ -375,7 +375,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 ### Process Flow
 
-1. **Rustdoc JSON Generation**: `crespigen` runs `cargo +nightly doc` with JSON output to extract the public API
+1. **Rustdoc JSON Generation**: `crespi-bindgen` runs `cargo +nightly doc` with JSON output to extract the public API
 2. **API Parsing**: The rustdoc JSON is parsed to discover functions, structs, enums, and methods
 3. **Type Mapping**: Rust types are mapped to Crespi types
 4. **Wrapper Generation**: Rust wrapper functions are generated that:

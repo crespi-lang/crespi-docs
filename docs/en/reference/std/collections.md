@@ -38,7 +38,7 @@ for i in range(5) {
     print(i)  // 0, 1, 2, 3, 4
 }
 
-var squares = range(1, 6).map(n => n * n)
+var squares = range(1, 6).map { n -> n * n }
 print(squares)  // [1, 4, 9, 16, 25]
 ```
 
@@ -193,10 +193,10 @@ Applies a function to each element, returning a new list.
 var nums = [1, 2, 3, 4]
 
 // Double each number
-print(nums.map(n => n * 2))  // [2, 4, 6, 8]
+print(nums.map { n -> n * 2 })  // [2, 4, 6, 8]
 
 // Convert to strings
-print(nums.map(n => str(n)))  // ["1", "2", "3", "4"]
+print(nums.map { n -> str(n) })  // ["1", "2", "3", "4"]
 
 // With named function
 fn square(n: Int) -> Int { return n * n }
@@ -213,14 +213,14 @@ Keeps only elements where the predicate returns true.
 var nums = [1, 2, 3, 4, 5, 6]
 
 // Keep even numbers
-print(nums.filter(n => n % 2 == 0))  // [2, 4, 6]
+print(nums.filter { n -> n % 2 == 0 })  // [2, 4, 6]
 
 // Keep numbers greater than 3
-print(nums.filter(n => n > 3))  // [4, 5, 6]
+print(nums.filter { n -> n > 3 })  // [4, 5, 6]
 
 // Remove empty strings
 var words = ["hello", "", "world", ""]
-print(words.filter(w => w.length() > 0))  // [hello, world]
+print(words.filter { w -> w.length() > 0 })  // [hello, world]
 ```
 
 ---
@@ -237,17 +237,17 @@ Reduces a list to a single value by applying a function cumulatively.
 var nums = [1, 2, 3, 4, 5]
 
 // Sum
-print(nums.reduce((a, b) => a + b, 0))  // 15
+print(nums.reduce({ a, b -> a + b }, 0))  // 15
 
 // Product
-print(nums.reduce((a, b) => a * b, 1))  // 120
+print(nums.reduce({ a, b -> a * b }, 1))  // 120
 
 // Max (without initial)
-print(nums.reduce((a, b) => if a > b { a } else { b }))  // 5
+print(nums.reduce { a, b -> if a > b { a } else { b } })  // 5
 
 // Build string
 var words = ["Hello", "World"]
-print(words.reduce((a, b) => a + " " + b))  // "Hello World"
+print(words.reduce { a, b -> a + " " + b })  // "Hello World"
 ```
 
 ---
@@ -266,14 +266,14 @@ var nums = [3, 1, 4, 1, 5]
 print(nums.sort())  // [1, 1, 3, 4, 5]
 
 // Descending order
-print(nums.sort((a, b) => b - a))  // [5, 4, 3, 1, 1]
+print(nums.sort { a, b -> b - a })  // [5, 4, 3, 1, 1]
 
 // Sort strings
 var words = ["banana", "apple", "cherry"]
 print(words.sort())  // [apple, banana, cherry]
 
 // Sort by length
-print(words.sort((a, b) => a.length() - b.length()))
+print(words.sort { a, b -> a.length() - b.length() })
 // [apple, banana, cherry]
 ```
 
@@ -318,15 +318,15 @@ Returns the first element matching the predicate, or `null` if none.
 ```crespi
 var nums = [1, 2, 3, 4, 5]
 
-print(nums.find(n => n > 3))   // 4
-print(nums.find(n => n > 10))  // null
+print(nums.find { n -> n > 3 })   // 4
+print(nums.find { n -> n > 10 })  // null
 
 // Find in objects
 var users = [
     ["name": "Ana", "age": 25],
     ["name": "Bob", "age": 30]
 ]
-var found = users.find(u => u["name"] == "Bob")
+var found = users.find { u -> u["name"] == "Bob" }
 print(found)  // {name: Bob, age: 30}
 ```
 
@@ -340,15 +340,15 @@ Checks if all/any elements satisfy a predicate.
 var nums = [2, 4, 6, 8]
 
 // All even?
-print(nums.every(n => n % 2 == 0))  // true
+print(nums.every { n -> n % 2 == 0 })  // true
 
 // Any greater than 5?
-print(nums.some(n => n > 5))  // true
+print(nums.some { n -> n > 5 })  // true
 
 // Validation example
 var ages = [18, 25, 30, 16]
-print(ages.every(a => a >= 18))  // false (16 is under 18)
-print(ages.some(a => a < 18))    // true
+print(ages.every { a -> a >= 18 })  // false (16 is under 18)
+print(ages.some { a -> a < 18 })    // true
 ```
 
 ---
@@ -366,7 +366,7 @@ print(deep.flatten())  // [[1, 2], [3, 4]] (one level only)
 
 // Flatten + map (flat_map pattern)
 var words = ["hello", "world"]
-var chars = words.map(w => w.split("")).flatten()
+var chars = words.map { w -> w.split("") }.flatten()
 print(chars)  // [h, e, l, l, o, w, o, r, l, d]
 ```
 
@@ -381,9 +381,9 @@ var data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 // Get sum of squares of even numbers
 var result = data
-    .filter(n => n % 2 == 0)      // [2, 4, 6, 8, 10]
-    .map(n => n * n)               // [4, 16, 36, 64, 100]
-    .reduce((a, b) => a + b, 0)    // 220
+    .filter { n -> n % 2 == 0 }           // [2, 4, 6, 8, 10]
+    .map { n -> n * n }                    // [4, 16, 36, 64, 100]
+    .reduce({ a, b -> a + b }, 0)          // 220
 
 print(result)  // 220
 ```
@@ -413,7 +413,7 @@ var people = [
     ["name": "Cara", "city": "Madrid"]
 ]
 
-var by_city = group_by(people, p => p["city"])
+var by_city = group_by(people) { p -> p["city"] }
 print(by_city["Madrid"])  // [Ana, Cara]
 ```
 
@@ -440,12 +440,12 @@ print(unique([1, 2, 2, 3, 3, 3]))  // [1, 2, 3]
 ```crespi
 fn partition(list, predicate) {
     var pass = list.filter(predicate)
-    var fail = list.filter(x => not predicate(x))
+    var fail = list.filter { x -> not predicate(x) }
     return (pass, fail)
 }
 
 var nums = [1, 2, 3, 4, 5, 6]
-var (evens, odds) = partition(nums, n => n % 2 == 0)
+var (evens, odds) = partition(nums) { n -> n % 2 == 0 }
 print(evens)  // [2, 4, 6]
 print(odds)   // [1, 3, 5]
 ```

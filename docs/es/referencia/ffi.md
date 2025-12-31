@@ -104,7 +104,7 @@ pub fn punto_medio(p1: &Punto, p2: &Punto) -> Punto {
 ### 4. Generar Bindings
 
 ```bash
-crespigen mi_proyecto/
+crespi-bindgen mi_proyecto/
 ```
 
 Esto genera:
@@ -289,12 +289,12 @@ tipo Color {
 }
 ```
 
-## Comando crespigen
+## Comando crespi-bindgen
 
 ### Uso
 
 ```bash
-crespigen [OPCIONES] <DIRECTORIO_PROYECTO>
+crespi-bindgen [OPCIONES] <DIRECTORIO_PROYECTO>
 ```
 
 ### Argumentos
@@ -314,7 +314,7 @@ crespigen [OPCIONES] <DIRECTORIO_PROYECTO>
 
 ### Archivos de Salida
 
-Despues de ejecutar `crespigen`, encontraras:
+Despues de ejecutar `crespi-bindgen`, encontraras:
 
 ```
 mi_proyecto/
@@ -333,7 +333,7 @@ mi_proyecto/
 
 ### Rust Nightly
 
-La herramienta `crespigen` requiere Rust nightly para la salida JSON de rustdoc:
+La herramienta `crespi-bindgen` requiere Rust nightly para la salida JSON de rustdoc:
 
 ```bash
 # Instalar nightly
@@ -360,7 +360,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 ```
 ┌─────────────────┐     ┌──────────────┐     ┌─────────────────┐
-│   Crate Rust    │────>│  crespigen   │────>│  bindings.crespi│
+│   Crate Rust    │────>│crespi-bindgen│────>│  bindings.crespi│
 │   (Cargo.toml)  │     │              │     │  lib_crespi_*.a │
 └─────────────────┘     └──────────────┘     └─────────────────┘
                               │
@@ -375,7 +375,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 ### Flujo del Proceso
 
-1. **Generacion de JSON Rustdoc**: `crespigen` ejecuta `cargo +nightly doc` con salida JSON para extraer la API publica
+1. **Generacion de JSON Rustdoc**: `crespi-bindgen` ejecuta `cargo +nightly doc` con salida JSON para extraer la API publica
 2. **Parseo de API**: El JSON de rustdoc se parsea para descubrir funciones, structs, enums y metodos
 3. **Mapeo de Tipos**: Los tipos de Rust se mapean a tipos de Crespi
 4. **Generacion de Wrappers**: Se generan funciones wrapper de Rust que:

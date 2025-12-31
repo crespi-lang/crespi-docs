@@ -58,7 +58,7 @@ Todas las funciones de la biblioteca estandar tambien estan disponibles globalme
 // Sin importar necesario
 mostrar("Hola!")
 variable x = raiz(16)
-variable nums = [1, 2, 3].mapear(n => n * 2)
+variable nums = [1, 2, 3].mapear { n -> n * 2 }
 ```
 
 ---

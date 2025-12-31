@@ -115,9 +115,9 @@ Use `when` to match a value against patterns with destructuring:
 var output = ""
 
 when [1, 2] {
-    is [a, b] => { output = "$a-$b" }
-    is {"name": n} => { output = n }
-    default => { output = "other" }
+    case [a, b] -> { output = "$a-$b" }
+    case {"name": n} -> { output = n }
+    default -> { output = "other" }
 }
 ```
 
@@ -134,8 +134,8 @@ class Person(let name, let age) {
 var person = Person("Ana", 30)
 
 when person {
-    is Person { name: n, age: e } => { print("$n-$e") }
-    default => { print("no") }
+    case Person { name: n, age: e } -> { print("$n-$e") }
+    default -> { print("no") }
 }
 ```
 
@@ -152,9 +152,9 @@ enum Result[T, E] {
 var result = Result.Ok(42)
 
 when result {
-    is Ok(value) => { print("Success: " + str(value)) }
-    is Err(msg) => { print("Error: " + msg) }
-    default => { print("Unknown") }
+    case .Ok(value) -> { print("Success: " + str(value)) }
+    case .Err(msg) -> { print("Error: " + msg) }
+    default -> { print("Unknown") }
 }
 ```
 
@@ -167,9 +167,9 @@ enum Option[T] {
 }
 
 when option {
-    is Some(_) => { print("Has value") }
-    is None => { print("No value") }
-    default => { print("Unknown") }
+    case .Some(_) -> { print("Has value") }
+    case .None -> { print("No value") }
+    default -> { print("Unknown") }
 }
 ```
 

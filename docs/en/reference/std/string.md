@@ -196,7 +196,7 @@ print(words.join(", "))  // "Hello, World"
 print(words.join(""))    // "HelloWorld"
 
 var numbers = [1, 2, 3]
-print(numbers.map(n => str(n)).join("-"))  // "1-2-3"
+print(numbers.map { n -> str(n) }.join("-"))  // "1-2-3"
 ```
 
 ---
@@ -207,7 +207,7 @@ print(numbers.map(n => str(n)).join("-"))  // "1-2-3"
 
 ```crespi
 fn parse_csv(line: String) -> [String] {
-    return line.split(",").map(s => s.trim())
+    return line.split(",").map { s -> s.trim() }
 }
 
 var data = "  apple , banana ,  cherry  "
@@ -267,7 +267,7 @@ print(get_email_domain("user@example.com"))  // "example.com"
 ```crespi
 fn word_count(text: String) -> Int {
     var words = text.trim().split(" ")
-    return words.filter(w => w.length() > 0).length()
+    return words.filter { w -> w.length() > 0 }.length()
 }
 
 print(word_count("Hello  World"))  // 2

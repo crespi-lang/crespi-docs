@@ -192,11 +192,11 @@ if result.isOk() {
 | `isErr()` | Returns true if Err | `result.isErr()` |
 | `unwrap()` | Get value or crash | `result.unwrap()` |
 | `unwrapOr(default)` | Get value or default | `result.unwrapOr(0)` |
-| `unwrapOrElse(fn)` | Get value or compute | `result.unwrapOrElse(e => -1)` |
+| `unwrapOrElse(fn)` | Get value or compute | `result.unwrapOrElse { e -> -1 }` |
 | `unwrapErr()` | Get error or crash | `result.unwrapErr()` |
-| `map(fn)` | Transform Ok value | `result.map(x => x * 2)` |
-| `mapErr(fn)` | Transform Err value | `result.mapErr(e => "Error: " + e)` |
-| `flatMap(fn)` | Chain Result operations | `result.flatMap(x => divide(x, 2))` |
+| `map(fn)` | Transform Ok value | `result.map { x -> x * 2 }` |
+| `mapErr(fn)` | Transform Err value | `result.mapErr { e -> "Error: " + e }` |
+| `flatMap(fn)` | Chain Result operations | `result.flatMap { x -> divide(x, 2) }` |
 
 ### Error Propagation Operator (?)
 

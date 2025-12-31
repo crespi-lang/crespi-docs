@@ -142,7 +142,7 @@ var task = get_answer()
 var value = await task
 ```
 
-Async also works with lambdas: `var f = async x => x + 1`.
+Async also works with lambdas: `var f = async { x -> x + 1 }`.
 
 ### `await`
 

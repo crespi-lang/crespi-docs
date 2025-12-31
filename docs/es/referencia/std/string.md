@@ -193,7 +193,7 @@ mostrar(palabras.unir(", "))  // "Hola, Mundo"
 mostrar(palabras.unir(""))    // "HolaMundo"
 
 variable numeros = [1, 2, 3]
-mostrar(numeros.mapear(n => texto(n)).unir("-"))  // "1-2-3"
+mostrar(numeros.mapear { n -> texto(n) }.unir("-"))  // "1-2-3"
 ```
 
 ---
@@ -204,7 +204,7 @@ mostrar(numeros.mapear(n => texto(n)).unir("-"))  // "1-2-3"
 
 ```crespi
 funcion parsear_csv(linea: String) -> [String] {
-    retornar linea.dividir(",").mapear(s => s.recortar())
+    retornar linea.dividir(",").mapear { s -> s.recortar() }
 }
 
 variable datos = "  manzana , banana ,  cereza  "

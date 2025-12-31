@@ -499,9 +499,9 @@ Los métodos de colecciones reciben una función o lambda. `reducir()` acepta un
 
 ```crespi
 variable numeros = [1, 2, 3, 4]
-mostrar(numeros.mapear(n => n * 2))         // [2, 4, 6, 8]
-mostrar(numeros.filtrar(n => n % 2 == 0))   // [2, 4]
-mostrar(numeros.reducir((a, b) => a + b, 0)) // 10
+mostrar(numeros.mapear { n -> n * 2 })         // [2, 4, 6, 8]
+mostrar(numeros.filtrar { n -> n % 2 == 0 })   // [2, 4]
+mostrar(numeros.reducir({ a, b -> a + b }, 0)) // 10
 ```
 
 ---

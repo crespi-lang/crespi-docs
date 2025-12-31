@@ -115,9 +115,9 @@ Usa `cuando` para comparar un valor con patrones y hacer desestructuracion:
 variable salida = ""
 
 cuando [1, 2] {
-    es [a, b] => { salida = "$a-$b" }
-    es {"nombre": n} => { salida = n }
-    defecto => { salida = "otro" }
+    caso [a, b] -> { salida = "$a-$b" }
+    caso {"nombre": n} -> { salida = n }
+    defecto -> { salida = "otro" }
 }
 ```
 
@@ -132,8 +132,8 @@ tipo Persona(immutable nombre, immutable edad) {
 variable persona = Persona("Ana", 30)
 
 cuando persona {
-    es Persona { nombre: n, edad: e } => { mostrar("$n-$e") }
-    defecto => { mostrar("no") }
+    caso Persona { nombre: n, edad: e } -> { mostrar("$n-$e") }
+    defecto -> { mostrar("no") }
 }
 ```
 

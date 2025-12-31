@@ -43,7 +43,7 @@ crespi-lang/
 │   ├── crespi-langpack/ # Language packs
 │   ├── crespi-schema/   # Schema definitions
 │   ├── crespi-cargo/    # Cargo integration logic
-│   └── crespigen/       # FFI binding generator
+│   └── crespi-bindgen/  # FFI binding generator
 ├── examples/             # Example programs (scripts + Cargo projects)
 ├── docs/                # Documentation
 └── Cargo.toml           # Workspace configuration

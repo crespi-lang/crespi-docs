@@ -101,7 +101,7 @@ var value = Option.Some(42)
 var empty = Option.None
 
 when value {
-    case .Some(v) => { print("Value: " + str(v)) }
+    case .Some(v) -> { print("Value: " + str(v)) }
     case .None -> { print("No value") }
     default -> { print("Unknown") }
 }
@@ -125,13 +125,13 @@ var msg2 = Message.Write("Hello")
 var msg3 = Message.ChangeColor(255, 0, 0)
 
 when msg1 {
-    case .Move(x, y) => {
+    case .Move(x, y) -> {
         print("Move to (" + str(x) + ", " + str(y) + ")")
     }
-    case .Write(text) => {
+    case .Write(text) -> {
         print("Write: " + text)
     }
-    case .ChangeColor(r, g, b) => {
+    case .ChangeColor(r, g, b) -> {
         print("Color RGB(" + str(r) + ", " + str(g) + ", " + str(b) + ")")
     }
     case .Quit -> {
@@ -165,10 +165,10 @@ fn divide(a: Int, b: Int) -> Result[Int, String] {
 var result = divide(10, 2)
 
 when result {
-    case .Ok(value) => {
+    case .Ok(value) -> {
         print("Result: " + str(value))
     }
-    case .Err(msg) => {
+    case .Err(msg) -> {
         print("Error: " + msg)
     }
     default -> {
@@ -199,7 +199,7 @@ enum Option[T] {
 
     fn isSome() -> Bool {
         when this {
-            case .Some(_) => { return true }
+            case .Some(_) -> { return true }
             case .None -> { return false }
             default -> { return false }
         }
@@ -207,7 +207,7 @@ enum Option[T] {
 
     fn isNone() -> Bool {
         when this {
-            case .Some(_) => { return false }
+            case .Some(_) -> { return false }
             case .None -> { return true }
             default -> { return false }
         }
@@ -215,7 +215,7 @@ enum Option[T] {
 
     fn unwrapOr(defaultValue: T) -> T {
         when this {
-            case .Some(value) => { return value }
+            case .Some(value) -> { return value }
             case .None -> { return defaultValue }
             default -> { return defaultValue }
         }
@@ -243,13 +243,13 @@ enum Shape {
 
     fn area() -> Float {
         when this {
-            case .Circle(r) => {
+            case .Circle(r) -> {
                 return 3.14159 * r * r
             }
-            case .Rectangle(w, h) => {
+            case .Rectangle(w, h) -> {
                 return w * h
             }
-            case .Triangle(b, h) => {
+            case .Triangle(b, h) -> {
                 return 0.5 * b * h
             }
             default -> {
@@ -260,13 +260,13 @@ enum Shape {
 
     fn scale(factor: Float) -> Shape {
         when this {
-            case .Circle(r) => {
+            case .Circle(r) -> {
                 return Shape.Circle(r * factor)
             }
-            case .Rectangle(w, h) => {
+            case .Rectangle(w, h) -> {
                 return Shape.Rectangle(w * factor, h * factor)
             }
-            case .Triangle(b, h) => {
+            case .Triangle(b, h) -> {
                 return Shape.Triangle(b * factor, h * factor)
             }
             default -> {
@@ -295,7 +295,7 @@ indirect enum Tree[T] {
     fn size() -> Int {
         when this {
             case .Empty -> { return 0 }
-            case .Node(_, left, right) => {
+            case .Node(_, left, right) -> {
                 return 1 + left.size() + right.size()
             }
             default -> { return 0 }
@@ -328,7 +328,7 @@ indirect enum List[T] {
     fn length() -> Int {
         when this {
             case .Nil -> { return 0 }
-            case .Cons(_, tail) => { return 1 + tail.length() }
+            case .Cons(_, tail) -> { return 1 + tail.length() }
             default -> { return 0 }
         }
     }
@@ -367,8 +367,8 @@ class Connection {
         when this.state {
             case .Disconnected -> { return "Not connected" }
             case .Connecting -> { return "Connecting..." }
-            case .Connected(id) => { return "Connected: " + id }
-            case .Error(msg) => { return "Error: " + msg }
+            case .Connected(id) -> { return "Connected: " + id }
+            case .Error(msg) -> { return "Error: " + msg }
             default -> { return "Unknown" }
         }
     }
@@ -384,7 +384,7 @@ enum Option[T] {
 
     fn map(f) -> Option {
         when this {
-            case .Some(value) => { return Option.Some(f(value)) }
+            case .Some(value) -> { return Option.Some(f(value)) }
             case .None -> { return Option.None }
             default -> { return Option.None }
         }
@@ -392,7 +392,7 @@ enum Option[T] {
 
     fn flatMap(f) -> Option {
         when this {
-            case .Some(value) => { return f(value) }
+            case .Some(value) -> { return f(value) }
             case .None -> { return Option.None }
             default -> { return Option.None }
         }
@@ -400,7 +400,7 @@ enum Option[T] {
 }
 
 var value = Option.Some(5)
-var doubled = value.map(x => x * 2)  // Option.Some(10)
+var doubled = value.map { x -> x * 2 }  // Option.Some(10)
 ```
 
 ### Result Type
@@ -412,16 +412,16 @@ enum Result[T, E] {
 
     fn isOk() -> Bool {
         when this {
-            case .Ok(_) => { return true }
-            case .Err(_) => { return false }
+            case .Ok(_) -> { return true }
+            case .Err(_) -> { return false }
             default -> { return false }
         }
     }
 
     fn unwrap() -> T {
         when this {
-            case .Ok(value) => { return value }
-            case .Err(msg) => {
+            case .Ok(value) -> { return value }
+            case .Err(msg) -> {
                 throw RuntimeError("unwrap on Err: " + str(msg))
             }
             default -> {

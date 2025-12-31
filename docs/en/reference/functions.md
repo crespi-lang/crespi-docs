@@ -498,9 +498,9 @@ Collection helpers take a function or lambda. `reduce()` accepts an optional ini
 
 ```crespi
 var numbers = [1, 2, 3, 4]
-print(numbers.map(n => n * 2))         // [2, 4, 6, 8]
-print(numbers.filter(n => n % 2 == 0)) // [2, 4]
-print(numbers.reduce((a, b) => a + b, 0)) // 10
+print(numbers.map { n -> n * 2 })         // [2, 4, 6, 8]
+print(numbers.filter { n -> n % 2 == 0 }) // [2, 4]
+print(numbers.reduce({ a, b -> a + b }, 0)) // 10
 ```
 
 ---

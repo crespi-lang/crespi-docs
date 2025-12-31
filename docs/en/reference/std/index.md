@@ -58,7 +58,7 @@ All standard library functions are also available globally without imports:
 // No import needed
 print("Hello!")
 var x = sqrt(16)
-var nums = [1, 2, 3].map(n => n * 2)
+var nums = [1, 2, 3].map { n -> n * 2 }
 ```
 
 ---

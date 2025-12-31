@@ -157,10 +157,10 @@ Aplica una funcion a cada elemento, retornando una nueva lista.
 variable nums = [1, 2, 3, 4]
 
 // Duplicar cada numero
-mostrar(nums.mapear(n => n * 2))  // [2, 4, 6, 8]
+mostrar(nums.mapear { n -> n * 2 })  // [2, 4, 6, 8]
 
 // Convertir a textos
-mostrar(nums.mapear(n => texto(n)))  // ["1", "2", "3", "4"]
+mostrar(nums.mapear { n -> texto(n) })  // ["1", "2", "3", "4"]
 
 // Con funcion nombrada
 funcion cuadrado(n: Int) -> Int { retornar n * n }
@@ -177,14 +177,14 @@ Mantiene solo elementos donde el predicado retorna verdadero.
 variable nums = [1, 2, 3, 4, 5, 6]
 
 // Mantener numeros pares
-mostrar(nums.filtrar(n => n % 2 == 0))  // [2, 4, 6]
+mostrar(nums.filtrar { n -> n % 2 == 0 })  // [2, 4, 6]
 
 // Mantener numeros mayores que 3
-mostrar(nums.filtrar(n => n > 3))  // [4, 5, 6]
+mostrar(nums.filtrar { n -> n > 3 })  // [4, 5, 6]
 
 // Eliminar textos vacios
 variable palabras = ["hola", "", "mundo", ""]
-mostrar(palabras.filtrar(w => w.longitud() > 0))  // [hola, mundo]
+mostrar(palabras.filtrar { w -> w.longitud() > 0 })  // [hola, mundo]
 ```
 
 ---
@@ -201,17 +201,17 @@ Reduce una lista a un solo valor aplicando una funcion acumulativamente.
 variable nums = [1, 2, 3, 4, 5]
 
 // Suma
-mostrar(nums.reducir((a, b) => a + b, 0))  // 15
+mostrar(nums.reducir({ a, b -> a + b }, 0))  // 15
 
 // Producto
-mostrar(nums.reducir((a, b) => a * b, 1))  // 120
+mostrar(nums.reducir({ a, b -> a * b }, 1))  // 120
 
 // Maximo (sin inicial)
-mostrar(nums.reducir((a, b) => si a > b { a } sino { b }))  // 5
+mostrar(nums.reducir { a, b -> si a > b { a } sino { b } })  // 5
 
 // Construir texto
 variable palabras = ["Hola", "Mundo"]
-mostrar(palabras.reducir((a, b) => a + " " + b))  // "Hola Mundo"
+mostrar(palabras.reducir { a, b -> a + " " + b })  // "Hola Mundo"
 ```
 
 ---
@@ -230,14 +230,14 @@ variable nums = [3, 1, 4, 1, 5]
 mostrar(nums.ordenar())  // [1, 1, 3, 4, 5]
 
 // Orden descendente
-mostrar(nums.ordenar((a, b) => b - a))  // [5, 4, 3, 1, 1]
+mostrar(nums.ordenar { a, b -> b - a })  // [5, 4, 3, 1, 1]
 
 // Ordenar textos
 variable palabras = ["banana", "manzana", "cereza"]
 mostrar(palabras.ordenar())  // [banana, cereza, manzana]
 
 // Ordenar por longitud
-mostrar(palabras.ordenar((a, b) => a.longitud() - b.longitud()))
+mostrar(palabras.ordenar { a, b -> a.longitud() - b.longitud() })
 ```
 
 ---
@@ -274,8 +274,8 @@ Retorna el primer elemento que coincide con el predicado, o `nulo` si ninguno.
 ```crespi
 variable nums = [1, 2, 3, 4, 5]
 
-mostrar(nums.encontrar(n => n > 3))   // 4
-mostrar(nums.encontrar(n => n > 10))  // null
+mostrar(nums.encontrar { n -> n > 3 })   // 4
+mostrar(nums.encontrar { n -> n > 10 })  // null
 ```
 
 ---
@@ -288,10 +288,10 @@ Verifica si todos/alguno de los elementos satisfacen un predicado.
 variable nums = [2, 4, 6, 8]
 
 // Todos pares?
-mostrar(nums.cada(n => n % 2 == 0))  // true
+mostrar(nums.cada { n -> n % 2 == 0 })  // true
 
 // Alguno mayor que 5?
-mostrar(nums.alguno(n => n > 5))  // true
+mostrar(nums.alguno { n -> n > 5 })  // true
 ```
 
 ---
@@ -316,9 +316,9 @@ variable datos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 // Obtener suma de cuadrados de numeros pares
 variable resultado = datos
-    .filtrar(n => n % 2 == 0)      // [2, 4, 6, 8, 10]
-    .mapear(n => n * n)             // [4, 16, 36, 64, 100]
-    .reducir((a, b) => a + b, 0)    // 220
+    .filtrar { n -> n % 2 == 0 }           // [2, 4, 6, 8, 10]
+    .mapear { n -> n * n }                  // [4, 16, 36, 64, 100]
+    .reducir({ a, b -> a + b }, 0)          // 220
 
 mostrar(resultado)  // 220
 ```

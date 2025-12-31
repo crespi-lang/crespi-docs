@@ -275,7 +275,7 @@ fn to_json(value) -> String {
         case "int", "float", "bool" -> return str(value)
         case "null" -> return "null"
         case "list" -> {
-            var items = value.map(v => to_json(v))
+            var items = value.map { v -> to_json(v) }
             return "[" + items.join(", ") + "]"
         }
         default -> return str(value)
