@@ -66,6 +66,24 @@ mostrar(PI)  // 3.14159
 
 Nota: `PI` y `E` son constantes integradas. Úsalas directamente: `mostrar(PI)` o `variable circunferencia = 2 * PI * radio`.
 
+### Constantes de Tiempo de Compilación
+
+Usa `const` para constantes de tiempo de compilación. Sus valores deben conocerse en tiempo de compilación:
+
+```crespi
+const MAX_TAMANO = 1024
+const TIMEOUT_DEFECTO = 30
+const VERSION: String = "1.0.0"
+
+mostrar(MAX_TAMANO)  // 1024
+```
+
+A diferencia de `immutable`, que crea constantes en tiempo de ejecución, los valores `const` se resuelven en tiempo de compilación. Usa `const` cuando:
+
+- El valor es un literal o expresión de tiempo de compilación
+- Quieres que el compilador inserte el valor directamente
+- El valor se usa en contextos que requieren evaluación en tiempo de compilación
+
 ### Inmutabilidad
 
 Intentar reasignar una constante produce un error:

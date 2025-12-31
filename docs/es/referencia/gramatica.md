@@ -184,11 +184,11 @@ whenStmt
   ;
 
 whenCase
-  : 'es' pattern '=>' block
+  : 'caso' pattern '->' block
   ;
 
 defaultCase
-  : 'defecto' '=>' block
+  : 'defecto' '->' block
   ;
 
 whileStmt

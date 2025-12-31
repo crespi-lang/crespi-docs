@@ -119,10 +119,14 @@ enum Message {
     case ChangeColor(r: Int, g: Int, b: Int)
 }
 
-// Construction with named arguments
+// Construction with positional arguments
 var msg1 = Message.Move(10, 20)
 var msg2 = Message.Write("Hello")
 var msg3 = Message.ChangeColor(255, 0, 0)
+
+// Construction with named arguments
+var msg4 = Message.Move(x = 10, y = 20)
+var msg5 = Message.ChangeColor(r = 255, g = 128, b = 0)
 
 when msg1 {
     case .Move(x, y) -> {

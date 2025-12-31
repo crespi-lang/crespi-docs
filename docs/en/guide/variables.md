@@ -66,6 +66,24 @@ print(PI)  // 3.14159
 
 Note: `PI` and `E` are built-in constants. Use them directly: `print(PI)` or `var circumference = 2 * PI * radius`.
 
+### Compile-Time Constants
+
+Use `const` for compile-time constants. These must have values known at compile time:
+
+```crespi
+const MAX_SIZE = 1024
+const DEFAULT_TIMEOUT = 30
+const VERSION: String = "1.0.0"
+
+print(MAX_SIZE)  // 1024
+```
+
+Unlike `let`, which creates runtime constants, `const` values are resolved at compile time. Use `const` when:
+
+- The value is a literal or compile-time expression
+- You want the compiler to inline the value
+- The value is used in contexts requiring compile-time evaluation
+
 ### Immutability
 
 Attempting to reassign a constant produces an error:
