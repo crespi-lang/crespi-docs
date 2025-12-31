@@ -578,9 +578,155 @@ Only `pub` functions and items are included in the generated bindings.
 
 **Solution:** Mark items as `pub` that you want to expose to Crespi.
 
+## C and Swift Interoperability
+
+In addition to calling Rust from Crespi, you can also expose Crespi functions to C, C++, Objective-C, and Swift using the `crespi-c-ffi` crate.
+
+### Generating C Headers
+
+Generate a C header file from Crespi source code:
+
+```rust
+use crespi_c_ffi::generate_c_header;
+
+let source = r#"
+    fn add(a: Int, b: Int) -> Int {
+        return a + b
+    }
+"#;
+
+let header = generate_c_header(source, "my_module").unwrap();
+println!("{}", header);
+```
+
+This generates a C header with function declarations like:
+
+```c
+#ifndef MY_MODULE_H
+#define MY_MODULE_H
+
+#include <stdint.h>
+#include <stdbool.h>
+
+typedef struct GcContext GcContext;
+typedef struct CrespiValue CrespiValue;
+
+extern "C" {
+    int64_t add(GcContext* gc, int64_t a, int64_t b);
+}
+
+#endif // MY_MODULE_H
+```
+
+### Type Mapping
+
+| Crespi Type | C Type |
+|-------------|--------|
+| `Int` | `int64_t` |
+| `Int32` | `int32_t` |
+| `Int16` | `int16_t` |
+| `Int8` | `int8_t` |
+| `UInt` | `uint64_t` |
+| `UInt32` | `uint32_t` |
+| `Double` | `double` |
+| `Float` | `float` |
+| `Bool` | `bool` |
+| `String` | `CrespiValue` |
+| `List<T>` | `CrespiValue` |
+| `Dict<K,V>` | `CrespiValue` |
+
+### Swift Module Maps
+
+Generate Swift module maps for iOS/macOS integration:
+
+```rust
+use crespi_c_ffi::{generate_swift_modulemap, SwiftModuleOptions};
+
+let opts = SwiftModuleOptions {
+    module_name: "MyCrespiLib".to_string(),
+    header_path: "crespi_module.h".to_string(),
+    link_library: Some("crespi_module".to_string()),
+    ..Default::default()
+};
+
+let modulemap = generate_swift_modulemap(&opts);
+```
+
+This generates a `module.modulemap` file:
+
+```
+module MyCrespiLib {
+    header "crespi_module.h"
+    link "crespi_module"
+    export *
+}
+```
+
+### Swift Wrapper Generation
+
+For type-safe Swift access, generate wrapper code:
+
+```rust
+use crespi_c_ffi::generate_swift_wrapper;
+
+let swift_code = generate_swift_wrapper("MyModule", &functions);
+```
+
+This generates Swift classes and structs:
+
+```swift
+/// Crespi garbage collection context
+public class CrespiGC {
+    private var context: OpaquePointer?
+
+    public init() {
+        context = crespi_rt_gc_create()
+    }
+
+    deinit {
+        if let ctx = context {
+            crespi_rt_gc_destroy(ctx)
+        }
+    }
+}
+
+/// Wrapper for CrespiValue
+public struct CrespiVal {
+    internal var raw: CrespiValue
+
+    public static var null: CrespiVal {
+        CrespiVal(raw: crespi_value_null())
+    }
+
+    public init(_ value: Int64) {
+        raw = crespi_value_from_int(value)
+    }
+
+    // ... additional initializers and accessors
+}
+```
+
+### GC Context Requirement
+
+All exported Crespi functions require a `GcContext*` as their first parameter. This context manages memory allocation and garbage collection for Crespi values.
+
+```c
+// C usage
+GcContext* gc = crespi_rt_gc_create();
+int64_t result = add(gc, 10, 20);
+crespi_rt_gc_destroy(gc);
+```
+
+```swift
+// Swift usage
+let gc = CrespiGC()
+let result = add(gc: gc, a: 10, b: 20)
+// gc is automatically destroyed when it goes out of scope
+```
+
 ## Future Work
 
-The FFI system is designed with multi-language interoperability in mind. While Rust is currently the primary supported language, the architecture allows for future expansion to support additional languages through the same marshaling layer.
+The FFI system is designed with multi-language interoperability in mind. Rust is the primary supported language for calling native code from Crespi, while C and Swift support enables embedding Crespi in native applications.
 
 ## See Also
 
