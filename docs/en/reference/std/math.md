@@ -36,6 +36,7 @@ Or use directly without import (globally available).
 | `pow(base, exp)` | `base, exp: Number` | `Float` | Power |
 | `min(a, b?)` | `a, b: Number` or `list` | `Number` | Minimum |
 | `max(a, b?)` | `a, b: Number` or `list` | `Number` | Maximum |
+| `clamp(x, min, max)` | `x, min, max: Number` | `Number` | Constrain to range |
 
 ### Rounding
 
@@ -172,6 +173,17 @@ print(max(5, 3))       // 5
 // List
 print(min([4, 1, 7, 2]))  // 1
 print(max([4, 1, 7, 2]))  // 7
+```
+
+### `clamp(x, min, max)`
+
+Constrains a value to a range.
+
+```crespi
+print(clamp(5, 0, 10))     // 5 (within range)
+print(clamp(-5, 0, 10))    // 0 (clamped to min)
+print(clamp(15, 0, 10))    // 10 (clamped to max)
+print(clamp(0.5, 0.0, 1.0)) // 0.5 (works with floats)
 ```
 
 ---

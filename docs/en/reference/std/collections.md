@@ -16,7 +16,43 @@ Or use directly without import (globally available).
 
 ---
 
+## List Creation
+
+### `range(end)` / `range(start, end)` / `range(start, end, step)`
+
+Creates a list of integers.
+
+**Forms:**
+- `range(end)` - 0 to end-1
+- `range(start, end)` - start to end-1
+- `range(start, end, step)` - with custom step
+
+```crespi
+print(range(5))           // [0, 1, 2, 3, 4]
+print(range(2, 7))        // [2, 3, 4, 5, 6]
+print(range(0, 10, 2))    // [0, 2, 4, 6, 8]
+print(range(10, 0, -2))   // [10, 8, 6, 4, 2]
+
+// Common patterns
+for i in range(5) {
+    print(i)  // 0, 1, 2, 3, 4
+}
+
+var squares = range(1, 6).map(n => n * n)
+print(squares)  // [1, 4, 9, 16, 25]
+```
+
+---
+
 ## Quick Reference
+
+### List Creation
+
+| Function | Spanish Alias | Parameters | Returns | Description |
+|----------|---------------|------------|---------|-------------|
+| `range(end)` | `rango` | `end: Int` | `[Int]` | List 0 to end-1 |
+| `range(start, end)` | `rango` | `start, end: Int` | `[Int]` | List start to end-1 |
+| `range(start, end, step)` | `rango` | `start, end, step: Int` | `[Int]` | List with step |
 
 ### Basic Operations
 

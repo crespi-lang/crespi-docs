@@ -24,6 +24,14 @@ Or use directly without import (globally available).
 | `int` | `entero` | `value: Any` | `Int` | Convert to integer |
 | `float` | `decimal` | `value: Any` | `Float` | Convert to float |
 | `typeof` | `tipo_de` | `value: Any` | `String` | Get type name |
+| `is_int` | `es_entero` | `value: Any` | `Bool` | Check if integer |
+| `is_float` | `es_decimal` | `value: Any` | `Bool` | Check if float |
+| `is_string` | `es_texto` | `value: Any` | `Bool` | Check if string |
+| `is_bool` | `es_bool` | `value: Any` | `Bool` | Check if boolean |
+| `is_list` | `es_lista` | `value: Any` | `Bool` | Check if list |
+| `is_dict` | `es_dict` | `value: Any` | `Bool` | Check if dictionary |
+| `is_null` | `es_nulo` | `value: Any` | `Bool` | Check if null |
+| `is_function` | `es_funcion` | `value: Any` | `Bool` | Check if function |
 
 ---
 
@@ -192,6 +200,36 @@ fn process(value) {
 process(42)         // Integer: 42
 process("hello")    // String: hello
 process([1, 2, 3])  // List with 3 items
+```
+
+---
+
+### Type Checking Functions
+
+The `is_*` functions provide a convenient way to check value types. They return `true` if the value is of the specified type.
+
+```crespi
+// Type checking examples
+print(is_int(42))           // true
+print(is_int(3.14))         // false
+print(is_float(3.14))       // true
+print(is_string("hello"))   // true
+print(is_bool(true))        // true
+print(is_list([1, 2, 3]))   // true
+print(is_dict(d))           // true (where d is a dict)
+print(is_null(null))        // true
+print(is_function(print))   // true
+
+// Practical use
+fn safe_add(a, b) {
+    if is_int(a) and is_int(b) {
+        return a + b
+    }
+    if is_float(a) or is_float(b) {
+        return float(a) + float(b)
+    }
+    throw "Arguments must be numbers"
+}
 ```
 
 ---

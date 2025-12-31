@@ -71,6 +71,8 @@ var nums = [1, 2, 3].map(n => n * 2)
 |----------|-------------|
 | `print(value)` | Print to stdout |
 | `read()` | Read line from stdin |
+| `time()` / `now()` | Unix timestamp |
+| `assert(cond, msg?)` | Assert condition |
 
 ### Conversions
 
@@ -80,6 +82,7 @@ var nums = [1, 2, 3].map(n => n * 2)
 | `int(value)` | Convert to integer |
 | `float(value)` | Convert to float |
 | `typeof(value)` | Get type name |
+| `is_int(v)`, `is_float(v)`, ... | Type checking |
 
 ### Math
 
@@ -88,6 +91,7 @@ var nums = [1, 2, 3].map(n => n * 2)
 | `abs(x)` | Absolute value |
 | `sqrt(x)` | Square root |
 | `pow(base, exp)` | Power |
+| `clamp(x, min, max)` | Constrain to range |
 | `round(x)` | Round to nearest |
 | `floor(x)` / `ceil(x)` | Round down/up |
 | `sin(x)` / `cos(x)` / `tan(x)` | Trigonometry |
@@ -110,6 +114,7 @@ var nums = [1, 2, 3].map(n => n * 2)
 
 | Method | Description |
 |--------|-------------|
+| `range(end)`, `range(start, end, step?)` | Create list |
 | `c.length()` | Get length |
 | `list.push(v)` / `list.pop()` | Add/remove |
 | `dict.keys()` / `dict.values()` | Dictionary access |

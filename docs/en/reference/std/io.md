@@ -22,6 +22,8 @@ Or use directly without import (globally available).
 |----------|---------------|------------|---------|-------------|
 | `print` | `mostrar` | `value: Any` | `Unit` | Print to stdout |
 | `read` | `leer` | - | `String` | Read line from stdin |
+| `time` | `tiempo` | - | `Float` | Unix timestamp in seconds |
+| `assert` | `afirmar` | `cond, msg?` | `Unit` | Assert condition |
 
 ---
 
@@ -109,6 +111,63 @@ when choice {
     case "2" -> print("Selected B")
     case "3" -> print("Goodbye!")
     default -> print("Invalid option")
+}
+```
+
+---
+
+### `time()` / `now()`
+
+Returns the current Unix timestamp in seconds (with fractional milliseconds).
+
+**Alias:** `now()`
+
+**Parameters:** None
+
+**Returns:** `Float` - Seconds since Unix epoch (January 1, 1970)
+
+**Examples:**
+
+```crespi
+var t = time()
+print(t)  // 1704067200.123456
+
+// Measure execution time
+var start = time()
+// ... some operation ...
+var elapsed = time() - start
+print("Took " + str(elapsed) + " seconds")
+```
+
+---
+
+### `assert(condition, message?)`
+
+Asserts that a condition is true. Throws an error if the condition is false.
+
+**Parameters:**
+- `condition: Bool` - The condition to check
+- `message?: String` - Optional error message (default: "Assertion failed")
+
+**Returns:** `Unit` (nothing)
+
+**Errors:** Throws if condition is false
+
+**Examples:**
+
+```crespi
+assert(1 + 1 == 2, "Math is broken!")  // passes
+assert(true)                            // passes
+
+// These will throw:
+// assert(false)                 // Error: Assertion failed
+// assert(1 > 2, "1 is not > 2") // Error: 1 is not > 2
+
+// Testing functions
+fn test_factorial() {
+    assert(factorial(0) == 1, "factorial(0) should be 1")
+    assert(factorial(5) == 120, "factorial(5) should be 120")
+    print("All tests passed!")
 }
 ```
 
