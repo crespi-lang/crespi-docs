@@ -1,0 +1,58 @@
+# Rust
+**/target/
+Cargo.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tooling
+.gemini-clipboard/
+.codex-target/
+.worktrees/
+/.plans/
+
+# Node
+node_modules/
+crespi-ide-support/vscode/out/
+crespi-ide-support/vscode/*.vsix
+crespi-learn/.svelte-kit/
+crespi-learn/build/
+
+# Crespi REPL history
+.crespi_history
+
+# Build artifacts
+/build/
+wasm/
+
+# Example programs (native binaries and object files)
+examples/simple_scripts/*
+!examples/simple_scripts/*.crespi
+!examples/simple_scripts/multi_file/
+examples/simple_scripts/multi_file/*
+!examples/simple_scripts/multi_file/*.crespi
+
+# Cargo example projects (ignore build artifacts)
+examples/cargo_projects/**/target/
+examples/cargo_projects/**/main
+examples/cargo_projects/**/test_ffi
+
+# Object files
+*.o
+
+# Development directories
+/lib/
+/kotlin/
+/swift/
+/codex/
+/claude/
+/gemini/
+/rust_ffi_sample
+.aider*
