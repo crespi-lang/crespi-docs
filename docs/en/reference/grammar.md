@@ -26,6 +26,9 @@ statement
   | whileStmt
   | forStmt
   | guardStmt
+  | tryStmt
+  | throwStmt
+  | deferStmt
   | returnStmt
   | breakStmt
   | continueStmt
@@ -35,7 +38,7 @@ statement
 
 declaration
   : importDecl
-  | decorator* visibility? (varDecl | letDecl | functionDecl | extensionFunctionDecl | classDecl | traitDecl)
+  | decorator* visibility? (varDecl | letDecl | functionDecl | extensionFunctionDecl | classDecl | traitDecl | enumDecl)
   | extensionDecl
   ;
 
@@ -56,11 +59,15 @@ letDecl
   ;
 
 functionDecl
-  : 'async'? 'fn' IDENTIFIER typeParams? '(' parameters? ')' returnType? (block | '=' expression semi)
+  : 'async'? 'fn' IDENTIFIER typeParams? '(' parameters? ')' throwsAnn? returnType? (block | '=' expression semi)
   ;
 
 extensionFunctionDecl
-  : 'async'? 'fn' IDENTIFIER '.' IDENTIFIER typeParams? '(' parameters? ')' returnType? (block | '=' expression semi)
+  : 'async'? 'fn' IDENTIFIER '.' IDENTIFIER typeParams? '(' parameters? ')' throwsAnn? returnType? (block | '=' expression semi)
+  ;
+
+throwsAnn
+  : 'throws'
   ;
 
 operatorDecl
@@ -104,12 +111,36 @@ staticMember
   | 'static' block
   ;
 
+// ===== Enum Declarations =====
+
+enumDecl
+  : 'indirect'? 'enum' IDENTIFIER typeParams? '{' enumVariants '}'
+  ;
+
+enumVariants
+  : ('case' enumVariant (',' enumVariant)* )+
+  ;
+
+enumVariant
+  : IDENTIFIER enumVariantFields?
+  ;
+
+enumVariantFields
+  : '(' enumField (',' enumField)* ')'
+  ;
+
+enumField
+  : (IDENTIFIER ':')? typeExpr
+  ;
+
+// ===== Traits and Extensions =====
+
 traitDecl
   : 'trait' IDENTIFIER typeParams? (':' parents)? '{' traitMember* '}'
   ;
 
 traitMember
-  : 'async'? 'fn' IDENTIFIER '(' parameters? ')' returnType? block?
+  : 'async'? 'fn' IDENTIFIER '(' parameters? ')' throwsAnn? returnType? block?
   ;
 
 extensionDecl
@@ -120,6 +151,8 @@ extensionMember
   : functionDecl
   | operatorDecl
   ;
+
+// ===== Imports =====
 
 importDecl
   : 'import' importKind? modulePath importAlias? importSymbols? semi
@@ -145,6 +178,8 @@ modulePath
   : IDENTIFIER ('.' IDENTIFIER)*
   ;
 
+// ===== Parameters and Types =====
+
 parameters
   : parameter (',' parameter)*
   ;
@@ -168,6 +203,8 @@ typeAnn
 returnType
   : '->' typeExpr
   ;
+
+// ===== Control Flow Statements =====
 
 ifStmt
   : 'if' expression block ('else' (ifStmt | block))?
@@ -201,6 +238,31 @@ forStmt
   : 'for' IDENTIFIER 'in' expression block
   ;
 
+// ===== Error Handling Statements =====
+
+tryStmt
+  : 'try' block catchClause+
+  ;
+
+catchClause
+  : 'catch' catchPattern? block
+  ;
+
+catchPattern
+  : pattern                    // Pattern match: catch FileError.notFound(path) { }
+  | IDENTIFIER                 // Binding: catch error { }
+  ;
+
+throwStmt
+  : 'throw' expression semi
+  ;
+
+deferStmt
+  : 'defer' block
+  ;
+
+// ===== Other Statements =====
+
 returnStmt
   : 'return' expression? semi
   ;
@@ -229,6 +291,8 @@ blockExprTail
   : 'return' expression?
   | expression
   ;
+
+// ===== Expressions =====
 
 expression
   : assignment
@@ -280,7 +344,11 @@ equality
   ;
 
 comparison
-  : shift (('<' | '<=' | '>' | '>=' | 'in') shift)*
+  : range (('<' | '<=' | '>' | '>=' | 'in') range)*
+  ;
+
+range
+  : shift (('..' | '..<') shift)?
   ;
 
 shift
@@ -297,7 +365,11 @@ factor
 
 unary
   : ('!' | '-' | '~' | 'await') unary
-  | call
+  | tryExpr
+  ;
+
+tryExpr
+  : call ('try?' | 'try!')?
   ;
 
 call
@@ -330,10 +402,12 @@ primary
 
 lambdaExpr
   : 'async'? '{' lambdaParams? '->' lambdaBody '}'
+  | 'async'? lambdaParams '=>' expression               // Arrow syntax: x => x + 1
   ;
 
 lambdaParams
   : IDENTIFIER (',' IDENTIFIER)*
+  | '(' (IDENTIFIER typeAnn? (',' IDENTIFIER typeAnn?)*)? ')'
   ;
 
 lambdaBody
@@ -357,16 +431,29 @@ dictEntry
   : expression ':' expression
   ;
 
+// ===== Patterns =====
+
 pattern
   : '_'
-  | IDENTIFIER patternClass?
   | literal
+  | enumPattern
+  | classPattern
   | listPattern
   | dictPattern
+  | IDENTIFIER
   ;
 
-patternClass
-  : '{' patternField (',' patternField)* '}'
+enumPattern
+  : '.' IDENTIFIER enumPatternFields?                    // Shorthand: .variant or .variant(x, y)
+  | IDENTIFIER '.' IDENTIFIER enumPatternFields?        // Qualified: EnumName.variant(x, y)
+  ;
+
+enumPatternFields
+  : '(' (pattern (',' pattern)*)? ')'
+  ;
+
+classPattern
+  : IDENTIFIER '{' patternField (',' patternField)* '}'
   ;
 
 patternField
@@ -385,6 +472,8 @@ patternEntry
   : STRING ':' pattern
   ;
 
+// ===== Operators =====
+
 operatorName
   : '+' | '-' | '*' | '/' | '%'
   | '==' | '!' | '<' | '<=>'
@@ -392,6 +481,8 @@ operatorName
   | 'increment' | 'decrement'
   | 'get' | 'set' | 'contains' | 'invoke'
   ;
+
+// ===== Type Expressions =====
 
 typeExpr
   : unionType
