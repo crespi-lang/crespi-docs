@@ -9,6 +9,9 @@ Notes:
 - String interpolation (`$ident` and `${expr}`) is handled by the lexer with modes in practice. The lexer
   rules below treat strings as single tokens for simplicity.
 - Import aliases use `as` in canonical syntax; Spanish `como` is accepted at runtime.
+- Lambdas use Kotlin-style brace syntax: `{ x -> x * 2 }`, `{ it * 2 }` (implicit parameter).
+- Trailing lambdas can follow function calls: `list.map { x -> x * 2 }`.
+- Range operators: `..` is inclusive, `..<` is exclusive (half-open).
 
 ```antlr
 grammar Crespi;
@@ -38,7 +41,7 @@ statement
 
 declaration
   : importDecl
-  | decorator* visibility? (varDecl | letDecl | functionDecl | extensionFunctionDecl | classDecl | traitDecl | enumDecl)
+  | decorator* visibility? (varDecl | letDecl | constDecl | functionDecl | extensionFunctionDecl | externFunctionDecl | classDecl | traitDecl | enumDecl)
   | extensionDecl
   ;
 
@@ -58,12 +61,24 @@ letDecl
   : 'let' IDENTIFIER typeAnn? '=' expression semi
   ;
 
+constDecl
+  : 'const' IDENTIFIER typeAnn? '=' expression semi
+  ;
+
 functionDecl
   : 'async'? 'fn' IDENTIFIER typeParams? '(' parameters? ')' throwsAnn? returnType? (block | '=' expression semi)
   ;
 
 extensionFunctionDecl
   : 'async'? 'fn' IDENTIFIER '.' IDENTIFIER typeParams? '(' parameters? ')' throwsAnn? returnType? (block | '=' expression semi)
+  ;
+
+externFunctionDecl
+  : attribute? 'extern' 'fn' IDENTIFIER '(' parameters? ')' returnType?
+  ;
+
+attribute
+  : '#' '[' IDENTIFIER '=' STRING ']'
   ;
 
 throwsAnn
@@ -84,7 +99,19 @@ constructorDelegation
   ;
 
 classDecl
-  : 'class' IDENTIFIER typeParams? ('(' parameters? ')')? (':' parents)? classBody?
+  : classModifier? 'class' IDENTIFIER typeParams? ('(' classParameters? ')')? (':' parents)? classBody?
+  ;
+
+classModifier
+  : 'nested' | 'inner'
+  ;
+
+classParameters
+  : classParameter (',' classParameter)*
+  ;
+
+classParameter
+  : ('var' | 'let')? IDENTIFIER typeAnn? ('=' expression)?
   ;
 
 parents
@@ -114,7 +141,7 @@ staticMember
 // ===== Enum Declarations =====
 
 enumDecl
-  : 'indirect'? 'enum' IDENTIFIER typeParams? '{' enumVariants '}'
+  : 'indirect'? 'enum' IDENTIFIER typeParams? '{' enumVariants enumMember* '}'
   ;
 
 enumVariants
@@ -131,6 +158,11 @@ enumVariantFields
 
 enumField
   : (IDENTIFIER ':')? typeExpr
+  ;
+
+enumMember
+  : functionDecl
+  | operatorDecl
   ;
 
 // ===== Traits and Extensions =====
@@ -344,7 +376,7 @@ equality
   ;
 
 comparison
-  : range (('<' | '<=' | '>' | '>=' | 'in') range)*
+  : range (('<' | '<=' | '>' | '>=' | 'in' | 'is' | '!is') range)*
   ;
 
 range
@@ -373,7 +405,7 @@ tryExpr
   ;
 
 call
-  : primary callSuffix*
+  : primary callSuffix* trailingLambda?
   ;
 
 callSuffix
@@ -384,8 +416,16 @@ callSuffix
   | '--'
   ;
 
+trailingLambda
+  : lambdaExpr
+  ;
+
 arguments
-  : expression (',' expression)*
+  : argument (',' argument)*
+  ;
+
+argument
+  : (IDENTIFIER '=')? expression
   ;
 
 primary
@@ -393,16 +433,30 @@ primary
   | IDENTIFIER
   | 'this'
   | 'super' '.' IDENTIFIER
+  | enumVariantShorthand
   | lambdaExpr
+  | anonymousFn
   | tupleLiteral
   | '(' expression ')'
   | arrayLiteral
   | dictLiteral
   ;
 
+literal
+  : INTEGER
+  | DECIMAL
+  | STRING
+  | 'true'
+  | 'false'
+  | 'null'
+  ;
+
+enumVariantShorthand
+  : '.' IDENTIFIER ('(' arguments? ')')?
+  ;
+
 lambdaExpr
-  : 'async'? '{' lambdaParams? '->' lambdaBody '}'
-  | 'async'? lambdaParams '=>' expression               // Arrow syntax: x => x + 1
+  : 'async'? '{' (lambdaParams '->')? lambdaBody '}'
   ;
 
 lambdaParams
@@ -414,12 +468,16 @@ lambdaBody
   : statement* expression?
   ;
 
+anonymousFn
+  : 'async'? 'fn' '(' parameters? ')' returnType? (block | '=' expression)
+  ;
+
 tupleLiteral
   : '(' expression ',' (expression (',' expression)*)? ','? ')'
   ;
 
 arrayLiteral
-  : '[' (expression (',' expression)*)? ']'
+  : '[' (expression (',' expression)* ','?)? ']'
   ;
 
 dictLiteral
@@ -500,12 +558,13 @@ primaryType
   : arrayType
   | dictType
   | functionType
+  | extensionFunctionType
   | tupleType
   | namedType
   ;
 
 namedType
-  : IDENTIFIER ('[' typeExpr (',' typeExpr)* ']')? ('.' '(' parameters? ')' '->' typeExpr)?
+  : IDENTIFIER ('[' typeExpr (',' typeExpr)* ']')?
   ;
 
 arrayType
@@ -517,7 +576,11 @@ dictType
   ;
 
 functionType
-  : '(' typeExpr (',' typeExpr)* ')' '->' typeExpr
+  : '(' (typeExpr (',' typeExpr)*)? ')' '->' typeExpr
+  ;
+
+extensionFunctionType
+  : IDENTIFIER '.' '(' (typeExpr (',' typeExpr)*)? ')' '->' typeExpr
   ;
 
 tupleType
